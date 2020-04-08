@@ -1,6 +1,7 @@
 # Config files
 local.properties
 signing.properties
+gradle.properties
 
 # Gradle
 .gradle/
@@ -19,3 +20,8 @@ webapp/libs
 # Standalone WAR user files
 webapp/i2pbote
 webapp/logs
+
+# Android Studio
+.idea/
+*.iml
+
