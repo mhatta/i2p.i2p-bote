@@ -232,7 +232,7 @@ thinWar {
 i2p {
     plugin {
         name 'i2pbote'
-        signer 'str4d@mail.i2p'
+        signer 'mhatta@mail.i2p'
         version project.version
 
         author 'str4d@mail.i2p'
