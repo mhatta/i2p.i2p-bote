@@ -55,8 +55,8 @@ precompileJsp.dependsOn compileJava
 compileJspJava.dependsOn precompileJsp
 
 dependencies {
-    jasper 'org.mortbay.jasper:apache-el:8.5.40'
-    jasper 'org.mortbay.jasper:apache-jsp:8.5.40'
+    jasper 'org.mortbay.jasper:apache-el:9.0.29'
+    jasper 'org.mortbay.jasper:apache-jsp:9.0.29'
 
     compile project(':core')
 
