@@ -24,4 +24,5 @@ webapp/logs
 # Android Studio
 .idea/
 *.iml
+android/release
 
