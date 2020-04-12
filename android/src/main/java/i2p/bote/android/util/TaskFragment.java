@@ -1,7 +1,7 @@
 package i2p.bote.android.util;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 public class TaskFragment<Params, Progress, Result> extends DialogFragment {
     RobustAsyncTask<Params, Progress, Result> mTask;

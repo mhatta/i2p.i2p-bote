@@ -18,12 +18,19 @@
     </string-array>
     <string-array name="languages">
         <item>zz</item>
-        <item>en</item>
-        <item>zh</item>
+        <item>ar</item>
+        <item>az</item>
         <item>de</item>
+        <item>el</item>
+        <item>en</item>
         <item>es</item>
+        <item>fa</item>
+        <item>fi</item>
         <item>fr</item>
+        <item>gl</item>
+        <item>hu</item>
         <item>in</item>
+        <item>it</item>
         <item>ko</item>
         <item>nb</item>
         <item>nl</item>
@@ -34,24 +41,35 @@
         <item>sq</item>
         <item>sv</item>
         <item>tr</item>
+        <item>uk</item>
+        <item>zh</item>
     </string-array>
     <string-array name="language_names">
         <item>@string/settings_default</item>
-        <item>English</item>
-        <item>Chinese 中国的</item>
+        <item>Arabic</item>
+        <item>Azerbaijani</item>
         <item>Deutsch</item>
+        <item>Greek</item>
+        <item>English</item>
         <item>Español</item>
+        <item>Persian</item>
+        <item>Finnish</item>
         <item>Français</item>
+        <item>Galician</item>
+        <item>Hungarian</item>
         <item>Indonesia</item>
+        <item>Italian</item>
         <item>Korean 한국어/조선말</item>
         <item>Norwegian Bokmål</item>
-        <item>Nederlands</item>
+        <item>Dutch</item>
         <item>Polski</item>
         <item>Português</item>
         <item>Română</item>
         <item>Russian Pусский</item>
-        <item>Shqip</item>
-        <item>Svenska</item>
+        <item>Albanian Shqip</item>
+        <item>Swedish Svenska</item>
         <item>Türkçe</item>
+        <item>Ukrainian</item>
+        <item>Chinese 中国的</item>
     </string-array>
 </resources>

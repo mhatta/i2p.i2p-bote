@@ -1,0 +1,551 @@
+<div>
+<h1>Întrebări frecvente</h1>
+
+<nav><p><a href="#What">Ce este I2P-Bote?</a></p>
+<p><a href="#Name">De ce se numește I2P-Bote?</a></p>
+<p><a href="#Why">De ce I2P-Bote?</a></p>
+<p><a href="#Sending">Сe se întâmplă cu un e-mail după ce dau clic pe „Trimite”?</a></p>
+<p><a href="#RandomPeople">Așteptați puțin, tot e-mail-ul pe care îl trimit este salvat în unele aleatorii
+hard disk-uri persoanei? Asta sună ca o idee cu adevărat mută!</a></p>
+<p><a href="#HowItWorks">Cum funcționează exact?</a></p>
+<p><a href="#NothingToHide">De ce aș folosi-o? Nu am nimic de ascuns…</a></p>
+<p><a href="#GPG">Dar PGP și GPG?</a></p>
+<p><a href="#UsingGPG">Mai pot folosi GPG / PGP cu I2P-Bote?</a></p>
+<p><a href="#Susimail">Cum se compară cu Susimail?</a></p>
+<p><a href="#Comparison">De ce este mai bun I2P-Bote?</a></p>
+<p><a href="#Safeguards">Cum se păstrează în siguranță identitatea mea atunci când schimb un mail cu
+cineva?</a></p>
+<p><a href="#How">Cum îl folosesc?</a></p>
+<p><a href="#EmailClients">Pot folosi un program de e-mail ca Thunderbird?</a></p>
+<p><a href="#Attachments">Pot trimite atașamente și ce limite există?</a></p>
+<p><a href="#CreateIdentity">Cum pot crea un cont de e-mail?</a></p>
+<p><a href="#EmailDestination">Ce este o destinație prin e-mail? Dar adresele de e-mail?</a></p>
+<p><a href="#AddressLength">De ce sunt adresele de e-mail atât de lungi?</a></p>
+<p><a href="#AddressBook">Dar nu-mi amintesc destinațiile lungi ...</a></p>
+<p><a href="#MultipleIdentities">Ce rost are să folosești mai multe identități de e-mail?</a></p>
+<p><a href="#EncryptionTypes">Care tip de criptare este cel mai bun?</a></p>
+<p><a href="#Algorithms">Ce algoritmi sunt folosiți pentru criptarea simetrică și
+pentru hashing?</a></p>
+<p><a href="#AntiSpam">Există măsuri anti-spam?</a></p>
+<p><a href="#HTML">Ce zici de HTML sau text în stil?</a></p>
+<p><a href="#Persistence">Cât timp se păstrează e-mailurile?</a></p>
+<p><a href="#DoIdentitiesExpire">Când expiră identitățile de e-mail?</a></p>
+<p><a href="#Gateways">Pot să trimit e-mail și să primesc e-mailuri de la 
+servere de e-mail din internet?</a></p>
+<p><a href="#Postman">Pot să trimit e-mail și să primesc e-mail de la poștașul
+conturi poștale tradiționale I2P?</a></p>
+<p><a href="#Know">Ce înseamnă când Know este ce a fost trimis pentru un e-mail
+Inbox?</a></p>
+<p><a href="#Terms">Ce înseamnă „BktPfx”, „Distanță” și „Blocat?”?</a></p>
+<p><a href="#Anonymous">Ce pot face pentru a fi mai anonim?</a></p>
+<p><a href="#Timestamps">Cum nu trimit timpe-uri?</a></p>
+<p><a href="#Backups">Cum pot migra setările și datele mele către alta
+computer, sau le face copie de rezervă?</a></p>
+<p><a href="#MailRoutes">e este o <em>cale de e-mail</em>?</a></p>
+<p><a href="#HighLatency">Ce înseamnă transport de mare latență?</a></p>
+<p><a href="#Latencies">Ce latențe există și cum pot fi ele controlate
+(dacă este deloc)?</a></p>
+<p><a href="#WhyI2P">Dacă I2P-Bote își generează propriul anonimat, de ce o face
+ai nevoie de I2P?</a></p>
+<p><a href="#WithoutRoutes">Cât de anonim / sigur este I2P-Bote fără rute de e-mail?</a></p>
+<p><a href="#OpenSource">Este I2P-Bote open source?</a></p>
+<p><a href="#Credits">Cine a făcut I2P-Bote?</a></p>
+<p><a href="#Languages">Ce limbi sunt disponibile?</a></p>
+<p><a href="#Translate">Cum pot contribui la traducerea I2P-Bote în limba mea?</a></p>
+<p><a href="#Technical">Cum funcționează la nivel tehnic?</a></p>
+<p><a href="#GetInvolved">Ce alte moduri pot ajuta?</a></p>
+</nav><h3 id="What">Ce este I2P-Bote?</h3>
+<p>Un program de e-mail peer-to-peer conceput pentru a vă proteja confidențialitatea.</p>
+
+<p>I2P-Bote este complet criptat, intern în rețea, complet
+sistem de e-mail descentralizat (fără server). Suporta diferite
+identități și nu expune anteturile de e-mail. În prezent, este
+încă software alfa. Poate fi accesat prin intermediul consolei web și
+are suport IMAP și SMTP, astfel încât e-mailurile pot fi citite și scrise de
+clienți obișnuiți prin e-mail. Este planificat să garanteze suplimentar
+anonimat prin furnizarea unei opțiuni de transport cu latență ridicată. Toate
+Bote-mail-urile sunt automat criptate end-to-end, astfel încât există
+nu este nevoie să configurați criptarea prin e-mail (deși opțiunea există),
+iar e-mailurile vor fi autentificate automat. Așa cum este
+descentralizat, nu există un server de e-mail care să poată lega diferite
+identități de e-mail comunicând între ele (profilare):
+Nici nodurile care afișează mailurile nu vor cunoaște expeditorul și
+în afară de expeditor și receptor, numai sfârșitul latenței ridicate
+tunelul de mail și nodurile de stocare vor ști cui (anonim
+identitate) e-mailul este destinat. Expeditorul original poate să fi plecat
+offline, cu mult înainte ca e-mailul să devină disponibil pe cealaltă parte.
+Aceasta adaugă gradul de anonimat cu care se poate ajunge
+I2P-Bote. Pentru cei care nu doresc întârzieri mari: Toate aceste setări
+pot fi ajustate de utilizator, astfel încât fiecare utilizator să decidă asupra câtor anonimat
+el vrea.</p>
+
+<h3 id="Name">De ce se numește I2P-Bote?</h3>
+<p>Bote este cuvântul german pentru mesager.</p>
+
+<h3 id="Why">De ce I2P-Bote?</h3>
+<p>Pentru că e fain. Și pentru că I2P îi lipsea o descentralizare
+serviciul de e-mail și văzând crearea unei astfel de oportunități
+pentru a îmbunătăți aspectele de anonimat neglijate, s-a decis adăugarea unui 
+transport opțional de mare latență Puteți utiliza un cont e-mail normal
+ și end-to-end criptați e-mailurile, dar acestea nu sunt încă
+anonime. Puteți utiliza e-mailuri anonime legate de server, dar acestea sunt
+nu automat criptat end-to-end.</p>
+
+<p>Sau puteți utiliza I2P-Bote în care e-mailurile dvs. sunt anonime și
+<em>automat</em> criptat end-to-end.</p>
+
+<p>Spre deosebire de sistemele de e-mail standard, nu este necesară configurarea unei
+aplicatiei suplimentare de gestionare a cheilor. Tot ce ai nevoie este
+deja acolo.</p>
+
+<p>Dar, în ciuda faptului că este simplu și ușor de utilizat, totuși oferă
+criptare de grad militar și opțiuni pentru extrem de puternice
+anonimat.</p>
+
+<h3 id="Sending">Ce se întâmplă cu un e-mail după ce dau clic pe „Trimite”?</h3>
+<p>Acesta este criptat și stocat pe alți participanți la I2P-Bote
+calculatoare. De acolo, acesta este livrat destinatarului atunci când acesta
+verificați-le e-mailul.</p>
+
+<h3 id="RandomPeople">Așteptați puțin, tot e-mail-ul pe care îl trimit este salvat în unele aleatorii
+hard disk-ul persoanei? Asta sună ca o idee cu adevărat mută!</h3>
+<p>Tot ce văd sunt date-gunoi, deoarece acestea sunt criptate
+cu criptare „de grad militar”. Numai tu și destinatarul știți ce
+este în e-mail. În plus, dacă trimiteți e-mailul cu relee
+activat, nici măcar nu este posibil să spun cine l-a trimis.</p>
+
+<p>Între aceasta și utilizarea unui cont de e-mail cu o
+<a href="http://www.theregister.co.uk/2009/12/07/schmidt_on_privacy/">companie
+asta nu respectă confidențialitatea dvs.</a> pe o linie de internet care
+<a href="http://www.eff.org/issues/nsa-spying">este spionat de
+agenții umbrite</a>, care ai spune că este mai de încredere?</p>
+
+<h3 id="HowItWorks">Cum funcționează exact?</h3>
+<p>Consultați <a href="userGuide.jsp#Technical-Concept">„Conceptul tehnic”</a>
+secțiunea din <a href="userGuide.jsp">Manualul de utilizare</a>.</p>
+
+<p>Pe scurt: nodurile I2P-Bote formează o rețea P2P, redând pachetele de poștă
+unul pentru altul și stocarea lor într-un DHT.</p>
+
+<h3 id="NothingToHide">De ce aș folosi-o? Nu am nimic de ascuns…</h3>
+<p>Pentru că nici nu ai ieși pe stradă dezbrăcată, nu-i așa?</p>
+
+<p>Ei bine, poate ai vrea. Dar ideea este că, uneori, vrei 
+comunicarea privata prin e-mail  să fie secretă și de neatestat și să nu lase
+întreaga lume știe când spui ce cui.</p>
+
+<p>Și uneori pur și simplu doriți să comunicați complet anonim cu
+alții.</p>
+
+<p>Prin urmare, I2P-Bote este instrumentul ideal, oferindu-vă o mulțime de iaduri
+protecție păstrând în același timp o mare flexibilitate.</p>
+
+<p>Acesta urmărește să ofere securitate profesională de grad militar și
+Utilizabilitate n00b: poți avea setări cu adevărat paranoice, unde
+este nevoie de o poștă pentru a ajunge la o veșnicie; sau au o comunicare mai rapidă
+și încă se bucură de un anonimat foarte ridicat.</p>
+
+<p>Dvs. decideți - ușor cu un clic al mouse-ului.</p>
+
+<h3 id="GPG">Dar <a href="http://www.pgp.com/">PGP</a> și
+<a href="http://gnupg.org/">GPG</a>?</h3>
+<p>PGP și GPG vă permit să criptați e-mailul și să îl trimiteți prin intermediul  
+cont de email dvs. existent. Oferă criptare puternică, dar criptează doar
+textul de e-mail, nu anteturile, ceea ce înseamnă linia de subiect, dvs.
+numele computerului și alte informații nu sunt sigure.</p>
+
+<p>O altă problemă de confidențialitate este aceea că PGP / GPG nu poate împiedica pe nimeni
+aflând cu cine vorbește.</p>
+
+<p>I2P-Bote, în schimb, criptează totul, în afară de cel al destinatarului
+Destinație prin e-mail. (De fapt, chiar destinația destinatarului este
+este vizibil numai pentru nodurile care nu știu cine este expeditorul de poștă).
+ Are și capacitatea de a trimite un e-mail prin mai multe
+relee (similare cu
+<a href="http://mixmaster.sourceforge.net/">Mixmaster</a>), deci nimeni nu poate
+afla cine trimite un e-mail cui.</p>
+
+<h3 id="UsingGPG">Mai pot folosi GPG / PGP cu I2P-Bote?</h3>
+<p>Desigur. Fie GPG criptați textul e-mailului dvs. înainte
+lipiți-l în câmpul de compunere a mesajelor I2P-Bote sau utilizați un mail
+aplicație cu suport GPG.</p>
+
+<h3 id="Susimail">Cum se compară cu Susimail?</h3>
+<p>I2P-Bote este mai bun, deoarece are un număr mai mare de versiune. Doar
+Glumesc.</p>
+
+<p>I2P-Bote oferă mai multă confidențialitate, dar Susimail are câteva caracteristici
+care I2P-Bote nu are încă (vezi mai jos), iar Susimail este mai mult
+eficientă lățime de bandă  deoarece nu stochează 
+redundantă e-mailurilor.</p>
+
+<h3 id="Comparison">De ce este mai bun I2P-Bote?</h3>
+<p><em>Credem</em> că este mai bine pentru <em>noi</em> (și poate și pentru tine;
+decide-te!), decât:</p>
+<ul>
+<li><p>Mixminion, deoarece este ușor de utilizat și la fel de rezistent la n00b
+am putea obține.</p></li>
+<li><p>servicii de e-mail anonime care nu se bazează pe destinație
+rutare cheie: întrucât cele nu livrează încorporat în sfârșit
+criptare.</p></li>
+<li><p>servicii centralizate, deoarece serverul ar putea coborî
+(din cauza atacurilor, a problemelor legale, a lipsei de finanțare sau a interesului, ...)
+iar administratorul serverului are prea multe mijloace pentru a face profilări.</p></li>
+</ul>
+<h3 id="Safeguards">Cum se păstrează în siguranță identitatea mea atunci când schimb un mail cu
+cineva?</h3>
+<p>Niciodată nu este inclusă adresa dvs. IP sau chiar destinația dvs. I2P
+orice e-mail pe care îl trimiteți.</p>
+
+<p>Transportul de mare latență contracarează atacurile de sincronizare.</p>
+
+<p>Criptare end-to-end, criptare per-hop, pachete de redare pentru
+alte noduri, o singură dimensiune a pachetului * (padding), o rată constantă de
+trimiterea (mesaje de testare și manechin) * și un lucru destul de echilibrat
+raport de intrare / ieșire * contra atacuri de analiză a traficului și în
+combinație cu întârzieri per-hop, I2P-Bote oferă mijloace bune împotriva
+atacuri de intersecție.</p>
+
+<p>Natura open source a I2P-Bote garantează că tu însuți poți
+vezi implementarea și verifică-i dacă există erori.</p>
+
+<p>*[nu este inca implementat]</p>
+
+<h3 id="How">Cum îl folosesc?</h3>
+<p>Citiți <a href="userGuide.jsp">manualul</a> sau vedeți celelalte întrebări și
+raspunsuri aici!</p>
+
+<p>Dacă mai aveți întrebări fără răspuns, întrebați pe forum:
+<a href="http://forum.i2p/viewforum.php?f=35">http://forum.i2p/viewforum.php?f=35</a></p>
+
+<h3 id="EmailClients">Pot folosi un program de e-mail ca Thunderbird?</h3>
+<p>Da, puteți utiliza clientul de e-mail la alegere, atât timp cât acesta
+acceptă IMAP și SMTP.</p>
+
+<h3 id="Attachments">Pot trimite atașamente și ce limite există?</h3>
+<p>Da, atașamentele sunt acceptate începând cu versiunea 0.2.5. Dimensiunea generală a
+fișierele atașate trebuie păstrate mici, de preferință sub 500kB.</p>
+
+<h3 id="CreateIdentity">Cum pot crea un cont de e-mail?</h3>
+<p>I2P-Bote le numește identități de e-mail. Puteți crea unul în
+Interfață web I2P-Bote sub linkul „Identități”. Motivul pentru care
+nu se numește cont, este faptul că nu există un furnizor precum GMail
+sau GMX. Doar țineți cheile (criptografice) ale e-mailului
+Identitate.</p>
+
+<p>Când creați o identitate de e-mail, I2P-Bote generează un șir de
+numere și litere numite destinație de e-mail. Acesta este
+adresa la care vă puteți adresa.</p>
+
+<p>Exemplu: <code>wsq-8u5bTWbaOsrS0JuXRKL-RsbTkckV4W7u2mIu0Yrlfetixq1F~03CArnvbd6tDWwjPHYEuoKyWqwxplSdix</code></p>
+
+<h3 id="EmailDestination">Ce este o destinație prin e-mail? Dar adresele de e-mail?</h3>
+<p>Destinațiile de e-mail (numite destinații bote) sunt cuprinse între 86 și 512
+caractere lungi, în funcție de tipul de criptare. Suport pentru
+Adrese ușor de reținut, adresele alese de utilizator sunt planificate pentru viitor apropiat.
+</p>
+
+<p>Identitățile de e-mail constau, de asemenea, din chei publice și private
+ca nume pe care utilizatorul îl alege. Partea publică este e-mailul dvs.
+destinația, identitatea voastră pseudonimă. Și un utilizator real poate avea
+mai mult de una dintre acele identități. Ele servesc pentru adresarea e-mailurilor
+pentru anumiți utilizatori - prin urmare este denumit a
+„destinație” sau scurt „dest” - precum și pentru criptare
+mailurile pentru ei. Prin urmare, destinația dvs. de e-mail este cheia
+alții folosesc pentru a cripta e-mailurile pe care vi le trimit și în
+pentru a verifica autenticitatea și integritatea mailurilor pe care le au
+primesc de la tine.</p>
+
+<p>Este sigur să oferiți destinația dvs. de e-mail oricui doriți
+primiți e-mailuri de la.</p>
+
+<p>Este important să distingem între destinația de poștă și routerul
+ID-ul! Identitatea dvs. de e-mail I2P-Bote nu are legătură cu I2P-Bote
+ID router / nod, care este utilizat pentru nodurile I2P-Bote pentru a contacta fiecare
+altele și în acest fel pentru rețeaua Bote.</p>
+
+<p>Dacă aveți probleme cu aplicația dvs. I2P-Bote - în mare măsură
+caz puțin probabil, ar trebui să fie necesar - puteți să vă spuneți I2P-Bote
+ID-ul routerului în canalele IRC, I2P sau forum sau manual
+adăugați ID-ul altor colegi pentru a vă conecta, deși până acum acest lucru
+nu a fost niciodată necesar.</p>
+
+<p><b>Nu este legat de IP-ul dvs</b>. Cu toate acestea, nu vă raportați
+ID-ul routerului I2P-Bote cu destinațiile dvs. de e-mail I2P-Bote, deoarece acest lucru ar putea fi posibil
+distruge anonimatul suplimentar pe care îl generează I2P-Bote!</p>
+
+<h3 id="AddressLength">De ce sunt adresele de e-mail atât de lungi?</h3>
+<p>În I2P-Bote, fiecare e-mail este criptat (automat). Pentru ca nu
+să vă solicite să schimbați o adresă de e-mail <b>și</b> o cheie lungă,
+pur și simplu am făcut acea cheie adresa. Aceasta vine cu alte două
+beneficii: nu va trebui să vă faceți griji dacă există deja o adresă de e-mail
+luate sau nu (cel puțin dacă nu trimiteți sau nu primiți e-mailuri la
+sau de pe internet) și nu aveți nevoie de o aplicație de gestionare a cheilor
+în afară de faptul că ai grijă de cheile tale.</p>
+
+<p>Este sigură să renunți la această cheie, deoarece este doar cheia publică
+despre care toată lumea poate cunoaște fără a-ți compromite e-mailurile ”
+secret.</p>
+
+<p>Utilizarea criptării ECC ca opțiune va genera un e-mail mai scurt
+cheile de destinație.</p>
+
+<h3 id="AddressBook">Dar nu-mi amintesc destinațiile lungi ...</h3>
+<p>Asta înseamnă că agenda de adrese este acolo. Odata ce ai
+familiarizați-vă cu I2P-Bote, veți aprecia
+criptare și autentificare încorporată, care poate fi realizată numai
+folosind chei criptografice.</p>
+
+<p>Din nou, alternativa ar fi să avem adrese scurte și ușoare
+<b>plus</b> o cheie lungă pentru criptare și autentificare,
+<b>și</b> să se bazeze pe o anumită autoritate pentru a mapa adresele de e-mail la
+un destinatar anonim.</p>
+
+<h3 id="MultipleIdentities">Ce rost are să folosești mai multe identități de e-mail?</h3>
+<p>I2P-Bote nu este un mesagerie instant, deci poți avea mai multe
+identități fără a fi nevoie să menținem deschise multe tuneluri. Doar pentru
+preluând cereri, vei utiliza mai multe resurse, dar în același timp
+oferi mai multă acoperire pentru alții.</p>
+
+<p>Acum, imaginați-vă că comunicați cu prietenii dvs. neobservat (vezi:
+legile privind păstrarea datelor) prin I2P-Bote și doriți să trimiteți rapid un
+e-mail pe care îl veți întâlni între ei într-o locație diferită
+astă seară. Apoi, nu ai nevoie de super-anonimat și poți renunța la poștă
+rutele și întârzierile. De cealaltă parte, prietenii tăi ar dori
+au un interval de verificare mai scurt, astfel că vor primi e-mailul
+timp. Totuși, îți dorești totuși un anonimat super înalt pentru unii dintre ai tăi
+alte comunicări - de unde are o identitate poștală diferită
+rutele de poștă, întârzierile și intervalele lungi de verificare sunt utile.</p>
+
+<h3 id="EncryptionTypes">Care tip de criptare este cel mai bun?</h3>
+<p><a href="http://en.wikipedia.org/wiki/Elliptic_curve_cryptography">ECC</a> de 256 biți
+produce e-mailuri scurte și la îndemână și este considerat
+mai puternic decât ElGamal pe 2048 biți.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Elliptic_curve_cryptography">ECC</a> de 521 biți
+este mai puternic decât 256 biți ECC, dar creează destinații prin e-mail
+mai lungi.</p>
+
+<p>2048 biți <a href="http://en.wikipedia.org/wiki/ElGamal">ElGamal</a>
+produce destinații de e-mail și mai lungi și este
+cea mai slabă criptografic din cele trei opțiuni. Cu toate acestea, ElGamal este
+mai bine cercetat decât ECC, ceea ce face mai puțin probabil ca acolo
+este o slăbiciune necunoscută în ElGamal decât în ​​ECC.</p>
+
+<h3 id="Algorithms">Ce algoritmi sunt folosiți pentru criptarea simetrică și
+pentru hashing?</h3>
+<p><a href="http://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES-256</a>
+în
+<a href="http://en.wikipedia.org/wiki/Block_cipher_modes_of_operation#Cipher-block_chaining_.28CBC.29">Modul CBC</a> și <a href="http://en.wikipedia.org/wiki/SHA-2">SHA-256</a>.</p>
+
+<h3 id="AntiSpam">Există măsuri anti-spam?</h3>
+<p>I2P-Bote nu are nicio filtrare de spam activă, ci faptul că această masă
+e-mailurile trebuie trimise individual, pentru a descuraja spamul.
+O altă linie de apărare este
+<a href="http://www.hashcash.org/">HashCash</a>, care este acceptat la
+nivelul de protocol și poate fi implementat într-o versiune viitoare, dacă este spam
+devine o problemă.</p>
+
+<h3 id="HTML">Ce zici de HTML sau text în stil?</h3>
+<p>Interfata web nu redă HTML.</p>
+
+<h3 id="Persistence">Cât timp se păstrează e-mailurile?</h3>
+<p>E-mailurile sunt disponibile timp de 100 de zile după ce au fost trimise. E-mailuri
+care nu au fost descărcate până atunci sunt șterse.</p>
+
+<p>E-mailurile primite rămân pe mașina locală până cind 
+le ștergeți.</p>
+
+<h3 id="DoIdentitiesExpire">Când expiră identitățile de e-mail?</h3>
+<p>Niciodată!</p>
+
+<h3 id="Gateways">Pot să trimit e-mail și să primesc e-mailuri de la normal
+servere de e-mail internet?</h3>
+<p>Nu, dar se lucrează la asta.</p> 
+<!-- Yes. You can both send and receive mails to/from ordinary internet e-mail accounts -->
+
+<h3 id="Postman">Pot să trimit e-mail și să primesc e-mail de la poștașul
+conturi poștale tradiționale I2P?</h3>
+<p>Nu, dar acest lucru este, de asemenea, lucrat.</p> 
+<!-- Yes. You can both send and receive mails to/from some_name@mail.i2p addresses -->
+
+<h3 id="Know">Ce înseamnă când Know este ce a fost trimis pentru un e-mail
+Inbox?</h3>
+<p>Atunci când destinația expeditorului nu este cunoscută local, e-mail-ul este
+marcat cu un x în coloana „Cunoașteți” sau prin introducerea „{UNK}” înainte
+adresa expeditorului din IMAP.</p>
+
+<p>Acest lucru înseamnă că nu aveți nicio dovadă că acest utilizator este cu adevărat cine susține
+să fie, în numele său de utilizator. Desigur, dacă semnătura este valabilă, dumneavoastră
+știu că deține cheia de destinație cu care a fost e-mailul
+semnat și că conținutul de e-mail este de la persoana respectivă. Dar tu
+nu se poate baza pe numele scurt aici. În caz că ai primit un mail
+de la un utilizator cu acest nume înainte, nu poți fi sigur că este
+de același utilizator de data aceasta, chiar dacă semnătura este valabilă. În acest caz
+trebuie să comparați cheile de destinație sau să le adăugați la 
+carte de adrese dvs. Un utilizator necunoscut local, nu este neapărat rău, dar
+nu ar trebui să ai încredere în utilizatorul pe care l-ai putea crede. Dar dacă
+verificat împotriva cheilor stocate local, știți că este același utilizator
+când primiți un alt e-mail de la el și „Cunoaște” are un verde
+Verifica.</p>
+
+<h3 id="Terms">Ce înseamnă „BktPfx”, „Distanță” și „Blocat?”?</h3>
+<ul>
+<li><p>BktPfx = ​​Bucket Prefix</p></li>
+<li><p>Distanță: distanța unui nod I2P-Bote față de dvs.
+nod propriu în spațiul cheie</p></li>
+<li><p>Blocat: Dacă un nod nu este accesibil pentru orice
+motiv, este marcat ca blocat, plus timpul în care a fost găsit
+de neatins.</p></li>
+</ul>
+<h3 id="Anonymous">Ce pot face pentru a fi mai anonim?</h3>
+<ul>
+<li><p>Nu trimiteți informații de identificare despre dvs.! (nume, adresă,
+fotografii, locație geografică, fus orar, vârstă, sex, site-uri web, autentificare
+nume, ID router I2P, ID I-2 Bote, Fișiere care conțin autor
+informatii despre tine, ...)</p></li>
+<li><p>nu trimiteți informații personale sau informații numai pe care le puteți
+poseda,</p></li>
+<li><p>lăsați I2P-Bote rulând 24/7,</p></li>
+<li><p>utilizați e-mailuri cu întârzieri randomizate per-hop și / sau per-hop
+ore de trimitere fixe, [încă nu sunt complet implementate]</p></li>
+<li><p>utilizați un interval de verificare lung,</p></li>
+<li><p>utilizați o întârziere locală lungă pentru pachete proprii,</p></li>
+<li><p>utilizați o randomizare mare a intervalului de verificare. [nu este inca implementat]</p></li>
+<li><p>suprimați trimiterea datei și orei în antetul e-mailurilor,</p></li>
+<li><p>suprimați traducerea markerilor precum „Re:” în altul
+limba,</p></li>
+<li><p>urmăriți-vă limba și stilul de scriere,</p></li>
+<li><p>utilizați diferite identități de e-mail,</p></li>
+<li><p>ia în considerare renunțarea la identitățile de e-mail după perioade mai lungi
+de utilizare,</p></li>
+<li><p>&hellip;</p></li>
+</ul>
+<p>Această listă nu este menită să vă facă paranoic, ci să vă arate unde
+anonimatul poate fi redus.</p>
+
+<h3 id="Timestamps">Cum nu trimit timpe-uri?</h3>
+<p>Accesați setările și dezactivați trimiterea de timpe. Acest lucru va avea
+efectul prin care e-mailul dvs. nu va conține o dată sau o dată
+trimiterea.</p>
+
+<!-- <p>(When using mailroutes, the timestamps are automatically disabled.) [not yet implemented]</p> -->
+
+<h3 id="Backups">Cum pot migra setările și datele mele către alta
+computer, sau le face copie de rezervă?</h3>
+<p>I2P-Bote stochează toate mesajele de e-mail și alte date în <code>i2pbote</code>
+pliant. Pe Windows, dosarul respectiv poate fi găsit la
+<code>%APPDATA%\I2P\i2pbote</code>; pe Linux, este
+<code>$HOME/.i2p/i2pbote</code>.</p>
+
+<p>Pentru a face o copie de siguranță sau a migra totul, trebuie doar să copiați întregul
+folderul <code>i2pbote</code>.</p>
+
+<p>Dacă sunteți interesat (ă) doar de identitățile dvs. de e-mail, copiați fișierul
+<code>identities.txt</code>. Pentru agenda de adrese, copiați
+<code>addressBook.txt</code>.</p>
+
+<h3 id="MailRoutes">Ce este o <em>cale de e-mail</em>?</h3>
+<p>Vedeți: Ce înseamnă transportul cu latență ridicată?</p>
+<!-- <p>(When using mail routes, the timestamps are automatically disabled.) [yet to be implemented]</p> -->
+
+<h3 id="HighLatency">Ce înseamnă transport de mare latență?</h3>
+<p>Înseamnă că puteți activa o opțiune în care pachetele de e-mail nu sunt
+trimise direct la nodurile de stocare, dar sunt transmise de
+alți colegi (care nu pot citi e-mailurile, deoarece sunt criptate
+cu mai multe straturi și rupte în părți mici), care nu trimit
+le pornește imediat, dar așteaptă un timp specificat de utilizator - în caz de
+trimitere specificată de expeditor, în cazul primirii specificată de către
+destinatar.</p>
+
+<p>Prin urmare, e-mailul necesită ceva timp pentru a ajunge. Astfel un atacator
+nu poate pur și simplu să ruleze statistici pe uptimes nod (care a fost conectat când)
+și de câte ori a fost primit un mesaj pentru a fi stocat (care în a
+mediu cu latență scăzută ar fi aproximativ în momentul în care a fost trimis), 
+pentru a descoperi identitățile din viața reală din spatele identități e-mailului I2P-Bote
+</p>
+
+<h3 id="Latencies">Ce latențe există și cum pot fi ele controlate
+(dacă se pot  deloc)?</h3>
+<p>I2P-Bote este distribuit și rulează pe partea de sus a rețelei I2P, deci
+este nevoie de ceva timp. Viteza nu este puterea noastră, dar comparăm bine
+cu alte sisteme de mail anonime. Fără rute de poștă activate, este nevoie
+La 3 până la 10 minute de la apăsarea butonului „Trimite” la afișare
+în inboxul receptorului.</p>
+
+<p>Dacă doriți viteza, dezactivați complet rutele de poștă sau setați-le pe
+numărul minim de hamei și minimul de întârziere per-hop pe care îl puteți rezista</p>
+
+<h3 id="WhyI2P">Dacă I2P-Bote își generează propriul anonimat, de ce o face
+ai nevoie de I2P?</h3>
+<p>I2P-Bote este construit pe I2P în principal din cinci motive:</p>
+<ul>
+<li><p>I2P nu avea un serviciu de e-mail descentralizat și
+HungryHobo este un utilizator I2P.</p></li>
+<li><p>I2P oferă un anonimat foarte bun, este matur și
+încorporează ani de experiență.</p></li>
+<li><p>Așadar, fiind deasupra lui, un fel de reprezentare reprezintă un anonimat
+Fall-back chiar dacă au existat câteva bug-uri cruciale în I2P-Bote.</p></li>
+<li><p>Flexibilitate: dorim să oferim o modalitate ușoară de a
+comunicare prin e-mail anonimă cu latență scăzută, cu un
+nivel ridicat de protecție.</p></li>
+<li><p>I2P cu  multe alte aplicații care rulează deasupra,
+creează mult trafic care se îmbină cu traficul I2P-Bote.</p></li>
+<li><p>Chiar și releele I2P-Bote sunt astfel ascunse.</p></li>
+</ul>
+<h3 id="WithoutRoutes">Cât de anonim / sigur este I2P-Bote fără rute de e-mail?</h3>
+<p>Destul de anonim și foarte sigur.</p>
+
+<p>Apoi, practic se bucură de același anonimat pe care îl au alte aplicații pe I2P,
+anonimatul oferit de routerul I2P - care este destul de puternic
+anonimatul deja. Cu toate acestea, I2P este o rețea cu latență scăzută, cu toate
+lipsurile pe care le are o rețea cu latență scăzută
+. Există atacuri împotriva cărora I2P nu vă poate proteja sau
+nu te protejează foarte fiabil. I2P-Bote face tot posibilul să mărească
+Anonimatul I2P cu opțiunea sa de transport cu latență ridicată, ceea ce face ca –
+dacă este activat – e-mailurile I2P-Bote, sunt <em>în mod paranoic</em>, anonime.</p>
+
+<h3 id="OpenSource">Este I2P-Bote open source?</h3>
+<p>Desigur!</p>
+
+<blockquote>Acest software este licențiat în conformitate cu versiunea GPL 3 (a se vedea
+ licenses/GPLv3.txt), cu excepția furnizorului BouncyCastle care este
+licențiat sub Licența  Bouncy Castle (vezi
+licenses/BouncyCastle.txt).</blockquote>
+
+<p>(Ambele licențe de tip open source gratuite).</p>
+
+<p>Codul sursă poate fi găsit în ramura <code>i2p.i2p-bote</code> din
+<a href="https://geti2p.net/en/get-involved/guides/new-developers#monotone">depozitul I2P Monotone</a>.
+Există, de asemenea, o <a href="https://github.com/i2p/i2p.i2p-bote">oglindă GitHub</a>
+care poate fi folosit pentru a vizualiza codul.</p>
+<h3 id="Credits">Cine a făcut I2P-Bote?</h3>
+<p>Concepție, design tehnic, implementare și interfață de utilizator web originală
+au fost realizate de HungryHobo, un dezvoltator anonim.</p>
+
+<p>Actualul dezvoltator al I2P-Bote este str4d.</p>
+
+<p>Pentru feedback sau dacă doriți să oferiți ajutor, consultați
+<a href="about.jsp">pagina Despre</a> pentru detalii de contact.</p>
+
+<h3 id="Languages">Ce limbi sunt disponibile?</h3>
+<p>Engleză, germană, rusă, franceză, spaniolă, portugheză, olandeză,
+Norvegiană, suedeză, chineză și arabă.</p>
+
+<h3 id="Translate">Cum pot contribui la traducerea I2P-Bote în versiunea mea
+limba?</h3>
+<p>Traducerile se fac la fel ca restul I2P. Daca ai
+doriți să vă ajutați și să aveți întrebări, vă rugăm să <a href="about.jsp">contactați autorul</a>.</p>
+
+<h3 id="Technical">Cum funcționează la nivel tehnic?</h3>
+<p>Aruncați o privire la fișierul <code>doc/techdoc.txt</code> din codul sursă.</p>
+
+<h3 id="GetInvolved">Ce alte moduri pot ajuta?</h3>
+<ul>
+<li><p>Folosiți I2P-Bote și dați feedback</p></li>
+<li><p>Spuneți-le prietenilor, familiei, colegilor și colab. despre I2P-Bote și dati o mână de ajutor</p></li>
+<li><p>Menționează I2P-Bote pe blogul tău, eepsit sau site-ul tău</p></li>
+<li><p>Scrieți ghidul utilizatorului sau îmbunătățiți documentația tehnică</p></li>
+<li><p>Adăugați funcții sau remediați erori (<a href="about.jsp">contactați mai întâi autorul</a>).</p></li>
+</ul>
+</div>

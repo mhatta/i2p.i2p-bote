@@ -17,7 +17,7 @@ allprojects {
 
 project.ext.i2pVersion = '0.9.45'
 
-String compat(String src) {
+static String compat(String src) {
     if (src.contains('.')) {
         src.substring(src.lastIndexOf('.') + 1)
     } else {
@@ -25,7 +25,7 @@ String compat(String src) {
     }
 }
 
-String javaExecutable(String targetJavaHome, String execName) {
+static String javaExecutable(String targetJavaHome, String execName) {
     def javaExecutablesPath = new File(targetJavaHome, "bin")
     def executable = new File(javaExecutablesPath, execName)
     if (!executable.exists()) {

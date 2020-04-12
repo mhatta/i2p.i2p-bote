@@ -1,5 +1,6 @@
 plugins {
     id 'war'
+    id 'java-library'
     id "org.gretty" version "2.3.1"
 }
 
@@ -61,21 +62,22 @@ dependencies {
 
     implementation "net.i2p.client:mstreaming:$rootProject.i2pVersion"
 
-    implementation 'org.apache.tomcat:tomcat-jsp-api:8.5.40'
-    implementation 'org.apache.tomcat:tomcat-servlet-api:8.5.40'
-    compile 'org.jfree:jcommon:1.0.23'
-    compile 'org.jfree:jfreechart:1.0.19'
+    implementation 'org.apache.tomcat:tomcat-jsp-api:9.0.33'
+    implementation 'org.apache.tomcat:tomcat-servlet-api:9.0.33'
+    compile 'org.jfree:jcommon:1.0.24'
+    compile 'org.jfree:jfreechart:1.5.0'
     compile 'org.owasp:csrfguard:3.1.0'
     compile('org.subethamail:subethasmtp:3.1.7') {
         exclude group: 'javax.mail', module: 'mail'
         exclude group: 'javax.activation', module: 'activation'
     }
     compile 'com.lambdaworks:scrypt:1.4.0'
-    compile 'com.sun.mail:smtp:1.5.6'
+    compile 'com.sun.mail:smtp:1.6.5'
 
     compile 'javax.servlet:jstl:1.2'
 
     // Apache James IMAP server
+    // 3.0.1 was the last Java 7 release
     compile 'org.apache.james:apache-james-mailbox-store:3.0.1'
     compile 'org.apache.james:james-server-protocols-imap4:3.0.1'
 
@@ -236,11 +238,11 @@ i2p {
         version project.version
 
         author 'str4d@mail.i2p'
-        websiteUrl 'http://bote.i2p/'
-        su3UpdateUrl 'http://bote.i2p/i2pbote-update.su3'
+        websiteUrl 'http://mhatta.i2p/'
+        su3UpdateUrl 'http://mhatta.i2p/i2pbote-update.su3'
         license 'GPLv3'
 
-        minI2PVersion '0.9.30'
+        minI2PVersion '0.9.40'
         minJavaVersion '1.7'
         minJettyVersion '9'
 

@@ -1,7 +1,7 @@
 package i2p.bote.android.config;
 
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceFragmentCompat;
 
 import i2p.bote.android.R;
 

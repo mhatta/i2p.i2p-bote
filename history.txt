@@ -1,6 +1,13 @@
 I2P-Bote Version History
 ------------------------
 
+0.4.8.1 (Released on April 13, 2020)
+  * Fixes to work on I2P 0.9.45 and above
+  * Migrated to AndroidX
+  * Added new bootstrap nodes run by mhatta
+  * Various housekeeping, updating, etc.
+  * UI improvements, bug fixes, translation updates
+
 0.4.8 (Released on May 16, 2019)
   * Fixes to work on I2P 0.9.38 and above
   * Removed kytv from bootstrap nodes :(

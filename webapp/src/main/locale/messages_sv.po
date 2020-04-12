@@ -7,23 +7,22 @@
 # hottuna <i2p@robertfoss.se>, 2011,2013
 # hottuna <i2p@robertfoss.se>, 2013
 # hottuna <i2p@robertfoss.se>, 2011
-# Jonatan Nyberg, 2017
-# Jonatan Nyberg, 2018
-# Jonatan Nyberg, 2017
+# Jonatan, 2017
+# Jonatan, 2018-2019
+# Jonatan, 2017
 # Martin Svensson <digitalmannen@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: I2P\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-16 12:19+0100\n"
-"PO-Revision-Date: 2019-05-16 11:18+0000\n"
-"Last-Translator: cacapo <handelsehorisont@gmail.com>\n"
-"Language-Team: Swedish (Sweden) (http://www.transifex.com/otf/I2P/language/"
-"sv_SE/)\n"
-"Language: sv_SE\n"
+"POT-Creation-Date: 2019-05-16 12:16+0100\n"
+"PO-Revision-Date: 2019-11-10 18:58+0000\n"
+"Last-Translator: Jonatan\n"
+"Language-Team: Swedish (Sweden) (http://www.transifex.com/otf/I2P/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sv_SE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/main/java/i2p/bote/imap/BoteMailbox.java:121
@@ -33,7 +32,7 @@ msgstr "Lösenord krävs eller fel lösenord angavs"
 
 #: src/main/java/i2p/bote/imap/MapperFactory.java:408
 msgid "Deletion of mailboxes is not currently supported."
-msgstr "Borttagning av brevlådor stöds för tillfället ej"
+msgstr "Radering av brevlådor stöds för närvarande inte."
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:250
 msgid "Not set."
@@ -159,7 +158,7 @@ msgstr "Fel protokollversion"
 
 #: src/main/java/i2p/bote/web/SendEmailTag.java:76
 msgid "Error: Please add at least one recipient."
-msgstr "Fel: Var god lägg till minst en mottagare"
+msgstr "Fel: Vänligen lägg till minst en mottagare"
 
 #: src/main/java/i2p/bote/web/SendEmailTag.java:104
 msgid "The email has been queued for sending."
@@ -175,8 +174,7 @@ msgstr "Fel vid sändning av epost: {0}"
 #: src/main/java/i2p/bote/web/SendEmailTag.java:114
 msgid ""
 "Address doesn't contain an Email Destination or an external address: {0}"
-msgstr ""
-"Adressen innehåller inte en epost-destination eller en extern adress: {0}"
+msgstr "Adressen innehåller inte en epost-destination eller en extern adress: {0}"
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:43
 msgid "BktPfx"
@@ -308,11 +306,11 @@ msgstr "Formuläret måste skickas via POST."
 
 #: src/main/webapp/editContact.jsp
 msgid "Please fill in the Destination field."
-msgstr "Var god fyll i destinationsfältet."
+msgstr "Vänligen fyll i destinationsfältet."
 
 #: src/main/webapp/editContact.jsp
 msgid "Please fill in the Name field."
-msgstr "Var god fyll i namnfältet."
+msgstr "Vänligen fyll i namnfältet."
 
 #: src/main/webapp/editContact.jsp
 msgid "The contact has been saved."
@@ -424,7 +422,7 @@ msgstr "Fyll vänligen i 'Publikt namn' fältet."
 
 #: src/main/webapp/submitIdentity.jsp
 msgid "Please wait..."
-msgstr "Var god vänta..."
+msgstr "Vänligen vänta..."
 
 #: src/main/webapp/submitIdentity.jsp
 msgid "The Email Identity is being generated. This may take a while."
@@ -434,9 +432,7 @@ msgstr "E-postidentiteten genereras. Detta kan ta en stund."
 msgid ""
 "This encryption type does not support destinations that start with {0}. "
 "Valid initial characters are {1}."
-msgstr ""
-"Den här krypteringstypen stödjer inte destinationer som börjar på {0}. "
-"Giltiga bokstäver i början är {1}."
+msgstr "Den här krypteringstypen stödjer inte destinationer som börjar på {0}. Giltiga bokstäver i början är {1}."
 
 #: src/main/webapp/submitIdentity.jsp
 msgid "The email identity has been saved."
@@ -448,7 +444,7 @@ msgstr "Lägg till e-post destination till Mapp"
 
 #: src/main/webapp/publishDestination.jsp
 msgid "The name exists already. Please choose a different Public Name."
-msgstr "Namnet finns read. Var god välj ett annat Publikt Namn."
+msgstr "Namnet finns read. Vänligen välj ett annat Publikt Namn."
 
 #: src/main/webapp/publishDestination.jsp
 msgid "Publish to the Address Directory"
@@ -536,8 +532,7 @@ msgstr "Redigera epostidentitet"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "An Email Identity lets you receive email from other I2P-Bote users."
-msgstr ""
-"Med en E-postsidentitet kan du ta emot e-post från andra I2P-Bote användare."
+msgstr "Med en E-postsidentitet kan du ta emot e-post från andra I2P-Bote användare."
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Public Name:"
@@ -601,7 +596,7 @@ msgstr "Visa"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Cannot publish until connected."
-msgstr "Kan ej publicera innan ansluten."
+msgstr "Det går inte att publicera förrän den är ansluten."
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Delete this identity"
@@ -663,9 +658,7 @@ msgstr "Om"
 msgid ""
 "For I2P-Bote to function properly, you must download the JCE Unlimited "
 "Strength Jurisdiction Policy files and move them into this folder:"
-msgstr ""
-"För att I2P-Bote ska fungera måste du ladda ner filerna i JCE Unlimited "
-"Strength Jurisdiction Policy och flytta in dem i denna mapp:"
+msgstr "För att I2P-Bote ska fungera måste du ladda ner filerna i JCE Unlimited Strength Jurisdiction Policy och flytta in dem i denna mapp:"
 
 #: src/main/webapp/header.jsp
 msgid "Guide"
@@ -695,38 +688,28 @@ msgstr "Status"
 msgid ""
 "In order to receive email from other people, you need to create an email "
 "identity first."
-msgstr ""
-"För att kunna ta emot epost från andra personer måste du skapa en "
-"epostidentitet först."
+msgstr "För att kunna ta emot epost från andra personer måste du skapa en epostidentitet först."
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
 "Every email identity is associated with an email destination. Anybody can "
 "send email to the email destination, but only the identity holder can read "
 "it."
-msgstr ""
-"Varje epostidentitet är förknippad med en e-destination. Vem som helst kan "
-"skicka e-post till e-destination, men endast identitetsägaren kan läsa den."
+msgstr "Varje epostidentitet är förknippad med en e-destination. Vem som helst kan skicka e-post till e-destination, men endast identitetsägaren kan läsa den."
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
 "In a sense, email identities are the equivalent to traditional email "
 "accounts - except that there is no provider that can read all your email "
 "because I2P-Bote stores all emails encrypted on the network."
-msgstr ""
-"På ett sätt är epostidentiteter likvärdiga med traditionella epostkonton - "
-"förutom att det inte finns någon leverantör som kan läsa alla dina e-post "
-"eftersom I2P-Bote lagrar all epost krypterat på nätet."
+msgstr "På ett sätt är epostidentiteter likvärdiga med traditionella epostkonton - förutom att det inte finns någon leverantör som kan läsa alla dina e-post eftersom I2P-Bote lagrar all epost krypterat på nätet."
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
-"I2P-Bote automatically decrypts emails sent to you, using the email identity "
-"you created. Email identities are stored in a file named identities; never "
+"I2P-Bote automatically decrypts emails sent to you, using the email identity"
+" you created. Email identities are stored in a file named identities; never "
 "give this file to anyone or they will be able to read all your emails."
-msgstr ""
-"I2P-Bote dekrypterar automatiskt e-post, med hjälp av e-postidentiteten du "
-"skapat. E-postidentiteter lagras i en fil som heter identities.txt, ge "
-"aldrig den  till någon för de kan då läsa all epost avsedd för dig."
+msgstr "I2P-Bote dekrypterar automatiskt e-post, med hjälp av e-postidentiteten du skapat. E-postidentiteter lagras i en fil som heter identities.txt, ge aldrig den  till någon för de kan då läsa all epost avsedd för dig."
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid "Do give out the email destination so others can contact you."
@@ -736,9 +719,7 @@ msgstr "Vill ge ut epostdestination så att andra kan kontakta dig."
 msgid ""
 "It is easy to create multiple identities for different purposes, or "
 "different contacts."
-msgstr ""
-"Det är lätt att skapa flera identiteter för olika ändamål, eller olika "
-"kontakter."
+msgstr "Det är lätt att skapa flera identiteter för olika ändamål, eller olika kontakter."
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
@@ -747,29 +728,20 @@ msgid ""
 "offered by I2P-Bote provide a high level of privacy, the length of an email "
 "destination depends on the encryption used. The choice of encryption also "
 "determines what signing algorithm is used."
-msgstr ""
-"När du skapar en ny e-postsidentitet kan du välja den typ av kryptering som "
-"ska användas av e-postsidentiteten. Alla krypteringsalgoritmer som erbjuds "
-"av I2P-Bote ger en hög säkerhet. Längden på en e-postdestination beror på "
-"den använda kryptering. Ju högre antal bitar, desto längre är destination."
+msgstr "När du skapar en ny e-postsidentitet kan du välja den typ av kryptering som ska användas av e-postsidentiteten. Alla krypteringsalgoritmer som erbjuds av I2P-Bote ger en hög säkerhet. Längden på en e-postdestination beror på den använda kryptering. Ju högre antal bitar, desto längre är destination."
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
 "It is generally recommended to choose 256-bit elliptic curve encryption "
 "because it produces the shortest email destinations (86 characters) while "
 "still being highly secure."
-msgstr ""
-"i allmänhet rekommenderas det att välja 256-bitars elliptisk kryptering "
-"eftersom det ger de kortaste e-postdestinationen (86 tecken), medan det "
-"fortfarande är säkert."
+msgstr "i allmänhet rekommenderas det att välja 256-bitars elliptisk kryptering eftersom det ger de kortaste e-postdestinationen (86 tecken), medan det fortfarande är säkert."
 
 #: src/main/webapp/showEmail.jsp
 msgid ""
 "The email could not be found in this folder. It was probably moved to the "
 "Sent folder."
-msgstr ""
-"Detta e-post kunde inte hittas i den här katalogen. Det har förmodligen "
-"flyttats till Skickat."
+msgstr "Detta e-post kunde inte hittas i den här katalogen. Det har förmodligen flyttats till Skickat."
 
 #: src/main/webapp/showEmail.jsp
 msgid "The email could not be found in this folder."
@@ -941,9 +913,7 @@ msgstr "Integritet"
 
 #: src/main/webapp/settings.jsp
 msgid "Use English for text added to outgoing email ('Re:', 'wrote:', etc.)"
-msgstr ""
-"Använd engelska till text som läggs till utgående epost ('Re:','wrote:', "
-"osv.)"
+msgstr "Använd engelska till text som läggs till utgående epost ('Re:','wrote:', osv.)"
 
 #: src/main/webapp/settings.jsp
 msgid "Include send time in outgoing emails"
@@ -995,11 +965,11 @@ msgstr "Lösenordet har bytits"
 
 #: src/main/webapp/setPassword.jsp
 msgid "Please wait"
-msgstr "var god vänta"
+msgstr "Vänligen vänta"
 
 #: src/main/webapp/setPassword.jsp
 msgid "Please wait while the password is being changed..."
-msgstr "Var god vänta medan lösenordet ändras..."
+msgstr "Vänligen vänta medan lösenordet ändras..."
 
 #: src/main/webapp/setPassword.jsp
 msgid "Set a new Password"
@@ -1007,16 +977,13 @@ msgstr "Bestäm ett nytt lösenord"
 
 #: src/main/webapp/setPassword.jsp
 msgid "If you have not set a password, leave the old password blank."
-msgstr ""
-"Om du inte har bestämt ett lösenord, låt det gamla lösenordet vara tomt."
+msgstr "Om du inte har bestämt ett lösenord, låt det gamla lösenordet vara tomt."
 
 #: src/main/webapp/setPassword.jsp
 msgid ""
 "Please note that if a password is set, emails cannot be checked "
 "automatically but only when the Check Mail button is clicked."
-msgstr ""
-"Observera att när ett lösenord används kan inte e-posten kollas automatiskt, "
-"utan enbart när knappen för att kolla efter nya brev klickas."
+msgstr "Observera att när ett lösenord används kan inte e-posten kollas automatiskt, utan enbart när knappen för att kolla efter nya brev klickas."
 
 #: src/main/webapp/setPassword.jsp
 msgid "Old password:"
@@ -1034,9 +1001,7 @@ msgstr "Nätverk"
 msgid ""
 "Network information is not available because I2P-Bote hasn't started "
 "connecting to the network yet."
-msgstr ""
-"Nätverksinformation är inte tillgänglig för I2P-Bote inte har börjat ansluta "
-"till nätverket än."
+msgstr "Nätverksinformation är inte tillgänglig för I2P-Bote inte har börjat ansluta till nätverket än."
 
 #: src/main/webapp/network.jsp
 msgid "Local destination:"
@@ -1187,12 +1152,9 @@ msgstr "Importera kontakt"
 #: src/main/webapp/importContact.jsp
 msgid ""
 "A matching record was found in the address directory. Note that the address "
-"directory is not secure against manipulation, so do not click &quot;"
-"import&quot; unless you trust that it is the right email destination."
-msgstr ""
-"Ett passande dokument hittades i adressmappen. Var medveten om att "
-"adressboken inte är säker mot manipulation, så klicka inte &quot;"
-"importera&quot; utan att du är säker på att det är rätt e-post-destination."
+"directory is not secure against manipulation, so do not click "
+"&quot;import&quot; unless you trust that it is the right email destination."
+msgstr "Ett passande dokument hittades i adressmappen. Var medveten om att adressboken inte är säker mot manipulation, så klicka inte &quot;importera&quot; utan att du är säker på att det är rätt e-post-destination."
 
 #: src/main/webapp/importContact.jsp
 msgid "Email Destination: "
@@ -1341,8 +1303,7 @@ msgstr "Komplett identitet för {0}:"
 #: src/main/webapp/showFullIdentity.jsp
 msgid ""
 "Do not show the above information to anyone! It contains your private keys."
-msgstr ""
-"Visa inte ovanstående information för någon! Den innehåller privata nycklar."
+msgstr "Visa inte ovanstående information för någon! Den innehåller privata nycklar."
 
 #: src/main/webapp/WEB-INF/tags/folderLink.tag
 msgid "{0} emails total"

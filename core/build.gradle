@@ -5,19 +5,19 @@ archivesBaseName = 'i2pbote'
 dependencies {
     implementation project(':crypto')
 
-    api "net.i2p:i2p:$rootProject.i2pVersion"
-    implementation "net.i2p.client:streaming:$rootProject.i2pVersion"
+    api "net.i2p:i2p:0.9.45"
+    implementation "net.i2p.client:streaming:0.9.45"
 
-    api 'com.sun.mail:mailapi:1.6.3'
-    implementation 'com.sun.activation:jakarta.activation:1.2.1'
+    api 'com.sun.mail:mailapi:1.6.5'
+    implementation 'com.sun.activation:jakarta.activation:1.2.2'
     implementation 'com.lambdaworks:scrypt:1.4.0'
     implementation 'org.apache.james:apache-mime4j-core:0.8.3'
     implementation 'org.b1.pack:lzma-sdk-4j:9.22.0'
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.58'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.65'
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jmock:jmock:2.11.0'
-    testImplementation 'org.jmock:jmock-legacy:2.11.0'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.jmock:jmock:2.12.0'
+    testImplementation 'org.jmock:jmock-legacy:2.12.0'
     testImplementation 'org.mockito:mockito-core:2.27.0'
 }
 

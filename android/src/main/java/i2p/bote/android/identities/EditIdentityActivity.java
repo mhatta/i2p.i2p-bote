@@ -1,7 +1,7 @@
 package i2p.bote.android.identities;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.Toast;
 
 import i2p.bote.android.BoteActivityBase;

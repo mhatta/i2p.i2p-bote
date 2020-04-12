@@ -10,8 +10,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,8 +31,6 @@ import android.widget.TextView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.tokenautocomplete.FilteredArrayAdapter;
-
-import net.i2p.data.DataFormatException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

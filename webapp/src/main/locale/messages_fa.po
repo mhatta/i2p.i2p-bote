@@ -1,20 +1,20 @@
 # Translators:
 # Translators:
-# dich_tran <thnhan@gmail.com>, 2011
-# dich_tran <thnhan@gmail.com>, 2011
+# NoProfile, 2016
+# Reza Ghasemi, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: I2P\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-16 12:16+0100\n"
 "PO-Revision-Date: 2019-10-02 08:58+0000\n"
-"Last-Translator: Nathan Tran\n"
-"Language-Team: Vietnamese (http://www.transifex.com/otf/I2P/language/vi/)\n"
+"Last-Translator: GnuPG <gnupg@tempinbox.com>\n"
+"Language-Team: Persian (http://www.transifex.com/otf/I2P/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: vi\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: fa\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/main/java/i2p/bote/imap/BoteMailbox.java:121
 #: src/main/java/i2p/bote/imap/BoteMailbox.java:135
@@ -27,28 +27,28 @@ msgstr ""
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:250
 msgid "Not set."
-msgstr ""
+msgstr "تنظیم نشده."
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:313
 msgid "Queued"
-msgstr "Xếp hàng"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:315
 msgid "Sending"
-msgstr "Gửi"
+msgstr "در حال ارسال"
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:317
 #, java-format
 msgid "Sent to {0} out of {1} recipients"
-msgstr "Gửi đến {0} trong số {1} người nhận"
+msgstr "ارسال شده به {0} از {1} گیرنده"
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:320
 msgid "Email sent"
-msgstr ""
+msgstr "ایمیل ارسال شد"
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:322
 msgid "Gateway disabled"
-msgstr "Cổng ra không chạy"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:324
 #: src/main/java/i2p/bote/web/SendEmailTag.java:110
@@ -59,185 +59,185 @@ msgstr ""
 #: src/main/java/i2p/bote/web/JSPHelper.java:327
 #, java-format
 msgid "Invalid recipient address: {0}"
-msgstr "Địa chỉ người nhận sai: {0}"
+msgstr "آدرس گیرنده نامعتبر: {0}"
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:329
 #, java-format
 msgid "Error creating email packets: {0}"
-msgstr "Có lỗi khi tạo ra cái gói thư: {0}"
+msgstr "خطا در ایجاد بسته های ایمیل: {0}"
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:331
 #, java-format
 msgid "Error while sending email: {0}"
-msgstr "Có lỗi khi gửi thư ra: {0}"
+msgstr "خطا در هنگام ارسال ایمیل: {0}"
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:333
 #, java-format
 msgid "Error saving email metadata: {0}"
-msgstr ""
+msgstr "خطا در ذخیره سازی فراداده ایمیل: {0}"
 
 #: src/main/java/i2p/bote/web/JSPHelper.java:354
 msgid "New email received"
-msgstr ""
+msgstr "ایمیل جدید دریافت شد"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:90
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:196
 msgid "Kademlia Peers:"
-msgstr "Trạm Kademlia:"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:114
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:238
 msgid "Relay Peers:"
-msgstr "Trạm chuyển tiếp:"
+msgstr "همتایان بازپخش:"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:118
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:144
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:39
 msgid "Peer"
-msgstr "Trạm bạn"
+msgstr "همتا"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:119
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:41
 msgid "I2P Destination"
-msgstr "Điểm đến I2P"
+msgstr "مقصد I2P"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:120
 msgid "Reachability %"
-msgstr "% khả năng với đến"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:129
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:227
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:232
 msgid "Untested"
-msgstr ""
+msgstr "آزمایش نشده"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:140
 msgid "Banned Peers:"
-msgstr "Trạm bị cấm:"
+msgstr "همتایان مسدود شده:"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:145
 msgid "Destination Hash"
-msgstr "Mã số hash điểm đến"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:146
 msgid "Ban Reason"
-msgstr "Lý do cấm"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:184
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:189
 msgid "Reachable"
-msgstr ""
+msgstr "قابل دسترس"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:186
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:190
 msgid "Unreachable"
-msgstr ""
+msgstr "غیر قابل دسترس"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:223
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:230
 msgid "Good"
-msgstr ""
+msgstr "خوب"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:225
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:231
 msgid "Unreliable"
-msgstr ""
+msgstr "غیر قابل اطمینان"
 
 #: src/main/java/i2p/bote/web/PeerInfoTag.java:250
 msgid "Wrong protocol version:"
-msgstr "Sai giao thức phiên bản:"
+msgstr "نسخه پروتکل نادرست:"
 
 #: src/main/java/i2p/bote/web/SendEmailTag.java:76
 msgid "Error: Please add at least one recipient."
-msgstr "Lỗi: thêm ít nhất là một người nhận"
+msgstr "خطا: لطفا حداقل یک گیرنده اضافه کنید."
 
 #: src/main/java/i2p/bote/web/SendEmailTag.java:104
 msgid "The email has been queued for sending."
-msgstr "Thư đã được xếp hàng gửi "
+msgstr "ایمیل برای ارسال در صف قرار داده شد."
 
 #: src/main/java/i2p/bote/web/SendEmailTag.java:110
 #: src/main/java/i2p/bote/web/SendEmailTag.java:114
 #: src/main/java/i2p/bote/web/SendEmailTag.java:118
 #, java-format
 msgid "Error sending email: {0}"
-msgstr "Có lỗi gửi thư: {0}"
+msgstr "خطا در ارسال ایمیل: {0}"
 
 #: src/main/java/i2p/bote/web/SendEmailTag.java:114
 msgid ""
 "Address doesn't contain an Email Destination or an external address: {0}"
-msgstr "Địa chỉ không có Email Đến hoặc email ngoài: {0}"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:43
 msgid "BktPfx"
-msgstr "BktPfx"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:45
 msgid "Distance"
-msgstr "Khoảng cách"
+msgstr "فاصله"
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:47
 msgid "Locked?"
-msgstr "Khóa?"
+msgstr "قفل شده؟"
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:49
 msgid "First Seen"
-msgstr "Thấy trước nhất"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:59
 msgid "Yes"
-msgstr "Có"
+msgstr "بله"
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:61
 msgid "No"
-msgstr "Không"
+msgstr "خیر"
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:63
 msgid "(S)"
-msgstr "(S)"
+msgstr ""
 
 #: src/main/java/i2p/bote/web/WebappPeerStatsRenderer.java:65
 msgid "(None)"
-msgstr "(Không)"
+msgstr "(هیچ)"
 
 #: src/main/webapp/exportIdentities.jsp
 msgid "Export Identities"
-msgstr ""
+msgstr "برون برد هویت ها"
 
 #: src/main/webapp/exportIdentities.jsp
 msgid "Password:"
-msgstr "Mật khẩu: "
+msgstr "رمز عبور:"
 
 #: src/main/webapp/exportIdentities.jsp
 msgid "(leave blank to not encrypt identities)"
-msgstr ""
+msgstr "(برای رمزگذاری نکردن هویت ها خالی بگذارید)"
 
 #: src/main/webapp/exportIdentities.jsp
 msgid "Confirm:"
-msgstr "Xác nhận:"
+msgstr "تایید:"
 
 #: src/main/webapp/exportIdentities.jsp
 msgid "Export"
-msgstr "Xuất"
+msgstr "خروجی"
 
 #: src/main/webapp/folder.jsp
 msgid "From"
-msgstr "Từ"
+msgstr "از"
 
 #: src/main/webapp/folder.jsp
 msgid "Know"
-msgstr "Biết"
+msgstr ""
 
 #: src/main/webapp/folder.jsp
 msgid "To"
-msgstr "Đến"
+msgstr "به"
 
 #: src/main/webapp/folder.jsp
 msgid "Subject"
-msgstr "Chủ đề"
+msgstr "موضوع"
 
 #: src/main/webapp/folder.jsp
 msgid "Sent Time"
-msgstr ""
+msgstr "زمان ارسال"
 
 #: src/main/webapp/folder.jsp
 msgid "Delivered"
@@ -245,11 +245,11 @@ msgstr ""
 
 #: src/main/webapp/folder.jsp
 msgid "Anonymous"
-msgstr "Ẩn danh"
+msgstr "ناشناس"
 
 #: src/main/webapp/folder.jsp
 msgid "(No subject)"
-msgstr "(Không chủ đề)"
+msgstr "(بدون موضوع)"
 
 #: src/main/webapp/folder.jsp
 msgid "Signature is invalid or missing"
@@ -257,39 +257,39 @@ msgstr ""
 
 #: src/main/webapp/folder.jsp
 msgid "Delete"
-msgstr "Xóa"
+msgstr "پاک کردن"
 
 #: src/main/webapp/folder.jsp
 msgid "Delete this email"
-msgstr "Xóa thư này"
+msgstr "حذف این ایمیل"
 
 #: src/main/webapp/userGuide.jsp
 msgid "User Guide"
-msgstr "Hướng dẫn sử dụng"
+msgstr "راهنمای کاربر"
 
 #: src/main/webapp/buttonFrame.jsp
 msgid "Checking for mail..."
-msgstr "Kiểm xem có thư..."
+msgstr "بررسی برای ایمیل..."
 
 #: src/main/webapp/buttonFrame.jsp
 msgid "Check Mail"
-msgstr "Kiểm Thư"
+msgstr "بررسی ایمیل"
 
 #: src/main/webapp/buttonFrame.jsp
 msgid "Compose"
-msgstr ""
+msgstr "نوشتن"
 
 #: src/main/webapp/buttonFrame.jsp
 msgid "Last checked:"
-msgstr ""
+msgstr "آخرین بررسی:"
 
 #: src/main/webapp/deleteContact.jsp
 msgid "The contact has been deleted from the address book."
-msgstr "Địa chỉ liên lạc đã được xóa khỏi sổ."
+msgstr "مخاطب از دفترچه آدرس حذف شده است."
 
 #: src/main/webapp/deleteContact.jsp
 msgid "Error"
-msgstr "Lỗi"
+msgstr "اشتباه"
 
 #: src/main/webapp/editContact.jsp
 msgid "Form must be submitted using POST."
@@ -297,107 +297,107 @@ msgstr ""
 
 #: src/main/webapp/editContact.jsp
 msgid "Please fill in the Destination field."
-msgstr "Xin điền vào ô Đến"
+msgstr "لطفا فیلد مقصد را پر کنید."
 
 #: src/main/webapp/editContact.jsp
 msgid "Please fill in the Name field."
-msgstr "Xin điền vào ô Tên"
+msgstr "لطفا فیلد نام را پر کنید."
 
 #: src/main/webapp/editContact.jsp
 msgid "The contact has been saved."
-msgstr "Liên lạc đã được lưu trữ"
+msgstr "مخاطب ذخیره شده است."
 
 #: src/main/webapp/editContact.jsp
 msgid "New Contact"
-msgstr "Liên hệ mới"
+msgstr "مخاطب جدید"
 
 #: src/main/webapp/editContact.jsp
 msgid "Add"
-msgstr "Thêm"
+msgstr "اضافه کردن"
 
 #: src/main/webapp/editContact.jsp
 msgid "Edit Contact"
-msgstr "Chỉnh sửa Liên hệ"
+msgstr "ویرایش مخاطب"
 
 #: src/main/webapp/editContact.jsp
 msgid "Save"
-msgstr "Lưu"
+msgstr "ذخيره"
 
 #: src/main/webapp/editContact.jsp
 msgid "Email Destination:"
-msgstr "Email Đến:"
+msgstr "مقصد ایمیل:"
 
 #: src/main/webapp/editContact.jsp
 msgid "(required field)"
-msgstr "(Bắt buộc)"
+msgstr "(فیلد ضروری)"
 
 #: src/main/webapp/editContact.jsp
 msgid "Name:"
-msgstr "Tên:"
+msgstr "نام:"
 
 #: src/main/webapp/editContact.jsp
 msgid "Picture:"
-msgstr ""
+msgstr "تصویر:"
 
 #: src/main/webapp/editContact.jsp
 msgid "Text:"
-msgstr ""
+msgstr "متن:"
 
 #: src/main/webapp/editContact.jsp
 msgid "Cancel"
-msgstr "Hủy"
+msgstr "لغو کردن"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Address Book"
-msgstr "Sổ địa chỉ"
+msgstr "دفترچه آدرس"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Private Address Book"
-msgstr "Sổ địa chỉ riêng"
+msgstr "دفترچه آدرس خصوصی"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Select One or More Entries"
-msgstr "Chọn một hoặc nhiều mục hơn"
+msgstr ""
 
 #: src/main/webapp/addressBook.jsp
 msgid "The address book is empty."
-msgstr "Sổ địa chỉ trống."
+msgstr "دفترچه آدرس خالی می باشد."
 
 #: src/main/webapp/addressBook.jsp
 msgid "Name"
-msgstr "Tên"
+msgstr "نام"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Text"
-msgstr "Chữ"
+msgstr "متن"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Email Destination"
-msgstr "Email Đến"
+msgstr "مقصد ایمیل"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Delete this contact"
-msgstr "Xoá liên hệ này"
+msgstr "حذف این مخاطب"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Add Recipients"
-msgstr "Thêm người nhận"
+msgstr "افزودن گیرندگان"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Return"
-msgstr "Trở về"
+msgstr "بازگشت"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Import from the public address directory"
-msgstr ""
+msgstr "درون برد از دایرکتوری آدرس عمومی"
 
 #: src/main/webapp/addressBook.jsp
 msgid "Lookup"
-msgstr ""
+msgstr "جستجو"
 
 #: src/main/webapp/saveIdentities.jsp
 msgid "Error:"
-msgstr "Lỗi:"
+msgstr "خطا:"
 
 #: src/main/webapp/csrfError.jsp
 msgid "Security Violation"
@@ -409,15 +409,15 @@ msgstr ""
 
 #: src/main/webapp/submitIdentity.jsp
 msgid "Please fill in the Public Name field."
-msgstr "Xin điền vào ô Tên Công Cộng."
+msgstr "لطفا فیلد نام عمومی را پر کنید."
 
 #: src/main/webapp/submitIdentity.jsp
 msgid "Please wait..."
-msgstr "Xin chờ..."
+msgstr "لطفا صبر کنید ..."
 
 #: src/main/webapp/submitIdentity.jsp
 msgid "The Email Identity is being generated. This may take a while."
-msgstr ""
+msgstr "هویت ایمیل در حال تولید می باشد. این ممکن است چندی وقت بگیرد."
 
 #: src/main/webapp/submitIdentity.jsp
 msgid ""
@@ -427,15 +427,15 @@ msgstr ""
 
 #: src/main/webapp/submitIdentity.jsp
 msgid "The email identity has been saved."
-msgstr "Danh tính email đã được lưu."
+msgstr "هویت ایمیل ذخیره شده است."
 
 #: src/main/webapp/publishDestination.jsp
 msgid "Add Email Destination to Directory"
-msgstr ""
+msgstr "افوزدن مقصد ایمیل به دایرکتوری"
 
 #: src/main/webapp/publishDestination.jsp
 msgid "The name exists already. Please choose a different Public Name."
-msgstr ""
+msgstr "نام هم اکنون موجود می باشد. لطفا یک نام عمومی متفاوت انتخاب کنید."
 
 #: src/main/webapp/publishDestination.jsp
 msgid "Publish to the Address Directory"
@@ -443,7 +443,7 @@ msgstr ""
 
 #: src/main/webapp/publishDestination.jsp
 msgid "Picture to upload:"
-msgstr ""
+msgstr "تصویر برای آپلود:"
 
 #: src/main/webapp/publishDestination.jsp
 msgid "(optional, 7.5 kBytes max)"
@@ -451,7 +451,7 @@ msgstr ""
 
 #: src/main/webapp/publishDestination.jsp
 msgid "Text to include:"
-msgstr ""
+msgstr "متن برای قرار دادن:"
 
 #: src/main/webapp/publishDestination.jsp
 msgid "(optional, 2000 chars max)"
@@ -459,7 +459,7 @@ msgstr ""
 
 #: src/main/webapp/publishDestination.jsp
 msgid "Publish"
-msgstr "Xuất bản"
+msgstr "انتشار"
 
 #: src/main/webapp/publishDestination.jsp
 msgid "The identity has been added to the address directory."
@@ -467,91 +467,91 @@ msgstr ""
 
 #: src/main/webapp/noIdentities.jsp
 msgid "No Identity"
-msgstr ""
+msgstr "هیچ هویت"
 
 #: src/main/webapp/noIdentities.jsp
 msgid "No Email Identity Defined"
-msgstr "Không có Danh tính "
+msgstr "هیچ هویت ایمیلی تعریف نشده است"
 
 #: src/main/webapp/noIdentities.jsp
 msgid "Create a New Email Identity"
-msgstr "Tạo địa chỉ email mới "
+msgstr "ایجاد یک هویت جدید ایمیل"
 
 #: src/main/webapp/deleteIdentity.jsp
 msgid "The email identity has been deleted."
-msgstr ""
+msgstr "هویت ایمیل حذف شده است."
 
 #: src/main/webapp/debug.jsp
 msgid "Debug"
-msgstr "Gở lỗi"
+msgstr "اشکال زدایی  کردن"
 
 #: src/main/webapp/debug.jsp
 msgid "Debug Page"
-msgstr ""
+msgstr "صفحه اشکال زدایی"
 
 #: src/main/webapp/debug.jsp
 msgid "Test encrypted files"
-msgstr ""
+msgstr "آزمایش فایل های رمزگذاری شده"
 
 #: src/main/webapp/debug.jsp
 msgid "No file encryption problems found."
-msgstr ""
+msgstr "هیچ مشکل رمزگذاری فایل یافت نشد."
 
 #: src/main/webapp/debug.jsp
 msgid "Undecryptable files:"
-msgstr ""
+msgstr "فایل های غیرقابل رمزگشایی:"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "More..."
-msgstr "Thêm..."
+msgstr "بیشتر..."
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Less..."
-msgstr ""
+msgstr "کمتر..."
 
 #: src/main/webapp/editIdentity.jsp
 msgid "New Email Identity"
-msgstr "Danh tính Email mới"
+msgstr "هویت ایمیل جدید"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Create"
-msgstr "Tạo"
+msgstr "ایجاد کردن"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Edit Email Identity"
-msgstr "Chỉnh sửa danh tính Email"
+msgstr "ویرایش هویت ایمیل"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "An Email Identity lets you receive email from other I2P-Bote users."
-msgstr ""
+msgstr "یک هویت ایمیل به شما اجازه می دهد تا ایمیل هایی از جانب دیگر کاربران I2P-Bote دریافت کنید."
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Public Name:"
-msgstr "Tên công cộng:"
+msgstr "نام عمومی:"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "(required field, shown to recipients)"
-msgstr "(bắt buộc, người nhận sẽ thấy)"
+msgstr "(فیلد ضروری، به گیرندگان نمایش داده می شود)"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Description:"
-msgstr "Mô tả:"
+msgstr "توضیح:"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "(optional, kept private)"
-msgstr "(tùy chọn, giữ kín)"
+msgstr "(اختیاری، خصوصی باقی می ماند)"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "(published to the address directory)"
-msgstr ""
+msgstr "(انتشار یافته روی دایرکتوری آدرس)"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Encryption:"
-msgstr "Mã hóa:"
+msgstr "رمزگذاری:"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "(If unsure, leave the default)"
-msgstr "(Nếu không chắc chắn, hãy để mặc định)"
+msgstr "(در صورت عدم اطمنیان، از پیش فرض استفاده کنید)"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Vanity Destination:"
@@ -563,11 +563,11 @@ msgstr ""
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Fingerprint:"
-msgstr "Dấu vết riêng:"
+msgstr "اثر انگشت:"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Default Identity:"
-msgstr "Danh tính mặc định"
+msgstr "هویت پیش فرض:"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Include in global check:"
@@ -575,31 +575,31 @@ msgstr ""
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Private keys:"
-msgstr "Chìa khóa riêng:"
+msgstr "کلید های خصوصی:"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "(Never reveal to anyone!)"
-msgstr "(Đừng tiết lộ cho ai khác!)"
+msgstr "(به هیچکس آشکار نکنید!)"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Show"
-msgstr "Hiển thị"
+msgstr "نمایش"
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Cannot publish until connected."
-msgstr ""
+msgstr "عدم توانایی در انتشار تا زمان اتصال."
 
 #: src/main/webapp/editIdentity.jsp
 msgid "Delete this identity"
-msgstr "Xóa danh tính này"
+msgstr "حذف این هویت"
 
 #: src/main/webapp/faq.jsp
 msgid "FAQ"
-msgstr "Câu Hỏi Thường Gặp"
+msgstr "سوالات متداول"
 
 #: src/main/webapp/faq.jsp
 msgid "Frequently Asked Questions"
-msgstr "Các câu hỏi thường gặp"
+msgstr "سوالات متداول"
 
 #: src/main/webapp/header.jsp
 msgid "- I2P-Bote"
@@ -607,7 +607,7 @@ msgstr "- I2P-Bote"
 
 #: src/main/webapp/header.jsp
 msgid "Password is cached. Click to clear the password cache."
-msgstr "Mật khẩu được giữ tạm. Bấm để xóa ra khỏi bộ đệm."
+msgstr "گذرواژه در حافظه قرار گرفت. برای پاکسازی حافظه کلیک کنید."
 
 #: src/main/webapp/header.jsp
 msgid "I2P-Bote"
@@ -615,35 +615,35 @@ msgstr "I2P-Bote"
 
 #: src/main/webapp/header.jsp
 msgid "Secure Distributed Email"
-msgstr "Email chuyển an toàn"
+msgstr ""
 
 #: src/main/webapp/header.jsp
 msgid "Addresses"
-msgstr "Địa chỉ"
+msgstr "آدرسها"
 
 #: src/main/webapp/header.jsp
 msgid "Identities"
-msgstr "Danh tính"
+msgstr "هویت ها"
 
 #: src/main/webapp/header.jsp
 msgid "Configuration"
-msgstr "Cấu hình"
+msgstr "پیکربندی"
 
 #: src/main/webapp/header.jsp
 msgid "Settings"
-msgstr "Thiết lập"
+msgstr "تنظیمات"
 
 #: src/main/webapp/header.jsp
 msgid "Network Status"
-msgstr "Tình trạng mạng"
+msgstr "وضعیت شبکه"
 
 #: src/main/webapp/header.jsp
 msgid "Help"
-msgstr "Trợ giúp"
+msgstr "راهنمایی"
 
 #: src/main/webapp/header.jsp
 msgid "About"
-msgstr "Giới thiệu"
+msgstr "درباره"
 
 #: src/main/webapp/header.jsp
 msgid ""
@@ -653,47 +653,47 @@ msgstr ""
 
 #: src/main/webapp/header.jsp
 msgid "Guide"
-msgstr ""
+msgstr "راهنما"
 
 #: src/main/webapp/clearPasswordCache.jsp
 msgid "Password Cleared"
-msgstr "Mật khẩu được tẩy sạch"
+msgstr "گذرواژه پاک شد"
 
 #: src/main/webapp/clearPasswordCache.jsp
 msgid "The password has been cleared from the cache."
-msgstr "Mật khẩu đã được xóa khỏi bộ đệm."
+msgstr "گذرواژه از حافظه پاک شده است."
 
 #: src/main/webapp/outbox.jsp
 msgid "Outbox"
-msgstr "Hộp thư đi"
+msgstr "ارسالی"
 
 #: src/main/webapp/outbox.jsp
 msgid "Create Time"
-msgstr "Giờ thiết lập"
+msgstr "ایجاد زمان"
 
 #: src/main/webapp/outbox.jsp
 msgid "Status"
-msgstr "Tình trạng"
+msgstr "وضعیت"
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
 "In order to receive email from other people, you need to create an email "
 "identity first."
-msgstr "Để nhận thư từ người khác, bạn phải tạo ra danh tính email trước."
+msgstr ""
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
 "Every email identity is associated with an email destination. Anybody can "
 "send email to the email destination, but only the identity holder can read "
 "it."
-msgstr "Mỗi danh tính email có liên hệ đến một Email Đến. Ai cũng gửi đến Email Đến đó, nhưng chỉ có chủ nhân của danh tính email đó mới đọc được"
+msgstr ""
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
 "In a sense, email identities are the equivalent to traditional email "
 "accounts - except that there is no provider that can read all your email "
 "because I2P-Bote stores all emails encrypted on the network."
-msgstr "Khái niệm Danh tính email không khác lắm với một tài khoản email ở ngoài đời, khác biệt là không có ai đọc được email của bạn vì I2P-Bote chứa mọi thư trong dạng mã hóa trên mạng."
+msgstr ""
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
@@ -704,13 +704,13 @@ msgstr ""
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid "Do give out the email destination so others can contact you."
-msgstr "Nên cung cấp địa chỉ email để người khác liên lạc với bạn được."
+msgstr "مقصد ایمیل را به دیگران بدهید تا بتوانند با شما ارتباط برقرار کنند."
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
 "It is easy to create multiple identities for different purposes, or "
 "different contacts."
-msgstr "Rất dễ để tạo ra nhiều danh tính khác nhau cho các mục tiêu khác nhau, hoặc cho các liên hệ khác"
+msgstr ""
 
 #: src/main/webapp/identitiesHelp.jsp
 msgid ""
@@ -732,231 +732,231 @@ msgstr ""
 msgid ""
 "The email could not be found in this folder. It was probably moved to the "
 "Sent folder."
-msgstr ""
+msgstr "ایمیل در این پوشه یافت نشد. احتمالا به پوشه ارسالی انتقال یافته است."
 
 #: src/main/webapp/showEmail.jsp
 msgid "The email could not be found in this folder."
-msgstr ""
+msgstr "ایمیل در این پوشه یافت نشد."
 
 #: src/main/webapp/showEmail.jsp
 msgid "From:"
-msgstr "Từ:"
+msgstr "از:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Signature:"
-msgstr "Chữ ký:"
+msgstr "امضا:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Valid"
-msgstr "Đúng"
+msgstr "معتبر"
 
 #: src/main/webapp/showEmail.jsp
 msgid "N/A (sender is anonymous)"
-msgstr ""
+msgstr "N/A (ارسال کننده ناشناس می باشد)"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Invalid or missing"
-msgstr "Không đúng hay không có"
+msgstr ""
 
 #: src/main/webapp/showEmail.jsp
 msgid "Reply To:"
-msgstr "Trả lời đến:"
+msgstr "پاسخ به:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "To:"
-msgstr "Đến:"
+msgstr "به:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "CC:"
-msgstr "CC:"
+msgstr ""
 
 #: src/main/webapp/showEmail.jsp
 msgid "BCC:"
-msgstr "BCC:"
+msgstr ""
 
 #: src/main/webapp/showEmail.jsp
 msgid "Sent:"
-msgstr "Gửi:"
+msgstr "ارسال:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Received:"
-msgstr "Nhận:"
+msgstr ""
 
 #: src/main/webapp/showEmail.jsp
 msgid "Subject:"
-msgstr "Chủ đề:"
+msgstr "موضوع:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Message:"
-msgstr "Nội dung:"
+msgstr "پیام:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Attachments:"
-msgstr "Đính kèm:"
+msgstr "پیوست ها:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Status:"
-msgstr "Tình trạng:"
+msgstr "وضعیت:"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Reply"
-msgstr "Trả lời"
+msgstr "پاسخ"
 
 #: src/main/webapp/showEmail.jsp
 msgid "Re:"
-msgstr "Re:"
+msgstr "پاسخ:"
 
 #: src/main/webapp/newEmail.jsp
 msgid "New Email"
-msgstr "Email Mới"
+msgstr "ایمیل جدید"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Please select a file to attach and try again."
-msgstr "Xin chọn một tập tin đính kèm khác."
+msgstr "لطفا یک فایل را برای پیوست کردن انتخاب کنید و دوباره امتحان کنید."
 
 #: src/main/webapp/newEmail.jsp
 msgid "Send"
-msgstr "Gửi"
+msgstr "ارسال"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Remove this recipient"
-msgstr ""
+msgstr "حذف این گیرنده"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Add this recipient to the address book"
-msgstr ""
+msgstr "این گیرنده را به دفترچه آدرس اضافه کنید"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Select recipients from address book"
-msgstr ""
+msgstr "انتخاب گیرندگان از دفترچه آدرس"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Add another recipient field"
-msgstr ""
+msgstr "افزودن یک فیلد گیرنده دیگر"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Remove this attachment"
-msgstr "Xóa đính kèm này"
+msgstr "حذف این پیوست"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Add another attachment"
-msgstr "Thêm một đính kèm khác"
+msgstr "افزودن یک پیوست دیگر"
 
 #: src/main/webapp/newEmail.jsp
 msgid "Attach"
-msgstr "Đính kèm"
+msgstr "پیوست کردن"
 
 #: src/main/webapp/newEmail.jsp
 msgid "It is recommended to keep attachments below 500 kBytes."
-msgstr "Đề nghị giới hạn đính kèm dưới 500Kb"
+msgstr "توصیه می شود تا پیوست ها را کمتر از 500 کیلوبایت نگه دارید."
 
 #: src/main/webapp/newEmail.jsp
 msgid "{0} wrote:"
-msgstr "{0} viết:"
+msgstr "{0} نوشت:"
 
 #: src/main/webapp/password.jsp
 msgid "Password Required"
-msgstr "Cần Mật Khẩu"
+msgstr "رمز عبور مورد نياز است"
 
 #: src/main/webapp/password.jsp
 msgid "Wrong password. Try again."
-msgstr "Mậu khẩu sai. Xin thử lại."
+msgstr "گذرواژه نادرست. دوباره امتحان کنید."
 
 #: src/main/webapp/password.jsp
 msgid "Password required"
-msgstr "Cần mật khẩu"
+msgstr "رمز عبور مورد نياز است"
 
 #: src/main/webapp/password.jsp
 msgid "OK"
-msgstr "OK"
+msgstr "تایید"
 
 #: src/main/webapp/settings.jsp
 msgid "Settings have been saved."
-msgstr "Điều chỉnh đã được lưu."
+msgstr "تنظیمات ذخیره شده اند."
 
 #: src/main/webapp/settings.jsp
 msgid "General"
-msgstr "Chung"
+msgstr "عمومی"
 
 #: src/main/webapp/settings.jsp
 msgid "Check for mail every {0} minutes"
-msgstr "Kiểm tra có thư mỗi {0} phút"
+msgstr "بررسی برای ایمیل هر {0} دقیقه"
 
 #: src/main/webapp/settings.jsp
 msgid "Check delivery status of sent emails"
-msgstr ""
+msgstr "بررسی وضعیت تحویل ایمیل های ارسالی"
 
 #: src/main/webapp/settings.jsp
 msgid "Enable IMAP on port {0}"
-msgstr ""
+msgstr "فعال سازی IMAP روی درگاه {0}"
 
 #: src/main/webapp/settings.jsp
 msgid "Enable SMTP on port {0}"
-msgstr ""
+msgstr "فعال سازی SMTP روی درگاه {0}"
 
 #: src/main/webapp/settings.jsp
 msgid "Theme:"
-msgstr ""
+msgstr "قالب:"
 
 #: src/main/webapp/settings.jsp
 msgid "Privacy"
-msgstr "Riêng tư"
+msgstr "حریم خصوصی"
 
 #: src/main/webapp/settings.jsp
 msgid "Use English for text added to outgoing email ('Re:', 'wrote:', etc.)"
-msgstr "Dùng tiếng Anh khi thêm một số chữ vào thư gửi ra"
-
-#: src/main/webapp/settings.jsp
-msgid "Include send time in outgoing emails"
-msgstr "Bao gồm thời gian gửi trong thư gửi ra"
-
-#: src/main/webapp/settings.jsp
-msgid "Routing"
 msgstr ""
 
 #: src/main/webapp/settings.jsp
+msgid "Include send time in outgoing emails"
+msgstr "قرار دادن زمان ارسال در ایمیل های ارسالی"
+
+#: src/main/webapp/settings.jsp
+msgid "Routing"
+msgstr "در حال مسیریابی"
+
+#: src/main/webapp/settings.jsp
 msgid "Use relays when sending mail:"
-msgstr "Dùng trạm chuyển tiếp khi gửi thư:"
+msgstr "استفاده از بازپخش ها در هنگام ارسال ایمیل:"
 
 #: src/main/webapp/settings.jsp
 msgid "None"
-msgstr "Không"
+msgstr "هیچ"
 
 #: src/main/webapp/settings.jsp
 msgid "Delay per relay hop: Between"
-msgstr "Thời gian chờ giữa các trạm: Khoảng từ"
+msgstr ""
 
 #: src/main/webapp/settings.jsp
 msgid "and"
-msgstr "và"
+msgstr "و"
 
 #: src/main/webapp/settings.jsp
 msgid "minutes"
-msgstr "phút"
+msgstr "دقیقه"
 
 #: src/main/webapp/settings.jsp
 msgid "Use a gateway when sending to non-I2P email addresses"
-msgstr "Dùng cổng ra khi gửi đến địa chỉ email không thuộc I2P"
+msgstr ""
 
 #: src/main/webapp/settings.jsp
 msgid "Email Destination of the gateway:"
-msgstr "Email Đến của cổng ra:"
+msgstr ""
 
 #: src/main/webapp/settings.jsp
 msgid "Change Password"
-msgstr "Đổi Mật Khẩu"
+msgstr "تغییر گذرواژه"
 
 #: src/main/webapp/setPassword.jsp
 msgid "Set Password"
-msgstr "Làm Mật Khẩu"
+msgstr "تنظیم گذرواژه"
 
 #: src/main/webapp/setPassword.jsp
 msgid "The password has been changed."
-msgstr "Mật khẩu đã được đổi"
+msgstr "گذرواژه تغییر یافته است."
 
 #: src/main/webapp/setPassword.jsp
 msgid "Please wait"
-msgstr "Vui lòng chờ"
+msgstr "لطفا صبر کنید"
 
 #: src/main/webapp/setPassword.jsp
 msgid "Please wait while the password is being changed..."
@@ -964,11 +964,11 @@ msgstr ""
 
 #: src/main/webapp/setPassword.jsp
 msgid "Set a new Password"
-msgstr "Làm Mật khẩu mới"
+msgstr "تنظیم یک گذرواژه جدید"
 
 #: src/main/webapp/setPassword.jsp
 msgid "If you have not set a password, leave the old password blank."
-msgstr "Nếu bạn chưa làm mật khẩu, để trống ô mật khẩu cũ"
+msgstr "اگر یک گذرواژه را تنظیم نکرده اید، گذرواژه قدیمی را خالی بگذارید."
 
 #: src/main/webapp/setPassword.jsp
 msgid ""
@@ -978,29 +978,29 @@ msgstr ""
 
 #: src/main/webapp/setPassword.jsp
 msgid "Old password:"
-msgstr "Mật khẩu cũ:"
+msgstr "رمز عبور قدیمی:"
 
 #: src/main/webapp/setPassword.jsp
 msgid "New password:"
-msgstr "Mật khẩu mới:"
+msgstr "رمز عبور قدیمی:"
 
 #: src/main/webapp/network.jsp
 msgid "Network"
-msgstr "Mạng lưới"
+msgstr "شبکه"
 
 #: src/main/webapp/network.jsp
 msgid ""
 "Network information is not available because I2P-Bote hasn't started "
 "connecting to the network yet."
-msgstr "Chi tiết về mạng chưa có vì I2P-Bote chưa nối vào mạng."
+msgstr ""
 
 #: src/main/webapp/network.jsp
 msgid "Local destination:"
-msgstr "Điểm đến địa phương:"
+msgstr "مقصد محلی:"
 
 #: src/main/webapp/connectError.jsp
 msgid "Error Details"
-msgstr ""
+msgstr "جزئیات خطا"
 
 #: src/main/webapp/connectError.jsp
 msgid "Oh dear! I2P-Bote couldn't connect to the network."
@@ -1008,113 +1008,113 @@ msgstr ""
 
 #: src/main/webapp/connectError.jsp
 msgid "This is the error that happened:"
-msgstr ""
+msgstr "این خطایی است که رخ داد:"
 
 #: src/main/webapp/connectError.jsp
 msgid ""
 "You can fix most problems by clicking the 'Retry Connecting' button in the "
 "menu bar."
-msgstr ""
+msgstr "شما بیشتر مشکلات را با کلیک کردن بر روی دکمه 'تلاش دوباره برای اتصال' در نوار منو میتوانید اصلاح کنید."
 
 #: src/main/webapp/connectError.jsp
 msgid "If that doesn't help, try restarting your I2P router."
-msgstr ""
+msgstr "اگر راهگشا نبود، مجددا روتر I2P را راه اندازی کنید."
 
 #: src/main/webapp/folders.jsp
 msgid "Folders"
-msgstr "Thư mục"
+msgstr "پوشه ها"
 
 #: src/main/webapp/folders.jsp
 msgid "Inbox"
-msgstr "Hộp thư đến"
+msgstr "ورودی"
 
 #: src/main/webapp/folders.jsp
 msgid "Sent"
-msgstr "Đã gửi"
+msgstr "ارسال شد"
 
 #: src/main/webapp/folders.jsp
 msgid "Trash"
-msgstr "Thùng rác"
+msgstr "زباله"
 
 #: src/main/webapp/statusFrame.jsp
 msgid "Not Started"
-msgstr "Chưa Bắt Đầu"
+msgstr "آغاز نشده"
 
 #: src/main/webapp/statusFrame.jsp
 msgid "Waiting 3 Minutes..."
-msgstr "Chờ 3 Phút..."
+msgstr ""
 
 #: src/main/webapp/statusFrame.jsp
 msgid "Connecting..."
-msgstr "Đang nối ..."
+msgstr "در حال اتصال..."
 
 #: src/main/webapp/statusFrame.jsp
 msgid "Connected"
-msgstr "Đã nối vào"
+msgstr "وصل شد"
 
 #: src/main/webapp/statusFrame.jsp
 msgid "Retry Connecting"
-msgstr ""
+msgstr "تلاش دوباره برای اتصال"
 
 #: src/main/webapp/statusFrame.jsp
 msgid "Connect Now"
-msgstr "Nối Ngay"
+msgstr "اتصال در همین لحظه"
 
 #: src/main/webapp/identities.jsp
 msgid "Email Identities"
-msgstr "Danh tính Email"
+msgstr "هویت های ایمیل"
 
 #: src/main/webapp/identities.jsp
 msgid "No email identities are defined."
-msgstr "Không có danh tính Email nào được xác định"
+msgstr "هیچ هویت ایمیلی تعریف نشده است."
 
 #: src/main/webapp/identities.jsp
 msgid "Def."
-msgstr "Def."
+msgstr ""
 
 #: src/main/webapp/identities.jsp
 msgid "Public Name"
-msgstr "Tên Công Cộng"
+msgstr "نام عمومی"
 
 #: src/main/webapp/identities.jsp
 msgid "Description"
-msgstr "Mô tả"
+msgstr "شرح"
 
 #: src/main/webapp/identities.jsp
 msgid "Check mail for this identity"
-msgstr ""
+msgstr "بررسی ایمیل برای این هویت"
 
 #: src/main/webapp/identities.jsp
 msgid "New Identity"
-msgstr "Danh tính mới"
+msgstr "هویت جدید"
 
 #: src/main/webapp/identities.jsp
 msgid "Import Identities"
-msgstr ""
+msgstr "درون برد هویت ها"
 
 #: src/main/webapp/sendEmail.jsp
 msgid "Go to inbox"
-msgstr ""
+msgstr "رفتن به ورودی"
 
 #: src/main/webapp/importIdentities.jsp
 msgid "Please select an identities file and try again."
-msgstr ""
+msgstr "لطفا یک فایل هویت را انتخاب کنید و دوباره تلاش کنید."
 
 #: src/main/webapp/importIdentities.jsp
 msgid "The identities have been imported."
-msgstr ""
+msgstr "هویت ها به درون برده شده اند."
 
 #: src/main/webapp/importIdentities.jsp
 msgid "Identities file:"
-msgstr ""
+msgstr "فایل هویت ها:"
 
 #: src/main/webapp/importIdentities.jsp
 msgid "(leave blank if identities not encrypted)"
-msgstr ""
+msgstr "(اگر هویت ها رمزگذاری نشده اند آن را خالی بگذارید)"
 
 #: src/main/webapp/importIdentities.jsp
 msgid "Overwrite all existing identities:"
-msgstr ""
+msgstr "رونویسی تمام هویت های موجود:"
 
 #: src/main/webapp/importIdentities.jsp
 msgid "Duplicates: replace existing identity:"
@@ -1122,7 +1122,7 @@ msgstr ""
 
 #: src/main/webapp/importIdentities.jsp
 msgid "Import"
-msgstr "Nhập"
+msgstr "وارد کن "
 
 #: src/main/webapp/importContact.jsp
 msgid "Address Directory Lookup"
@@ -1130,7 +1130,7 @@ msgstr ""
 
 #: src/main/webapp/importContact.jsp
 msgid "The name has been imported to the address book."
-msgstr ""
+msgstr "نام به درون دفترچه آدرس برده شده است."
 
 #: src/main/webapp/importContact.jsp
 msgid "The name &quot;{0}&quot; was not found in the directory."
@@ -1138,7 +1138,7 @@ msgstr ""
 
 #: src/main/webapp/importContact.jsp
 msgid "Import Contact"
-msgstr ""
+msgstr "درون برد مخاطب"
 
 #: src/main/webapp/importContact.jsp
 msgid ""
@@ -1149,51 +1149,51 @@ msgstr ""
 
 #: src/main/webapp/importContact.jsp
 msgid "Email Destination: "
-msgstr "Email Đến:"
+msgstr "مقصد ایمیل:"
 
 #: src/main/webapp/about.jsp
 msgid "About I2P-Bote"
-msgstr "Giới thiệu I2P-Bote"
+msgstr "درباره I2P-Bote"
 
 #: src/main/webapp/about.jsp
 msgid "I2P-Bote Version {0}"
-msgstr "I2P-Bote Phiên bản {0}"
+msgstr "نسخه {0} I2P-Bote"
 
 #: src/main/webapp/about.jsp
 msgid "To submit bug reports or feature requests:"
-msgstr ""
+msgstr "برای ثبت گزارش های باگ یا درخواست ویژگی ها:"
 
 #: src/main/webapp/about.jsp
 msgid "click here"
-msgstr ""
+msgstr "اینجا کلیک کنید"
 
 #: src/main/webapp/about.jsp
 msgid "Developers:"
-msgstr ""
+msgstr "توسعه دهندگان:"
 
 #: src/main/webapp/about.jsp
 msgid "Click to send an email"
-msgstr "Bấm để gửi thư"
+msgstr "برای ارسال یک ایمیل کلیک کنید"
 
 #: src/main/webapp/about.jsp
 msgid "Maintenance, user experience, extended features, Android app"
-msgstr ""
+msgstr "نگهداری، تجربه کاربر، ویژگی های تعمیم یافته، برنامه اندروید"
 
 #: src/main/webapp/about.jsp
 msgid "Past developers:"
-msgstr ""
+msgstr "توسعه دهندگان گذشته:"
 
 #: src/main/webapp/about.jsp
 msgid "Feedback on I2P-Bote"
-msgstr "Phản hồi về I2P-Bote"
+msgstr "بازخورد روی I2P-Bote"
 
 #: src/main/webapp/about.jsp
 msgid "Technical concept, implementation, user interface"
-msgstr ""
+msgstr "مفهوم فنی، پیاده سازی، رابط کاربر"
 
 #: src/main/webapp/about.jsp
 msgid "Contributors:"
-msgstr "Người đóng góp"
+msgstr "مشارکت کنندگان:"
 
 #: src/main/webapp/about.jsp
 msgid "Technical concept, translation, QA, usability, technical feedback"
@@ -1201,7 +1201,7 @@ msgstr ""
 
 #: src/main/webapp/about.jsp
 msgid "Pluginization, technical feedback"
-msgstr "Pluginization, phản hồi kỹ thuật"
+msgstr ""
 
 #: src/main/webapp/about.jsp
 msgid "Seedless integration"
@@ -1209,55 +1209,55 @@ msgstr ""
 
 #: src/main/webapp/about.jsp
 msgid "Russian translation"
-msgstr "Bản dịch tiếng Nga"
+msgstr "ترجمه روسی"
 
 #: src/main/webapp/about.jsp
 msgid "French translation"
-msgstr "Bản dịch tiếng Pháp"
+msgstr "ترجمه فرانسوی"
 
 #: src/main/webapp/about.jsp
 msgid "Dutch translation"
-msgstr "Bản dịch tiếng Hà Lan"
+msgstr "ترجمه هلندی"
 
 #: src/main/webapp/about.jsp
 msgid "Norwegian translation"
-msgstr "Bản dịch tiếng Na Uy"
+msgstr "ترجمه نروژی"
 
 #: src/main/webapp/about.jsp
 msgid "Swedish translation"
-msgstr "Bản dịch tiếng Thụy Điển"
+msgstr "ترجمه سوئدی"
 
 #: src/main/webapp/about.jsp
 msgid "Chinese translation"
-msgstr "Bản dịch tiếng Hoa"
+msgstr "ترجمه چینی"
 
 #: src/main/webapp/about.jsp
 msgid "Arabic translation"
-msgstr "Bản dịch tiếng Á-Rập"
+msgstr "ترجمه عربی"
 
 #: src/main/webapp/about.jsp
 msgid "Czech translation"
-msgstr ""
+msgstr "ترجمه چکی"
 
 #: src/main/webapp/about.jsp
 msgid "German translation"
-msgstr ""
+msgstr "ترجمه آلمانی"
 
 #: src/main/webapp/about.jsp
 msgid "Polish translation"
-msgstr ""
+msgstr "ترجمه لهستانی"
 
 #: src/main/webapp/about.jsp
 msgid "Italian translation"
-msgstr ""
+msgstr "ترجمه ایتالیایی"
 
 #: src/main/webapp/about.jsp
 msgid "Ukrainian translation"
-msgstr ""
+msgstr "ترجمه اوکراینی"
 
 #: src/main/webapp/about.jsp
 msgid "Hungarian translation"
-msgstr ""
+msgstr "ترجمه مجارستانی"
 
 #: src/main/webapp/about.jsp
 msgid "Alpha testing"
@@ -1269,7 +1269,7 @@ msgstr ""
 
 #: src/main/webapp/about.jsp
 msgid "Code fixes"
-msgstr ""
+msgstr "اصلاحات کد"
 
 #: src/main/webapp/about.jsp
 msgid "Usability improvement"
@@ -1281,20 +1281,20 @@ msgstr ""
 
 #: src/main/webapp/deleteEmail.jsp
 msgid "Error: Couldn't delete email."
-msgstr "Lỗi: không thể xóa thư"
+msgstr "خطا: عدم توانایی در حذف ایمیل."
 
 #: src/main/webapp/showFullIdentity.jsp
 msgid "Full Identity"
-msgstr "Danh Tính Đầy Đủ"
+msgstr "هویت کامل"
 
 #: src/main/webapp/showFullIdentity.jsp
 msgid "Full Email Identity for {0}:"
-msgstr "Danh Tính Email Đầy Đủ cho {0}:"
+msgstr "هویت ایمیل کامل برای {0}:"
 
 #: src/main/webapp/showFullIdentity.jsp
 msgid ""
 "Do not show the above information to anyone! It contains your private keys."
-msgstr "Đừng đưa thông tin trên cho ai khác! Nó chứa chìa khóa riêng của bạn. "
+msgstr "اطلاعات بالا را به هیچکس نشان ندهید! حاوی کلید های خصوصی شما می باشد."
 
 #: src/main/webapp/WEB-INF/tags/folderLink.tag
 msgid "{0} emails total"
@@ -1306,15 +1306,15 @@ msgstr ""
 
 #: src/main/webapp/WEB-INF/tags/folderLink.tag
 msgid "{0} incomplete"
-msgstr ""
+msgstr "{0} ناقص"
 
 #: src/main/webapp/WEB-INF/tags/printDate.tag
 msgid "Unknown"
-msgstr "Không rõ"
+msgstr "ناشناخته"
 
 #: src/main/webapp/WEB-INF/tags/address.tag
 msgid "Add to Address Book"
-msgstr "Thêm vào Sổ Địa Chỉ"
+msgstr "افزودن به دفترچه آدرس"
 
 #~ msgid "Material"
 #~ msgstr "Material"

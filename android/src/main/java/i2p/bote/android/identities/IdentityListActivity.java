@@ -3,7 +3,7 @@ package i2p.bote.android.identities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.R;

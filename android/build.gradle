@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         versionCode 17
         versionName '0.6.1.1'
@@ -10,7 +10,7 @@ android {
         multiDexEnabled true
 
         // For Espresso
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -38,7 +38,7 @@ android {
     }
 }
 
-def supportVersion = '25.4.0'
+def supportVersion = '28.0.0'
 
 configurations.all {
     resolutionStrategy {
@@ -61,17 +61,17 @@ dependencies {
 
     // Android Support Repository dependencies
     //noinspection GradleCompatible
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation "com.android.support:support-annotations:$supportVersion"
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:preference-v7:$supportVersion"
-    implementation "com.android.support:preference-v14:$supportVersion"
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     // Remote dependencies
-    implementation 'com.sun.mail:android-mail:1.6.3'
-    implementation 'com.sun.mail:android-activation:1.6.3'
+    implementation 'com.sun.mail:android-mail:1.6.5'
+    implementation 'com.sun.mail:android-activation:1.6.5'
     implementation "net.i2p:router:$rootProject.i2pVersion"
     implementation "net.i2p.android:client:$rootProject.i2pVersion@aar"
     implementation 'net.i2p.android:helper:0.9.5@aar'
@@ -79,23 +79,23 @@ dependencies {
     implementation 'com.madgag.spongycastle:core:1.58.0.0'
     implementation 'com.madgag.spongycastle:prov:1.58.0.0'
     implementation 'com.lambdaworks:scrypt:1.4.0'
-    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.zxing:core:3.4.0'
     implementation 'com.google.zxing:android-integration:3.3.0'
     implementation 'com.androidplot:androidplot-core:1.5.6'
     implementation 'com.inkapplications.viewpageindicator:library:2.4.4'
     implementation 'com.pnikosis:materialish-progress:1.7'
     implementation 'com.mikepenz:iconics-core:2.7.2@aar'
-    implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+    implementation 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar'
     implementation('com.mikepenz:materialdrawer:5.4.0@aar') {
         transitive = true
     }
     implementation 'org.sufficientlysecure:html-textview:3.1'
 
     // Testing-only dependencies
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
 }
 
 project.ext.i2pbase = '../i2p.i2p'
@@ -116,7 +116,7 @@ if (propFile.canRead()) {
 }
 
 task certificatesZip(type: Zip) {
-    archiveName = 'certificates_zip'
+    archiveFileName = 'certificates_zip'
     into('reseed') {
         from files('' + i2pbase + '/installer/resources/certificates/reseed')
     }
