@@ -35,7 +35,7 @@ static String javaExecutable(String targetJavaHome, String execName) {
 }
 
 configure([project(':core'), project(':webapp')]) {
-    project.version = '0.4.8.1'
+    project.version = '0.4.8.2'
 
     project.afterEvaluate {
         jar {

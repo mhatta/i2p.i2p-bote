@@ -13,7 +13,7 @@ dependencies {
     implementation 'com.lambdaworks:scrypt:1.4.0'
     implementation 'org.apache.james:apache-mime4j-core:0.8.3'
     implementation 'org.b1.pack:lzma-sdk-4j:9.22.0'
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.58'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.59'
 
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.jmock:jmock:2.12.0'

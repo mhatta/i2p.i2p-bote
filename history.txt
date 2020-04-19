@@ -1,6 +1,9 @@
 I2P-Bote Version History
 ------------------------
 
+0.4.8.2 (Released on April 19, 2020)
+  * Various housekeeping, updating, etc.
+
 0.4.8.1 (Released on April 13, 2020)
   * Fixes to work on I2P 0.9.45 and above
   * Migrated to AndroidX
