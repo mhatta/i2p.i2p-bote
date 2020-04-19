@@ -2,11 +2,11 @@ package i2p.bote.android;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import i2p.bote.android.util.LocaleManager;
 
@@ -25,8 +25,7 @@ public class BoteActivityBase extends AppCompatActivity {
 
         // Initialize screen security
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-                prefs.getBoolean("pref_screen_security", true))
+        if (prefs.getBoolean("pref_screen_security", true))
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         else
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);

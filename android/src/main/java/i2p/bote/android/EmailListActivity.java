@@ -10,16 +10,17 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -98,7 +99,7 @@ public class EmailListActivity extends BoteActivityBase implements
         setContentView(R.layout.activity_main);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Initialize variables
@@ -194,7 +195,7 @@ public class EmailListActivity extends BoteActivityBase implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mAccountHeader.saveInstanceState(outState);
         mDrawer.saveInstanceState(outState);
@@ -301,9 +302,7 @@ public class EmailListActivity extends BoteActivityBase implements
                 startActivityForResult(i, RUN_SETUP);
             }
         } else if (requestCode == RUN_SETUP) {
-            if (resultCode == RESULT_OK) {
-                // TODO implement a UI tutorial?
-            }
+            // TODO implement a UI tutorial?
         } else if (requestCode == I2PAndroidHelper.REQUEST_START_I2P) {
             if (resultCode == RESULT_OK) {
                 startBote();
@@ -350,6 +349,7 @@ public class EmailListActivity extends BoteActivityBase implements
         getSupportLoaderManager().restartLoader(LOADER_DRAWER_FOLDERS, null, new DrawerFolderLoaderCallbacks());
         EmailListFragment f = (EmailListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.list_fragment);
+        assert f != null;
         f.onIdentitySelected();
     }
 
@@ -384,6 +384,7 @@ public class EmailListActivity extends BoteActivityBase implements
 
     private boolean isBoteServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        assert manager != null;
         for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (BoteService.class.getName().equals(service.service.getClassName()))
                 return true;
@@ -410,8 +411,9 @@ public class EmailListActivity extends BoteActivityBase implements
         @Override
         @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+            assert getArguments() != null;
             int message = getArguments().getInt("message");
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setMessage(message)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -428,13 +430,14 @@ public class EmailListActivity extends BoteActivityBase implements
     //
 
     private class IdentityLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<IProfile>> {
+        @NonNull
         @Override
         public Loader<ArrayList<IProfile>> onCreateLoader(int id, Bundle args) {
             return new DrawerIdentityLoader(EmailListActivity.this);
         }
 
         @Override
-        public void onLoadFinished(Loader<ArrayList<IProfile>> loader, ArrayList<IProfile> data) {
+        public void onLoadFinished(@NonNull Loader<ArrayList<IProfile>> loader, ArrayList<IProfile> data) {
             mAccountHeader.setProfiles(data);
             String selectedIdentity = mSharedPrefs.getString(Constants.PREF_SELECTED_IDENTITY, null);
             for (IProfile profile : data) {
@@ -448,7 +451,7 @@ public class EmailListActivity extends BoteActivityBase implements
         }
 
         @Override
-        public void onLoaderReset(Loader<ArrayList<IProfile>> loader) {
+        public void onLoaderReset(@NonNull Loader<ArrayList<IProfile>> loader) {
             mAccountHeader.clear();
             mAccountHeader.addProfiles(getLockedProfile());
         }
@@ -457,7 +460,7 @@ public class EmailListActivity extends BoteActivityBase implements
     private static class DrawerIdentityLoader extends BetterAsyncTaskLoader<ArrayList<IProfile>> implements IdentitiesListener {
         private int identiconSize;
 
-        public DrawerIdentityLoader(Context context) {
+        DrawerIdentityLoader(Context context) {
             super(context);
             // Must be a multiple of nine
             identiconSize = context.getResources().getDimensionPixelSize(R.dimen.identicon);
@@ -478,12 +481,8 @@ public class EmailListActivity extends BoteActivityBase implements
                 for (EmailIdentity identity : identities) {
                     profiles.add(getIdentityDrawerItem(identity));
                 }
-            } catch (PasswordException e) {
+            } catch (PasswordException | GeneralSecurityException | IOException e) {
                 // TODO handle, but should not get here
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
             return profiles;
@@ -531,13 +530,14 @@ public class EmailListActivity extends BoteActivityBase implements
     }
 
     private class DrawerFolderLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<IDrawerItem>> {
+        @NonNull
         @Override
         public Loader<ArrayList<IDrawerItem>> onCreateLoader(int id, Bundle args) {
             return new DrawerFolderLoader(EmailListActivity.this, I2PBote.getInstance().getEmailFolders());
         }
 
         @Override
-        public void onLoadFinished(Loader<ArrayList<IDrawerItem>> loader, ArrayList<IDrawerItem> data) {
+        public void onLoadFinished(@NonNull Loader<ArrayList<IDrawerItem>> loader, ArrayList<IDrawerItem> data) {
             if (mDrawer.getDrawerItems() == null || mDrawer.getDrawerItems().size() == 0)
                 mDrawer.setItems(data);
             else {
@@ -550,7 +550,7 @@ public class EmailListActivity extends BoteActivityBase implements
         }
 
         @Override
-        public void onLoaderReset(Loader<ArrayList<IDrawerItem>> loader) {
+        public void onLoaderReset(@NonNull Loader<ArrayList<IDrawerItem>> loader) {
             mDrawer.removeAllItems();
         }
     }
@@ -558,7 +558,7 @@ public class EmailListActivity extends BoteActivityBase implements
     private static class DrawerFolderLoader extends BetterAsyncTaskLoader<ArrayList<IDrawerItem>> implements FolderListener {
         private List<EmailFolder> mFolders;
 
-        public DrawerFolderLoader(Context context, List<EmailFolder> folders) {
+        DrawerFolderLoader(Context context, List<EmailFolder> folders) {
             super(context);
             mFolders = folders;
         }
@@ -658,6 +658,7 @@ public class EmailListActivity extends BoteActivityBase implements
     @Override
     public void onFolderSelected(EmailFolder newFolder) {
         EmailListFragment f = (EmailListFragment) getSupportFragmentManager().findFragmentById(R.id.list_fragment);
+        assert f != null;
         f.onFolderSelected(newFolder);
     }
 
