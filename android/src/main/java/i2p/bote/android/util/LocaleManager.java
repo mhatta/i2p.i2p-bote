@@ -1,6 +1,5 @@
 package i2p.bote.android.util;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,8 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
 
 public class LocaleManager {
@@ -16,12 +17,12 @@ public class LocaleManager {
 
     private Locale currentLocale;
 
-    public void onCreate(Activity activity) {
+    public void onCreate(AppCompatActivity activity) {
         currentLocale = getSelectedLocale(activity);
         setContextLocale(activity, currentLocale);
     }
 
-    public void onResume(Activity activity) {
+    public void onResume(AppCompatActivity activity) {
         // If the activity has the incorrect locale, restart it
         if (!currentLocale.equals(getSelectedLocale(activity))) {
             Intent intent = activity.getIntent();

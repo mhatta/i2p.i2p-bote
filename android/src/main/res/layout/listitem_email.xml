@@ -15,7 +15,7 @@
         android:layout_marginStart="@dimen/listitem_horizontal_margin"
         android:layout_marginTop="4dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_contact_picture"/>
+        app:srcCompat="@drawable/ic_contact_picture"/>
 
     <ImageView
         android:id="@+id/email_selected"
@@ -24,7 +24,7 @@
         android:layout_alignBottom="@+id/contact_picture"
         android:layout_alignLeft="@+id/contact_picture"
         android:layout_alignStart="@+id/contact_picture"
-        android:src="@drawable/ic_navigation_accept"
+        app:srcCompat="@drawable/ic_navigation_accept"
         android:visibility="gone"/>
 
     <TextView

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_height_one_line_avatar">
 
@@ -14,7 +15,7 @@
         android:layout_marginLeft="@dimen/listitem_horizontal_margin"
         android:layout_marginStart="@dimen/listitem_horizontal_margin"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_contact_picture"/>
+        app:srcCompat="@drawable/ic_contact_picture"/>
 
     <TextView
         android:id="@+id/contact_name"

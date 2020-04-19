@@ -1,7 +1,8 @@
 package i2p.bote.android.intro;
 
-import android.app.Activity;
 import android.app.Instrumentation;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -42,7 +43,7 @@ public class SetupActivityTest {
         // Check we are on "Set password" page
         onView(withId(R.id.textView)).check(matches(withText(R.string.set_password)));
 
-        intending(hasComponent(SetPasswordActivity.class.getName())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
+        intending(hasComponent(SetPasswordActivity.class.getName())).respondWith(new Instrumentation.ActivityResult(AppCompatActivity.RESULT_OK, null));
 
         onView(withId(R.id.button_set_password)).perform(click());
         onView(withId(R.id.textView)).check(matches(withText(R.string.create_identity)));
@@ -64,7 +65,7 @@ public class SetupActivityTest {
         onView(withId(R.id.button_skip)).perform(click());
         onView(withId(R.id.textView)).check(matches(withText(R.string.create_identity)));
 
-        intending(hasComponent(EditIdentityActivity.class.getName())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
+        intending(hasComponent(EditIdentityActivity.class.getName())).respondWith(new Instrumentation.ActivityResult(AppCompatActivity.RESULT_OK, null));
 
         onView(withId(R.id.button_set_password)).perform(click());
         onView(withId(R.id.textView)).check(matches(withText(R.string.setup_finished)));

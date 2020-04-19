@@ -65,7 +65,7 @@
     </style>
 
     <style name="Divider">
-        <item name="android:background">?android:attr/listDivider</item>
+        <item name="background">?android:attr/listDivider</item>
     </style>
 
     <style name="Divider.Horizontal" parent="Divider">
