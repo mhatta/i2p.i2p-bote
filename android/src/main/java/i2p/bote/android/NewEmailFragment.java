@@ -8,10 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.tokenautocomplete.FilteredArrayAdapter;
@@ -39,11 +40,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import i2p.bote.I2PBote;
@@ -61,9 +62,9 @@ public class NewEmailFragment extends Fragment {
     private Callbacks mCallbacks = sDummyCallbacks;
 
     public interface Callbacks {
-        public void onTaskFinished();
+        void onTaskFinished();
 
-        public void onBackPressAllowed();
+        void onBackPressAllowed();
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -75,7 +76,7 @@ public class NewEmailFragment extends Fragment {
     };
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof Callbacks))
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
@@ -88,16 +89,16 @@ public class NewEmailFragment extends Fragment {
         mCallbacks = sDummyCallbacks;
     }
 
-    public static final String QUOTE_MSG_FOLDER = "sender";
-    public static final String QUOTE_MSG_ID = "recipient";
+    static final String QUOTE_MSG_FOLDER = "sender";
+    static final String QUOTE_MSG_ID = "recipient";
 
-    public static enum QuoteMsgType {
+    public enum QuoteMsgType {
         REPLY,
         REPLY_ALL,
         FORWARD
     }
 
-    public static final String QUOTE_MSG_TYPE = "type";
+    static final String QUOTE_MSG_TYPE = "type";
 
     private static final long MAX_RECOMMENDED_ATTACHMENT_SIZE = 1048576;
 
@@ -105,20 +106,20 @@ public class NewEmailFragment extends Fragment {
 
     private String mSenderKey;
 
-    Spinner mSpinner;
-    int mDefaultPos;
-    ArrayAdapter<Person> mAdapter;
-    ImageView mMore;
-    ContactsCompletionView mTo;
-    ContactsCompletionView mCc;
-    ContactsCompletionView mBcc;
-    EditText mSubject;
-    EditText mContent;
-    LinearLayout mAttachments;
+    private Spinner mSpinner;
+    private int mDefaultPos;
+    private ImageView mMore;
+    private ContactsCompletionView mTo;
+    private ContactsCompletionView mCc;
+    private ContactsCompletionView mBcc;
+    private EditText mSubject;
+    private EditText mContent;
+    private LinearLayout mAttachments;
     private long mTotalAttachmentSize;
     private View mAttachmentSizeWarning;
-    boolean mMoreVisible;
-    boolean mDirty;
+    private boolean mMoreVisible;
+
+    private boolean mDirty;
 
     public static NewEmailFragment newInstance(String quoteMsgFolder, String quoteMsgId,
                                                QuoteMsgType quoteMsgType) {
@@ -144,25 +145,26 @@ public class NewEmailFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSpinner = (Spinner) view.findViewById(R.id.sender_spinner);
-        mMore = (ImageView) view.findViewById(R.id.more);
-        mTo = (ContactsCompletionView) view.findViewById(R.id.to);
-        mCc = (ContactsCompletionView) view.findViewById(R.id.cc);
-        mBcc = (ContactsCompletionView) view.findViewById(R.id.bcc);
-        mSubject = (EditText) view.findViewById(R.id.subject);
-        mContent = (EditText) view.findViewById(R.id.message);
-        mAttachments = (LinearLayout) view.findViewById(R.id.attachments);
+        mSpinner = view.findViewById(R.id.sender_spinner);
+        mMore = view.findViewById(R.id.more);
+        mTo = view.findViewById(R.id.to);
+        mCc = view.findViewById(R.id.cc);
+        mBcc = view.findViewById(R.id.bcc);
+        mSubject = view.findViewById(R.id.subject);
+        mContent = view.findViewById(R.id.message);
+        mAttachments = view.findViewById(R.id.attachments);
 
+        assert getArguments() != null;
         String quoteMsgFolder = getArguments().getString(QUOTE_MSG_FOLDER);
         String quoteMsgId = getArguments().getString(QUOTE_MSG_ID);
         QuoteMsgType quoteMsgType = (QuoteMsgType) getArguments().getSerializable(QUOTE_MSG_TYPE);
         boolean hide = I2PBote.getInstance().getConfiguration().getHideLocale();
 
-        List<Person> toRecipients = new ArrayList<Person>();
-        List<Person> ccRecipients = new ArrayList<Person>();
+        List<Person> toRecipients = new ArrayList<>();
+        List<Person> ccRecipients = new ArrayList<>();
         String origSubject = null;
         String origContent = null;
         String origFrom = null;
@@ -171,7 +173,7 @@ public class NewEmailFragment extends Fragment {
 
             if (origEmail != null) {
                 mSenderKey = BoteHelper.extractEmailDestination(
-                        BoteHelper.getOneLocalRecipient(origEmail).toString());
+                        Objects.requireNonNull(BoteHelper.getOneLocalRecipient(origEmail)).toString());
 
                 if (quoteMsgType == QuoteMsgType.REPLY) {
                     String recipient = BoteHelper.getNameAndDestination(
@@ -192,19 +194,11 @@ public class NewEmailFragment extends Fragment {
                 origContent = origEmail.getText();
                 origFrom = BoteHelper.getShortSenderName(origEmail.getOneFromAddress(), 50);
             }
-        } catch (PasswordException e) {
+        } catch (PasswordException | IOException | GeneralSecurityException | MessagingException e) {
             // Should not happen, we cannot get to this page without authenticating
             e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        } // TODO Auto-generated catch block
+
 
         // Set up identities spinner
         IdentityAdapter identities = new IdentityAdapter(getActivity());
@@ -212,13 +206,13 @@ public class NewEmailFragment extends Fragment {
         mSpinner.setSelection(mDefaultPos);
 
         // Set up Cc/Bcc button
-        mMore.setImageDrawable(new IconicsDrawable(getActivity(), GoogleMaterial.Icon.gmd_unfold_more).colorRes(R.color.md_grey_600).sizeDp(24).paddingDp(3));
+        mMore.setImageDrawable(new IconicsDrawable(requireActivity(), GoogleMaterial.Icon.gmd_unfold_more).colorRes(R.color.md_grey_600).sizeDp(24).paddingDp(3));
         mMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mCc.setVisibility(mMoreVisible ? View.GONE : View.VISIBLE);
                 mBcc.setVisibility(mMoreVisible ? View.GONE : View.VISIBLE);
-                mMore.setImageDrawable(new IconicsDrawable(getActivity(), mMoreVisible ?
+                mMore.setImageDrawable(new IconicsDrawable(requireActivity(), mMoreVisible ?
                         GoogleMaterial.Icon.gmd_unfold_more : GoogleMaterial.Icon.gmd_unfold_less)
                         .colorRes(R.color.md_grey_600)
                         .sizeDp(24)
@@ -238,18 +232,19 @@ public class NewEmailFragment extends Fragment {
             // TODO handle
             e.printStackTrace();
         }
-        mAdapter = new FilteredArrayAdapter<Person>(getActivity(), android.R.layout.simple_list_item_1, contacts) {
+        ArrayAdapter<Person> mAdapter = new FilteredArrayAdapter<Person>(getActivity(), android.R.layout.simple_list_item_1, contacts) {
             @Override
             protected boolean keepObject(Person obj, String mask) {
                 mask = mask.toLowerCase(Locale.US);
                 return obj.getName().toLowerCase(Locale.US).startsWith(mask) || obj.getAddress().toLowerCase(Locale.US).startsWith(mask);
             }
 
+            @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 View v;
                 if (convertView == null)
-                    v = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                    v = ((LayoutInflater) Objects.requireNonNull(getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)))
                             .inflate(R.layout.listitem_contact, parent, false);
                 else
                     v = convertView;
@@ -259,8 +254,9 @@ public class NewEmailFragment extends Fragment {
 
             private void setViewContent(View v, int position) {
                 Person person = getItem(position);
+                assert person != null;
                 ((TextView) v.findViewById(R.id.contact_name)).setText(person.getName());
-                ImageView picView = (ImageView) v.findViewById(R.id.contact_picture);
+                ImageView picView = v.findViewById(R.id.contact_picture);
                 Bitmap picture = person.getPicture();
                 if (picture == null) {
                     ViewGroup.LayoutParams lp = picView.getLayoutParams();
@@ -339,11 +335,7 @@ public class NewEmailFragment extends Fragment {
         String recipientName = BoteHelper.extractName(recipient);
         try {
             recipientName = BoteHelper.getName(recipient);
-        } catch (PasswordException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
+        } catch (PasswordException | IOException | GeneralSecurityException e) {
             e.printStackTrace();
         }
         String recipientAddr = BoteHelper.extractEmailDestination(recipient);
@@ -359,11 +351,7 @@ public class NewEmailFragment extends Fragment {
             Bitmap recipientPic = null;
             try {
                 recipientPic = BoteHelper.getPictureForDestination(recipientAddr);
-            } catch (PasswordException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
+            } catch (PasswordException | IOException | GeneralSecurityException e) {
                 e.printStackTrace();
             }
             return new Person(recipientName, recipientAddr, recipientPic);
@@ -371,7 +359,7 @@ public class NewEmailFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.new_email, menu);
         menu.findItem(R.id.action_attach_file).setIcon(BoteHelper.getMenuIcon(getActivity(), GoogleMaterial.Icon.gmd_attach_file));
         menu.findItem(R.id.action_send_email).setIcon(BoteHelper.getMenuIcon(getActivity(), GoogleMaterial.Icon.gmd_send));
@@ -391,17 +379,14 @@ public class NewEmailFragment extends Fragment {
 
             case android.R.id.home:
                 if (mDirty) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
                     builder.setTitle(R.string.stop_composing_email)
                             .setMessage(R.string.all_changes_will_be_discarded)
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
-                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-                                        mCallbacks.onBackPressAllowed();
-                                    else
-                                        getActivity().onNavigateUp();
+                                    requireActivity().onNavigateUp();
                                 }
                             }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
@@ -422,8 +407,7 @@ public class NewEmailFragment extends Fragment {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.setType("*/*");
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-            i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(
                 Intent.createChooser(i,
                         getResources().getString(R.string.select_attachment)),
@@ -440,30 +424,27 @@ public class NewEmailFragment extends Fragment {
             return;
         }
 
-        switch (requestCode) {
-            case REQUEST_FILE:
-                addAttachment(data.getData());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 &&
-                        data.getClipData() != null) {
-                    ClipData clipData = data.getClipData();
-                    for (int i = 0; i < clipData.getItemCount(); i++) {
-                        addAttachment(clipData.getItemAt(i).getUri());
-                    }
+        if (requestCode == REQUEST_FILE) {
+            addAttachment(data.getData());
+            if (data.getClipData() != null) {
+                ClipData clipData = data.getClipData();
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    addAttachment(clipData.getItemAt(i).getUri());
                 }
-                break;
+            }
         }
     }
 
     private void addAttachment(Uri uri) {
         // Try to create a ContentAttachment using the provided Uri.
         try {
-            final ContentAttachment attachment = new ContentAttachment(getActivity(), uri);
-            final View v = getActivity().getLayoutInflater().inflate(R.layout.listitem_attachment, mAttachments, false);
+            final ContentAttachment attachment = new ContentAttachment(requireActivity(), uri);
+            final View v = requireActivity().getLayoutInflater().inflate(R.layout.listitem_attachment, mAttachments, false);
             v.setTag(attachment);
             ((TextView) v.findViewById(R.id.filename)).setText(attachment.getFileName());
             ((TextView) v.findViewById(R.id.size)).setText(attachment.getHumanReadableSize());
-            ImageView attachmentAction = (ImageView) v.findViewById(R.id.attachment_action);
-            attachmentAction.setImageDrawable(new IconicsDrawable(getActivity(), GoogleMaterial.Icon.gmd_clear).colorRes(R.color.md_grey_600).sizeDp(24).paddingDp(5));
+            ImageView attachmentAction = v.findViewById(R.id.attachment_action);
+            attachmentAction.setImageDrawable(new IconicsDrawable(requireActivity(), GoogleMaterial.Icon.gmd_clear).colorRes(R.color.md_grey_600).sizeDp(24).paddingDp(5));
             attachmentAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -487,9 +468,9 @@ public class NewEmailFragment extends Fragment {
             mTotalAttachmentSize += size;
             if (mTotalAttachmentSize > MAX_RECOMMENDED_ATTACHMENT_SIZE &&
                     mAttachmentSizeWarning == null) {
-                mAttachmentSizeWarning = getActivity().getLayoutInflater().inflate(
+                mAttachmentSizeWarning = requireActivity().getLayoutInflater().inflate(
                         R.layout.listitem_attachment_warning, mAttachments, false);
-                TextView warning = (TextView) mAttachmentSizeWarning.findViewById(
+                TextView warning = mAttachmentSizeWarning.findViewById(
                         R.id.attachment_warning_text);
                 warning.setText(
                         getString(R.string.attachment_size_warning,
@@ -544,7 +525,7 @@ public class NewEmailFragment extends Fragment {
             Address[] rcpts = email.getAllRecipients();
             if (rcpts == null || rcpts.length == 0) {
                 // No recipients
-                mTo.setError(getActivity().getString(R.string.add_one_recipient));
+                mTo.setError(requireActivity().getString(R.string.add_one_recipient));
                 mTo.requestFocus();
                 return false;
             } else {
@@ -554,7 +535,7 @@ public class NewEmailFragment extends Fragment {
             email.setSubject(mSubject.getText().toString(), "UTF-8");
 
             // Extract the attachments
-            List<Attachment> attachments = new ArrayList<Attachment>();
+            List<Attachment> attachments = new ArrayList<>();
             for (int i = 0; i < mAttachments.getChildCount(); i++) {
                 View v = mAttachments.getChildAt(i);
                 // Warning views don't have tags set
@@ -578,19 +559,7 @@ public class NewEmailFragment extends Fragment {
             }
 
             return true;
-        } catch (PasswordException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (AddressException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
+        } catch (PasswordException | MessagingException | IOException | GeneralSecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -600,14 +569,14 @@ public class NewEmailFragment extends Fragment {
     private class IdentityAdapter extends ArrayAdapter<EmailIdentity> {
         private LayoutInflater mInflater;
 
-        public IdentityAdapter(Context context) {
+        IdentityAdapter(Context context) {
             super(context, android.R.layout.simple_spinner_item);
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             try {
                 Collection<EmailIdentity> identities = I2PBote.getInstance().getIdentities().getAll();
                 mDefaultPos = 0;
-                String selectedIdentity = getActivity().getSharedPreferences(Constants.SHARED_PREFS, 0)
+                String selectedIdentity = requireActivity().getSharedPreferences(Constants.SHARED_PREFS, 0)
                         .getString(Constants.PREF_SELECTED_IDENTITY, null);
                 for (EmailIdentity identity : identities) {
                     add(identity);
@@ -620,16 +589,11 @@ public class NewEmailFragment extends Fragment {
                     if (selectByDefault)
                         mDefaultPos = getPosition(identity);
                 }
-            } catch (PasswordException e) {
-                // TODO Handle
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Handle
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
+            } catch (PasswordException | IOException | GeneralSecurityException e) {
                 // TODO Handle
                 e.printStackTrace();
             }
+
         }
 
         @Override
@@ -653,8 +617,9 @@ public class NewEmailFragment extends Fragment {
             return super.getCount() + 1;
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             View v;
             if (convertView == null)
                 v = mInflater.inflate(android.R.layout.simple_spinner_item, parent, false);
@@ -666,7 +631,7 @@ public class NewEmailFragment extends Fragment {
         }
 
         @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
             View v;
             if (convertView == null)
                 v = mInflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
@@ -678,7 +643,7 @@ public class NewEmailFragment extends Fragment {
         }
 
         private void setViewText(View v, int position) {
-            TextView text = (TextView) v.findViewById(android.R.id.text1);
+            TextView text = v.findViewById(android.R.id.text1);
             EmailIdentity identity = getItem(position);
             if (identity == null)
                 text.setText("Anonymous");
@@ -687,9 +652,9 @@ public class NewEmailFragment extends Fragment {
         }
     }
 
-    public void onBackPressed() {
+    void onBackPressed() {
         if (mDirty) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setTitle(R.string.stop_composing_email)
                     .setMessage(R.string.all_changes_will_be_discarded)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {

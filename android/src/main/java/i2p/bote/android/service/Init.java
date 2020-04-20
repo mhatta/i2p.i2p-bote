@@ -3,7 +3,7 @@ package i2p.bote.android.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import net.i2p.android.ui.I2PAndroidHelper;

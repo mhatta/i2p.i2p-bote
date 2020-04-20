@@ -4,6 +4,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class NewEmailActivity extends BoteActivityBase implements
         NewEmailFragment.Callbacks {
     @Override
@@ -12,11 +14,11 @@ public class NewEmailActivity extends BoteActivityBase implements
         setContentView(R.layout.activity_toolbar);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             NewEmailFragment f;
@@ -39,6 +41,7 @@ public class NewEmailActivity extends BoteActivityBase implements
     @Override
     public void onBackPressed() {
         NewEmailFragment f = (NewEmailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+        assert f != null;
         f.onBackPressed();
     }
 

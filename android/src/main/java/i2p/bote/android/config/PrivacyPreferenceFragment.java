@@ -2,7 +2,7 @@ package i2p.bote.android.config;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 

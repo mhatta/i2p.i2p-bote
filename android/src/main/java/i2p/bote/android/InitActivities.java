@@ -3,6 +3,7 @@ package i2p.bote.android;
 import android.content.Context;
 
 import java.security.Security;
+import java.util.Objects;
 
 public class InitActivities {
     static {
@@ -11,7 +12,7 @@ public class InitActivities {
 
     private final String myDir;
 
-    public InitActivities(Context c) {
+    InitActivities(Context c) {
         this(c.getFilesDir().getAbsolutePath());
     }
 
@@ -21,7 +22,7 @@ public class InitActivities {
 
     public void initialize() {
         // Don't initialize twice
-        if (System.getProperty("i2pbote.initialized", "false").equals("true"))
+        if (Objects.equals(System.getProperty("i2pbote.initialized", "false"), "true"))
             return;
 
         // Set up the locations so settings can find them

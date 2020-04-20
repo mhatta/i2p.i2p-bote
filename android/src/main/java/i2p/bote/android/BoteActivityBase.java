@@ -3,7 +3,7 @@ package i2p.bote.android;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;

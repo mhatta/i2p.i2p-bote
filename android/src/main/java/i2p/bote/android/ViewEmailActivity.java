@@ -3,6 +3,8 @@ package i2p.bote.android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -14,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import i2p.bote.android.util.BetterAsyncTaskLoader;
 import i2p.bote.android.util.BoteHelper;
@@ -41,11 +44,11 @@ public class ViewEmailActivity extends BoteActivityBase implements
         setContentView(R.layout.activity_view_email);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent i = getIntent();
@@ -55,7 +58,7 @@ public class ViewEmailActivity extends BoteActivityBase implements
         mMessageId = i.getStringExtra(MESSAGE_ID);
 
         // Instantiate the ViewPager and PagerAdapter
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = findViewById(R.id.pager);
         mPagerAdapter = new ViewEmailPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -70,10 +73,7 @@ public class ViewEmailActivity extends BoteActivityBase implements
                         if (!BoteHelper.isOutbox(mFolder))
                             mFolder.setNew(mMessageId, false);
                         mFolder.setRecent(mMessageId, false);
-                    } catch (PasswordException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (GeneralSecurityException e) {
+                    } catch (PasswordException | GeneralSecurityException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
@@ -88,7 +88,7 @@ public class ViewEmailActivity extends BoteActivityBase implements
     private class ViewEmailPagerAdapter extends FragmentStatePagerAdapter {
         private List<String> mIds;
 
-        public ViewEmailPagerAdapter(FragmentManager fm) {
+        ViewEmailPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -97,20 +97,21 @@ public class ViewEmailActivity extends BoteActivityBase implements
             notifyDataSetChanged();
         }
 
-        public int getPosition(String messageId) {
+        int getPosition(String messageId) {
             if (mIds == null)
                 return 0;
             else
                 return mIds.indexOf(messageId);
         }
 
-        public String getMessageId(int position) {
+        String getMessageId(int position) {
             if (mIds == null)
                 return null;
             else
                 return mIds.get(position);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             if (mIds == null)
@@ -131,6 +132,7 @@ public class ViewEmailActivity extends BoteActivityBase implements
 
     // LoaderManager.LoaderCallbacks<List<String>>
 
+    @NonNull
     public Loader<List<String>> onCreateLoader(int id, Bundle args) {
         return new MessageIdListLoader(this, mFolder);
     }
@@ -139,7 +141,7 @@ public class ViewEmailActivity extends BoteActivityBase implements
     FolderListener {
         private EmailFolder mFolder;
 
-        public MessageIdListLoader(Context context, EmailFolder folder) {
+        MessageIdListLoader(Context context, EmailFolder folder) {
             super(context);
             mFolder = folder;
         }
@@ -149,7 +151,7 @@ public class ViewEmailActivity extends BoteActivityBase implements
             List<String> messageIds = null;
             try {
                 List<Email> emails = BoteHelper.getEmails(mFolder, null, true);
-                messageIds = new ArrayList<String>();
+                messageIds = new ArrayList<>();
                 for (Email email : emails)
                     messageIds.add(email.getMessageID());
             } catch (PasswordException pe) {
@@ -187,8 +189,8 @@ public class ViewEmailActivity extends BoteActivityBase implements
         }
     }
 
-    public void onLoadFinished(Loader<List<String>> loader,
-            List<String> data) {
+    public void onLoadFinished(@NonNull Loader<List<String>> loader,
+                               List<String> data) {
         mPagerAdapter.setData(data);
         mPager.setCurrentItem(
                 mPagerAdapter.getPosition(mMessageId));
@@ -199,17 +201,14 @@ public class ViewEmailActivity extends BoteActivityBase implements
                 if (!BoteHelper.isOutbox(mFolder))
                     mFolder.setNew(mMessageId, false);
                 mFolder.setRecent(mMessageId, false);
-            } catch (PasswordException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
+            } catch (PasswordException | GeneralSecurityException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
 
-    public void onLoaderReset(Loader<List<String>> loader) {
+    public void onLoaderReset(@NonNull Loader<List<String>> loader) {
         mPagerAdapter.setData(null);
     }
 }

@@ -5,14 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.fragment.app.DialogFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -55,11 +57,11 @@ public class EmailListFragment extends AuthenticatedFragment implements
         LoaderManager.LoaderCallbacks<List<Email>>,
         MoveToDialogFragment.MoveToDialogListener,
         SwipeRefreshLayout.OnRefreshListener {
-    public static final String FOLDER_NAME = "folder_name";
+    private static final String FOLDER_NAME = "folder_name";
 
     private static final int EMAIL_LIST_LOADER = 1;
 
-    OnEmailSelectedListener mCallback;
+    private OnEmailSelectedListener mCallback;
 
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
     private AsyncTask<Void, Void, Void> mCheckingTask;
@@ -73,7 +75,6 @@ public class EmailListFragment extends AuthenticatedFragment implements
 
     // The Controller which provides CHOICE_MODE_MULTIPLE_MODAL-like functionality
     private MultiSelectionUtil.Controller mMultiSelectController;
-    private ModalChoiceListener mModalChoiceListener;
 
     public static EmailListFragment newInstance(String folderName) {
         EmailListFragment f = new EmailListFragment();
@@ -85,11 +86,11 @@ public class EmailListFragment extends AuthenticatedFragment implements
 
     // Container Activity must implement this interface
     public interface OnEmailSelectedListener {
-        public void onEmailSelected(String folderName, String messageId);
+        void onEmailSelected(String folderName, String messageId);
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
 
         // This makes sure that the container activity has implemented
@@ -105,20 +106,22 @@ public class EmailListFragment extends AuthenticatedFragment implements
     @Override
     public View onCreateAuthenticatedView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        assert getArguments() != null;
         String folderName = getArguments().getString(FOLDER_NAME);
         mFolder = BoteHelper.getMailFolder(folderName);
+        assert mFolder != null;
         boolean isInbox = BoteHelper.isInbox(mFolder);
 
         View v = inflater.inflate(
                 isInbox ? R.layout.fragment_list_emails_with_refresh : R.layout.fragment_list_emails,
                 container, false);
 
-        mEmailsList = (LoadingRecyclerView) v.findViewById(R.id.emails_list);
+        mEmailsList = v.findViewById(R.id.emails_list);
         View empty = v.findViewById(R.id.empty);
-        ProgressWheel loading = (ProgressWheel) v.findViewById(R.id.loading);
+        ProgressWheel loading = v.findViewById(R.id.loading);
         mEmailsList.setLoadingView(empty, loading);
 
-        mNewEmail = (ImageButton) v.findViewById(R.id.promoted_action);
+        mNewEmail = v.findViewById(R.id.promoted_action);
         mNewEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +147,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
         super.onActivityCreated(savedInstanceState);
 
         mEmailsList.setHasFixedSize(true);
-        mEmailsList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mEmailsList.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         // Use a linear layout manager
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -156,7 +159,8 @@ public class EmailListFragment extends AuthenticatedFragment implements
 
         // Attach a MultiSelectionUtil.Controller to the ListView, giving it an instance of
         // ModalChoiceListener (see below)
-        mModalChoiceListener = new ModalChoiceListener();
+
+        ModalChoiceListener mModalChoiceListener = new ModalChoiceListener();
         mMultiSelectController = MultiSelectionUtil
                 .attachMultiSelectionController(mEmailsList, (AppCompatActivity) getActivity(),
                         mModalChoiceListener);
@@ -169,7 +173,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
             Toast.makeText(getActivity(), R.string.folder_does_not_exist, Toast.LENGTH_SHORT).show();
         }
 
-        getActivity().setTitle(
+        requireActivity().setTitle(
                 BoteHelper.getFolderDisplayName(getActivity(), mFolder));
     }
 
@@ -219,7 +223,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Allow the Controller to save it's instance state so that any checked items are
@@ -255,18 +259,15 @@ public class EmailListFragment extends AuthenticatedFragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_check_email:
-                if (!mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(true);
-                    onRefresh();
-                    getActivity().supportInvalidateOptionsMenu();
-                }
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_check_email) {
+            if (!mSwipeRefreshLayout.isRefreshing()) {
+                mSwipeRefreshLayout.setRefreshing(true);
+                onRefresh();
+                requireActivity().supportInvalidateOptionsMenu();
+            }
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void startNewEmail() {
@@ -319,10 +320,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
                         try {
                             // The Loader will update mAdapter
                             mFolder.setNew(email, !areUnread);
-                        } catch (PasswordException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (GeneralSecurityException e) {
+                        } catch (PasswordException | GeneralSecurityException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
@@ -333,6 +331,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
 
                 case R.id.action_move_to:
                     DialogFragment f = MoveToDialogFragment.newInstance(mFolder);
+                    assert getFragmentManager() != null;
                     f.show(getFragmentManager(), "moveTo");
                     return true;
 
@@ -384,7 +383,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
 
     // Called by EmailListActivity.onIdentitySelected()
 
-    public void onIdentitySelected() {
+    void onIdentitySelected() {
         getLoaderManager().restartLoader(EMAIL_LIST_LOADER, null, this);
     }
 
@@ -401,9 +400,10 @@ public class EmailListFragment extends AuthenticatedFragment implements
 
     // LoaderManager.LoaderCallbacks<List<Email>>
 
+    @NonNull
     public Loader<List<Email>> onCreateLoader(int id, Bundle args) {
         return new EmailListLoader(getActivity(), mFolder,
-                getActivity().getSharedPreferences(Constants.SHARED_PREFS, 0)
+                requireActivity().getSharedPreferences(Constants.SHARED_PREFS, 0)
                         .getString(Constants.PREF_SELECTED_IDENTITY, null));
     }
 
@@ -412,7 +412,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
         private EmailFolder mFolder;
         private String mSelectedIdentityKey;
 
-        public EmailListLoader(Context context, EmailFolder folder, String selectedIdentityKey) {
+        EmailListLoader(Context context, EmailFolder folder, String selectedIdentityKey) {
             super(context);
             mFolder = folder;
             mSelectedIdentityKey = selectedIdentityKey;
@@ -449,11 +449,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
                     emails = allEmails;
             } catch (PasswordException pe) {
                 // XXX: Should not get here.
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (MessagingException | GeneralSecurityException | IOException e) {
                 e.printStackTrace();
             }
 
@@ -489,7 +485,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
         }
     }
 
-    public void onLoadFinished(Loader<List<Email>> loader,
+    public void onLoadFinished(@NonNull Loader<List<Email>> loader,
                                List<Email> data) {
         // Clear recent flags
         for (Email email : data)
@@ -501,7 +497,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
             }
         mAdapter.setEmails(data);
         try {
-            getActivity().setTitle(
+            requireActivity().setTitle(
                     BoteHelper.getFolderDisplayNameWithNew(getActivity(), mFolder));
         } catch (PasswordException e) {
             // Should not get here.
@@ -513,9 +509,9 @@ public class EmailListFragment extends AuthenticatedFragment implements
         }
     }
 
-    public void onLoaderReset(Loader<List<Email>> loader) {
+    public void onLoaderReset(@NonNull Loader<List<Email>> loader) {
         mAdapter.setEmails(null);
-        getActivity().setTitle(
+        requireActivity().setTitle(
                 BoteHelper.getFolderDisplayName(getActivity(), mFolder));
     }
 
@@ -559,13 +555,7 @@ public class EmailListFragment extends AuthenticatedFragment implements
                     }
                 };
                 mCheckingTask.execute();
-            } catch (PasswordException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
+            } catch (PasswordException | IOException | GeneralSecurityException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

@@ -4,12 +4,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -20,13 +21,13 @@ public class HelpAboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_help_about, container, false);
 
-        TextView versionText = (TextView) view.findViewById(R.id.help_about_version);
+        TextView versionText = view.findViewById(R.id.help_about_version);
         versionText.setText(getString(R.string.version) + " " + getVersion());
 
-        TextView licenseText = (TextView) view.findViewById(R.id.help_about_license);
+        TextView licenseText = view.findViewById(R.id.help_about_license);
         licenseText.setText(getString(R.string.license, "GPLv3+"));
 
-        HtmlTextView aboutLibsView = (HtmlTextView) view.findViewById(R.id.help_about_libraries);
+        HtmlTextView aboutLibsView = view.findViewById(R.id.help_about_libraries);
 
         // load html from raw resource (Parsing handled by HtmlTextView library)
         aboutLibsView.setHtml(R.raw.help_about_libraries);
@@ -43,10 +44,10 @@ public class HelpAboutFragment extends Fragment {
      * @return The current version.
      */
     private String getVersion() {
-        String result = "";
+        String result;
         try {
-            PackageManager manager = getActivity().getPackageManager();
-            PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
+            PackageManager manager = requireActivity().getPackageManager();
+            PackageInfo info = manager.getPackageInfo(requireActivity().getPackageName(), 0);
 
             result = String.format("%s (%s)", info.versionName, info.versionCode);
         } catch (NameNotFoundException e) {

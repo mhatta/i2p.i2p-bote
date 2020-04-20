@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,7 @@ public class EmailListAdapter extends MultiSelectionUtil.SelectableAdapter<Recyc
     private int mIncompleteEmails;
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
-        public SimpleViewHolder(View itemView) {
+        SimpleViewHolder(View itemView) {
             super(itemView);
         }
     }
@@ -54,27 +56,28 @@ public class EmailListAdapter extends MultiSelectionUtil.SelectableAdapter<Recyc
         public TextView address;
         public TextView content;
         public TextView sent;
-        public ImageView emailAttachment;
-        public TextView emailStatus;
-        public ImageView emailDelivered;
+        ImageView emailAttachment;
+        TextView emailStatus;
+        ImageView emailDelivered;
 
-        public EmailViewHolder(View itemView) {
+        EmailViewHolder(View itemView) {
             super(itemView);
 
-            picture = (ImageView) itemView.findViewById(R.id.contact_picture);
+            picture = itemView.findViewById(R.id.contact_picture);
             //emailSelected = view.findViewById(R.id.email_selected);
-            subject = (TextView) itemView.findViewById(R.id.email_subject);
-            address = (TextView) itemView.findViewById(R.id.email_address);
-            content = (TextView) itemView.findViewById(R.id.email_content);
-            sent = (TextView) itemView.findViewById(R.id.email_sent);
-            emailAttachment = (ImageView) itemView.findViewById(R.id.email_attachment);
-            emailStatus = (TextView) itemView.findViewById(R.id.email_status);
-            emailDelivered = (ImageView) itemView.findViewById(R.id.email_delivered);
+            subject = itemView.findViewById(R.id.email_subject);
+            address = itemView.findViewById(R.id.email_address);
+            content = itemView.findViewById(R.id.email_content);
+            sent = itemView.findViewById(R.id.email_sent);
+            emailAttachment = itemView.findViewById(R.id.email_attachment);
+
+            emailStatus = itemView.findViewById(R.id.email_status);
+            emailDelivered = itemView.findViewById(R.id.email_delivered);
         }
     }
 
-    public EmailListAdapter(Context context, String folderName,
-                            EmailListFragment.OnEmailSelectedListener listener) {
+    EmailListAdapter(Context context, String folderName,
+                     EmailListFragment.OnEmailSelectedListener listener) {
         super();
         mCtx = context;
         mFolderName = folderName;
@@ -91,7 +94,7 @@ public class EmailListAdapter extends MultiSelectionUtil.SelectableAdapter<Recyc
      * <p/>
      * TODO: call this method at midnight to refresh the UI
      */
-    public void setDateBoundaries() {
+    private void setDateBoundaries() {
         BOUNDARY_DAY = Calendar.getInstance();
         BOUNDARY_DAY.set(Calendar.HOUR, 0);
         BOUNDARY_DAY.set(Calendar.MINUTE, 0);
@@ -113,7 +116,7 @@ public class EmailListAdapter extends MultiSelectionUtil.SelectableAdapter<Recyc
         notifyDataSetChanged();
     }
 
-    public Email getEmail(int position) {
+    Email getEmail(int position) {
         if (mIncompleteEmails > 0)
             position--;
 
@@ -123,7 +126,7 @@ public class EmailListAdapter extends MultiSelectionUtil.SelectableAdapter<Recyc
         return mEmails.get(position);
     }
 
-    public void setIncompleteEmails(int incompleteEmails) {
+    void setIncompleteEmails(int incompleteEmails) {
         if (incompleteEmails > 0) {
             if (mIncompleteEmails == 0) {
                 mIncompleteEmails = incompleteEmails;
@@ -150,16 +153,15 @@ public class EmailListAdapter extends MultiSelectionUtil.SelectableAdapter<Recyc
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(viewType, parent, false);
-        switch (viewType) {
-            case R.layout.listitem_email:
-                return new EmailViewHolder(v);
-            default:
-                return new SimpleViewHolder(v);
+        if (viewType == R.layout.listitem_email) {
+            return new EmailViewHolder(v);
         }
+        return new SimpleViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -201,10 +203,7 @@ public class EmailListAdapter extends MultiSelectionUtil.SelectableAdapter<Recyc
                     }
                 });
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-                    evh.itemView.setSelected(isSelected(position));
-                else
-                    evh.itemView.setActivated(isSelected(position));
+                evh.itemView.setActivated(isSelected(position));
                 // TODO fix
                 //holder.emailSelected.setVisibility(isSelected(position) ? View.VISIBLE : View.GONE);
 

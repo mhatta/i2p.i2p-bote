@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 import i2p.bote.I2PBote;
@@ -38,7 +41,7 @@ public class NetworkInfoFragment extends Fragment {
     private TextView mRelayPeers;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mConnectError = I2PBote.getInstance().getConnectError();
         if (mConnectError == null)
@@ -48,14 +51,14 @@ public class NetworkInfoFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         if (mConnectError == null) {
-            mKademliaPie = (PieChart) view.findViewById(R.id.kademlia_peers_pie);
-            mKademliaPeers = (TextView) view.findViewById(R.id.kademlia_peers);
-            mRelayPie = (PieChart) view.findViewById(R.id.relay_peers_pie);
-            mRelayPeers = (TextView) view.findViewById(R.id.relay_peers);
+            mKademliaPie = view.findViewById(R.id.kademlia_peers_pie);
+            mKademliaPeers = view.findViewById(R.id.kademlia_peers);
+            mRelayPie = view.findViewById(R.id.relay_peers_pie);
+            mRelayPeers = view.findViewById(R.id.relay_peers);
 
             setupKademliaPeers();
             setupRelayPeers();
@@ -67,20 +70,15 @@ public class NetworkInfoFragment extends Fragment {
             ((TextView) view.findViewById(R.id.error)).setText(mConnectError.toString());
 
             view.findViewById(R.id.copy_error).setOnClickListener(new View.OnClickListener() {
-                @SuppressWarnings("deprecation")
                 @Override
                 public void onClick(View view) {
                     String fullError = joinStackTrace(mConnectError);
-                    Object clipboardService = getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                        android.text.ClipboardManager clipboard = (android.text.ClipboardManager) clipboardService;
-                        clipboard.setText(fullError);
-                    } else {
-                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) clipboardService;
-                        android.content.ClipData clip = android.content.ClipData.newPlainText(
-                                getString(R.string.bote_connection_error), fullError);
-                        clipboard.setPrimaryClip(clip);
-                    }
+                    Object clipboardService = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) clipboardService;
+                    android.content.ClipData clip = android.content.ClipData.newPlainText(
+                            getString(R.string.bote_connection_error), fullError);
+                    assert clipboard != null;
+                    clipboard.setPrimaryClip(clip);
                     Toast.makeText(getActivity(), R.string.full_error_copied_to_clipboard, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -211,9 +209,7 @@ public class NetworkInfoFragment extends Fragment {
     }
 
     private static void joinStackTrace(Throwable e, StringWriter writer) {
-        PrintWriter printer = null;
-        try {
-            printer = new PrintWriter(writer);
+        try (PrintWriter printer = new PrintWriter(writer)) {
 
             while (e != null) {
 
@@ -225,10 +221,6 @@ public class NetworkInfoFragment extends Fragment {
                 if (e != null)
                     printer.println("Caused by:\r\n");
             }
-        }
-        finally {
-            if (printer != null)
-                printer.close();
         }
     }
 }
