@@ -6,7 +6,7 @@ android {
         versionCode 19
         versionName '0.6.1.2'
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 26
         multiDexEnabled true
 
         // For Espresso

@@ -266,7 +266,7 @@
     <string name="changelog">Changelog</string>
     <string name="about">About</string>
     <string name="version">Version</string>
-    <string name="help_about_url" translatable="false">https://github.com/i2p/i2p.i2p-bote.android</string>
+    <string name="help_about_url" translatable="false">https://github.com/mhatta/i2p.i2p-bote.android</string>
     <!-- As in software license, e.g. Apache License v2 -->
     <string name="license">License: %s</string>
     <!-- Software libraries -->
