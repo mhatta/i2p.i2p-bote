@@ -10,6 +10,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +59,7 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         if (sUriMatcher.match(uri) == UriMatcher.NO_MATCH)
             throw new IllegalArgumentException("Invalid URI: " + uri);
@@ -83,11 +85,7 @@ public class AttachmentProvider extends ContentProvider {
                         break;
                 }
             }
-        } catch (PasswordException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
+        } catch (PasswordException | IOException | MessagingException e) {
             e.printStackTrace();
         }
 
@@ -95,7 +93,7 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         if (sUriMatcher.match(uri) != UriMatcher.NO_MATCH) {
             try {
                 Part attachment = getAttachment(uri);
@@ -128,11 +126,7 @@ public class AttachmentProvider extends ContentProvider {
                     }
                     return contentType;
                 }
-            } catch (PasswordException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (MessagingException e) {
+            } catch (PasswordException | IOException | MessagingException e) {
                 e.printStackTrace();
             }
         }
@@ -140,7 +134,7 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Override
-    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+    public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
         if (sUriMatcher.match(uri) == UriMatcher.NO_MATCH)
             throw new FileNotFoundException("Invalid URI: " + uri);
         if (!"r".equals(mode))
@@ -199,17 +193,17 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         return null;
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         return 0;
     }
 
@@ -217,7 +211,7 @@ public class AttachmentProvider extends ContentProvider {
         List<String> segments = uri.getPathSegments();
         String folderName = segments.get(0);
         String messageId = segments.get(1);
-        int partNum = Integer.valueOf(segments.get(2));
+        int partNum = Integer.parseInt(segments.get(2));
 
         Email email = BoteHelper.getEmail(folderName, messageId);
         if (email != null) {

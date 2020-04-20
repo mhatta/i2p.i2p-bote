@@ -2,6 +2,8 @@ package i2p.bote.android.intro;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.viewpagerindicator.LinePageIndicator;
+
+import java.util.Objects;
 
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.R;
@@ -47,11 +51,11 @@ public class IntroActivity extends BoteActivityBase {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         // Bind the page indicator to the pager.
-        LinePageIndicator pageIndicator = (LinePageIndicator)findViewById(R.id.page_indicator);
+        LinePageIndicator pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(mViewPager);
 
         findViewById(R.id.skip_intro).setOnClickListener(new View.OnClickListener() {
@@ -68,12 +72,13 @@ public class IntroActivity extends BoteActivityBase {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the intro sections.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public static class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
@@ -113,8 +118,9 @@ public class IntroActivity extends BoteActivityBase {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            assert getArguments() != null;
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1:
                     return inflater.inflate(R.layout.fragment_intro_1, container, false);
@@ -126,24 +132,24 @@ public class IntroActivity extends BoteActivityBase {
                     return inflater.inflate(R.layout.fragment_intro_4, container, false);
                 case 5:
                     View v5 = inflater.inflate(R.layout.fragment_intro_5, container, false);
-                    Button b = (Button) v5.findViewById(R.id.start_setup_wizard);
+                    Button b = v5.findViewById(R.id.start_setup_wizard);
                     b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            getActivity().setResult(Activity.RESULT_OK);
-                            getActivity().finish();
+                            requireActivity().setResult(Activity.RESULT_OK);
+                            requireActivity().finish();
                         }
                     });
                     return v5;
 
                 default:
                     View v0 = inflater.inflate(R.layout.fragment_intro_0, container, false);
-                    TextView tv = (TextView) v0.findViewById(R.id.intro_app_name);
+                    TextView tv = v0.findViewById(R.id.intro_app_name);
                     tv.append(".");
 
-                    TextView swipe = (TextView) v0.findViewById(R.id.intro_swipe_to_start);
+                    TextView swipe = v0.findViewById(R.id.intro_swipe_to_start);
                     swipe.setCompoundDrawablesWithIntrinsicBounds(
-                            new IconicsDrawable(getActivity(), GoogleMaterial.Icon.gmd_arrow_back)
+                            new IconicsDrawable(requireActivity(), GoogleMaterial.Icon.gmd_arrow_back)
                                     .colorRes(R.color.md_grey_600).sizeDp(24).paddingDp(4),
                             null, null, null
                     );
