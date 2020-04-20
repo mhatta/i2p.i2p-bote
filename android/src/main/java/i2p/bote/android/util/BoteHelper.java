@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.mail.Address;
 import javax.mail.MessagingException;
@@ -258,7 +259,7 @@ public class BoteHelper extends GeneralHelper {
         return BitmapFactory.decodeByteArray(decodedPic, 0, decodedPic.length);
     }
 
-    public static String encodePicture(Bitmap picture) {
+    static String encodePicture(Bitmap picture) {
         if (picture == null)
             return null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -358,10 +359,10 @@ public class BoteHelper extends GeneralHelper {
             case SENT_TO:
                 if (full)
                     return res.getString(R.string.sent_to,
-                            (Integer) emailStatus.getParam1(), (Integer) emailStatus.getParam2());
+                            emailStatus.getParam1(), emailStatus.getParam2());
                 else
                     return res.getString(R.string.sent_to_short,
-                            (Integer) emailStatus.getParam1(), (Integer) emailStatus.getParam2());
+                            emailStatus.getParam1(), emailStatus.getParam2());
             case EMAIL_SENT:
                 return res.getString(R.string.email_sent);
             case GATEWAY_DISABLED:
@@ -396,7 +397,7 @@ public class BoteHelper extends GeneralHelper {
         return isInbox(folder.getName());
     }
 
-    public static boolean isInbox(String folderName) {
+    private static boolean isInbox(String folderName) {
         return "Inbox".equalsIgnoreCase(folderName);
     }
 
@@ -412,7 +413,7 @@ public class BoteHelper extends GeneralHelper {
         return isTrash(folder.getName());
     }
 
-    public static boolean isTrash(String folderName) {
+    private static boolean isTrash(String folderName) {
         return "Trash".equalsIgnoreCase(folderName);
     }
 
@@ -428,9 +429,9 @@ public class BoteHelper extends GeneralHelper {
     }
 
     public interface RequestPasswordListener {
-        public void onPasswordVerified();
+        void onPasswordVerified();
 
-        public void onPasswordCanceled();
+        void onPasswordCanceled();
     }
 
     /**
@@ -445,15 +446,15 @@ public class BoteHelper extends GeneralHelper {
      *
      * @param error is pre-filled in the dialog if not null.
      */
-    public static void requestPassword(final Context context, final RequestPasswordListener listener, String error) {
+    private static void requestPassword(final Context context, final RequestPasswordListener listener, String error) {
         LayoutInflater li = LayoutInflater.from(context);
         View promptView = li.inflate(R.layout.dialog_password, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(promptView);
 
-        final EditText passwordInput = (EditText) promptView.findViewById(R.id.passwordInput);
+        final EditText passwordInput = promptView.findViewById(R.id.passwordInput);
         if (error != null) {
-            TextView passwordError = (TextView) promptView.findViewById(R.id.passwordError);
+            TextView passwordError = promptView.findViewById(R.id.passwordError);
             passwordError.setText(error);
             passwordError.setVisibility(View.VISIBLE);
         }
@@ -462,6 +463,7 @@ public class BoteHelper extends GeneralHelper {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
                 imm.hideSoftInputFromWindow(passwordInput.getWindowToken(), 0);
                 dialog.dismiss();
                 new PasswordWaiter(context, listener).execute(passwordInput.getText().toString());
@@ -475,7 +477,7 @@ public class BoteHelper extends GeneralHelper {
             }
         }).setCancelable(false);
         AlertDialog passwordDialog = builder.create();
-        passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        Objects.requireNonNull(passwordDialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         passwordDialog.show();
     }
 
@@ -484,7 +486,7 @@ public class BoteHelper extends GeneralHelper {
         private final ProgressDialog mDialog;
         private final RequestPasswordListener mListener;
 
-        public PasswordWaiter(Context context, RequestPasswordListener listener) {
+        PasswordWaiter(Context context, RequestPasswordListener listener) {
             super();
             mContext = context;
             mDialog = new ProgressDialog(context);
@@ -507,11 +509,7 @@ public class BoteHelper extends GeneralHelper {
                     return mContext.getResources().getString(
                             R.string.password_incorrect);
                 }
-            } catch (IOException e) {
-                cancel(false);
-                return mContext.getResources().getString(
-                        R.string.password_file_error);
-            } catch (GeneralSecurityException e) {
+            } catch (IOException | GeneralSecurityException e) {
                 cancel(false);
                 return mContext.getResources().getString(
                         R.string.password_file_error);

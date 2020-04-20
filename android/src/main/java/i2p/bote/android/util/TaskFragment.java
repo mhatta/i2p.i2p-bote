@@ -4,7 +4,7 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 
 public class TaskFragment<Params, Progress, Result> extends DialogFragment {
-    RobustAsyncTask<Params, Progress, Result> mTask;
+    private RobustAsyncTask<Params, Progress, Result> mTask;
 
     public void setTask(RobustAsyncTask<Params, Progress, Result> task) {
         mTask = task;

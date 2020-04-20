@@ -2,6 +2,7 @@ package i2p.bote.android.util;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import i2p.bote.android.R;
 import android.app.Activity;
@@ -16,16 +17,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class EditPictureFragment extends Fragment {
-    static final int REQUEST_PICTURE_FILE = 1;
-    static final int CROP_PICTURE = 2;
+    private static final int REQUEST_PICTURE_FILE = 1;
+    private static final int CROP_PICTURE = 2;
 
-    Uri mPictureCaptureUri;
-    Bitmap mPicture;
-    ImageView mPictureView; 
+    private Uri mPictureCaptureUri;
+    private Bitmap mPicture;
+    private ImageView mPictureView;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        mPictureView = (ImageView) view.findViewById(R.id.picture);
+        mPictureView = view.findViewById(R.id.picture);
 
         // Set up listener for picture changing
         mPictureView.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +56,7 @@ public class EditPictureFragment extends Fragment {
             if (resultCode == Activity.RESULT_CANCELED) {
                 System.out.println("Cancelled");
                 if (mPictureCaptureUri != null ) {
-                    getActivity().getContentResolver().delete(mPictureCaptureUri, null, null);
+                    requireActivity().getContentResolver().delete(mPictureCaptureUri, null, null);
                     mPictureCaptureUri = null;
                 }
             }
@@ -74,7 +75,7 @@ public class EditPictureFragment extends Fragment {
                 mPicture = extras.getParcelable("data");
                 mPictureView.setImageBitmap(mPicture);
             }
-            File f = new File(mPictureCaptureUri.getPath());
+            File f = new File(Objects.requireNonNull(mPictureCaptureUri.getPath()));
             if (f.exists())
                 f.delete();
             break;
@@ -86,7 +87,7 @@ public class EditPictureFragment extends Fragment {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setType("image/*");
 
-        List<ResolveInfo> list = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        List<ResolveInfo> list = requireActivity().getPackageManager().queryIntentActivities(intent, 0);
         if (list.size() == 0) {
             Toast.makeText(getActivity(), R.string.no_image_cropping_app_found, Toast.LENGTH_SHORT)
                     .show();

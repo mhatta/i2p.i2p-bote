@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,7 +18,7 @@ import i2p.bote.android.R;
 import i2p.bote.folder.EmailFolder;
 
 public class MoveToDialogFragment extends DialogFragment {
-    public static final String CURRENT_FOLDER = "current_folder";
+    private static final String CURRENT_FOLDER = "current_folder";
 
     public static MoveToDialogFragment newInstance(EmailFolder currentFolder) {
         MoveToDialogFragment f = new MoveToDialogFragment();
@@ -28,15 +29,15 @@ public class MoveToDialogFragment extends DialogFragment {
     }
 
     public interface MoveToDialogListener {
-        public void onFolderSelected(EmailFolder newFolder);
+        void onFolderSelected(EmailFolder newFolder);
     }
 
-    MoveToDialogListener mListener;
-    List<EmailFolder> mFolders;
-    List<String> mFolderDisplayNames;
+    private MoveToDialogListener mListener;
+    private List<EmailFolder> mFolders;
+    private List<String> mFolderDisplayNames;
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (MoveToDialogListener) activity;
@@ -50,8 +51,9 @@ public class MoveToDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFolders = I2PBote.getInstance().getEmailFolders();
-        mFolderDisplayNames = new ArrayList<String>();
+        mFolderDisplayNames = new ArrayList<>();
 
+        assert getArguments() != null;
         String curFolder = getArguments().getString(CURRENT_FOLDER);
         Iterator<EmailFolder> i = mFolders.iterator();
         while (i.hasNext()) {
@@ -67,9 +69,9 @@ public class MoveToDialogFragment extends DialogFragment {
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle(R.string.action_move_to)
-        .setItems(mFolderDisplayNames.toArray(new String[mFolderDisplayNames.size()]),
+        .setItems(mFolderDisplayNames.toArray(new String[0]),
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -133,7 +133,7 @@ public class BoteService extends Service implements NetworkStatusListener, NewEm
             if (mStateService != null) {
                 try {
                     mStateService.unregisterCallback(mStatusListener);
-                } catch (RemoteException e) {}
+                } catch (RemoteException ignored) {}
             }
             unbindService(mStateConnection);
         }
@@ -210,7 +210,7 @@ public class BoteService extends Service implements NetworkStatusListener, NewEm
 
     private final IRouterStateCallback.Stub mStatusListener =
             new IRouterStateCallback.Stub() {
-        public void stateChanged(State newState) throws RemoteException {
+        public void stateChanged(State newState) {
             if (newState == State.ACTIVE &&
                     I2PBote.getInstance().getNetworkStatus() == NetworkStatus.DELAY)
                 I2PBote.getInstance().connectNow();
@@ -277,6 +277,7 @@ public class BoteService extends Service implements NetworkStatusListener, NewEm
             int numNew = newEmails.size();
             switch (numNew) {
             case 0:
+                assert nm != null;
                 nm.cancel(NOTIF_ID_NEW_EMAIL);
                 return;
 
@@ -310,36 +311,28 @@ public class BoteService extends Service implements NetworkStatusListener, NewEm
                 b.setContentTitle(getResources().getQuantityString(
                         R.plurals.n_new_emails, numNew, numNew));
 
-                HashSet<Address> recipients = new HashSet<Address>();
-                String bigText = "";
+                HashSet<Address> recipients = new HashSet<>();
+                StringBuilder bigText = new StringBuilder();
                 for (Email ne : newEmails) {
                     recipients.add(BoteHelper.getOneLocalRecipient(ne));
-                    bigText += BoteHelper.getNameAndShortDestination(
-                            ne.getOneFromAddress());
-                    bigText += ": " + ne.getSubject() + "\n";
+                    bigText.append(BoteHelper.getNameAndShortDestination(
+                            ne.getOneFromAddress()));
+                    bigText.append(": ").append(ne.getSubject()).append("\n");
                 }
                 b.setContentText(BoteHelper.joinAddressNames(recipients));
-                b.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
+                b.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText.toString()));
 
                 Intent eli = new Intent(this, EmailListActivity.class);
                 eli.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 PendingIntent peli = PendingIntent.getActivity(this, 0, eli, PendingIntent.FLAG_UPDATE_CURRENT);
                 b.setContentIntent(peli);
             }
-        } catch (PasswordException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
+        } catch (PasswordException | MessagingException | IOException | GeneralSecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
+        assert nm != null;
         nm.notify(NOTIF_ID_NEW_EMAIL, b.build());
     }
 }

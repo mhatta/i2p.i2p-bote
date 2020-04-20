@@ -83,7 +83,7 @@ public class Init {
         System.setProperty(I2PClient.PROP_TCP_PORT, i2cpPort);
 
         if (routerChoice == RouterChoice.INTERNAL) {
-            mergeResourceToFile(R.raw.router_config, "router.config", null);
+            mergeResourceToFile();
 
             File certDir = new File(myDir, "certificates");
             certDir.mkdir();
@@ -95,7 +95,7 @@ public class Init {
                     FileUtil.rmdir(f, false);
                 }
             }
-            unzipResourceToDir(R.raw.certificates_zip, "certificates");
+            unzipResourceToDir();
         }
 
         return routerChoice;
@@ -105,61 +105,53 @@ public class Init {
      *  Load defaults from resource,
      *  then add props from settings,
      *  and write back
-     *
-     *  @param f relative to base dir
-     *  @param overrides local overrides or null
-     */
-    public void mergeResourceToFile(int resID, String f, Properties overrides) {
+     *  */
+    private void mergeResourceToFile() {
         InputStream in = null;
         InputStream fin = null;
 
         try {
-            in = ctx.getResources().openRawResource(resID);
+            in = ctx.getResources().openRawResource(R.raw.router_config);
             Properties props = new OrderedProperties();
             try {
-                fin = new FileInputStream(new File(myDir, f));
+                fin = new FileInputStream(new File(myDir, "router.config"));
                 DataHelper.loadProps(props, fin);
-            } catch (IOException ioe) {
+            } catch (IOException ignored) {
             }
 
             // write in default settings
             DataHelper.loadProps(props, in);
 
             // override with user settings
-            if (overrides != null)
-                props.putAll(overrides);
-            File path = new File(myDir, f);
+            File path = new File(myDir, "router.config");
             DataHelper.storeProps(props, path);
-        } catch (IOException ioe) {
-        } catch (Resources.NotFoundException nfe) {
+        } catch (IOException | Resources.NotFoundException ignored) {
         } finally {
             if (in != null) try {
                 in.close();
-            } catch (IOException ioe) {
+            } catch (IOException ignored) {
             }
             if (fin != null) try {
                 fin.close();
-            } catch (IOException ioe) {
+            } catch (IOException ignored) {
             }
         }
     }
 
     /**
-     *  @param folder relative to base dir
      */
-    private void unzipResourceToDir(int resID, String folder) {
+    private void unzipResourceToDir() {
         InputStream in = null;
         FileOutputStream out = null;
         ZipInputStream zis = null;
 
-        Log.d(Constants.ANDROID_LOG_TAG, "Creating files in '" + myDir + "/" + folder + "/' from resource");
+        Log.d(Constants.ANDROID_LOG_TAG, "Creating files in '" + myDir + "/" + "certificates" + "/' from resource");
         try {
             // Context methods
-            in = ctx.getResources().openRawResource(resID);
+            in = ctx.getResources().openRawResource(R.raw.certificates_zip);
             zis = new ZipInputStream((in));
             ZipEntry ze;
             while ((ze = zis.getNextEntry()) != null) {
-                out = null;
                 try {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     byte[] buffer = new byte[1024];
@@ -168,27 +160,26 @@ public class Init {
                         baos.write(buffer, 0, count);
                     }
                     String name = ze.getName();
-                    File f = new File(myDir + "/" + folder +"/" + name);
+                    File f = new File(myDir + "/" + "certificates" +"/" + name);
                     if (ze.isDirectory()) {
-                        Log.d(Constants.ANDROID_LOG_TAG, "Creating directory " + myDir + "/" + folder +"/" + name + " from resource");
+                        Log.d(Constants.ANDROID_LOG_TAG, "Creating directory " + myDir + "/" + "certificates" +"/" + name + " from resource");
                         f.mkdir();
                     } else {
-                        Log.d(Constants.ANDROID_LOG_TAG, "Creating file " + myDir + "/" + folder +"/" + name + " from resource");
+                        Log.d(Constants.ANDROID_LOG_TAG, "Creating file " + myDir + "/" + "certificates" +"/" + name + " from resource");
                         byte[] bytes = baos.toByteArray();
                         out = new FileOutputStream(f);
                         out.write(bytes);
                     }
-                } catch (IOException ioe) {
+                } catch (IOException ignored) {
                 } finally {
-                    if (out != null) { try { out.close(); } catch (IOException ioe) {} out = null; }
+                    if (out != null) { try { out.close(); } catch (IOException ignored) {} out = null; }
                 }
             }
-        } catch (IOException ioe) {
-        } catch (Resources.NotFoundException nfe) {
+        } catch (IOException | Resources.NotFoundException ignored) {
         } finally {
-            if (in != null) try { in.close(); } catch (IOException ioe) {}
-            if (out != null) try { out.close(); } catch (IOException ioe) {}
-            if (zis != null) try { zis.close(); } catch (IOException ioe) {}
+            if (in != null) try { in.close(); } catch (IOException ignored) {}
+            if (out != null) try { out.close(); } catch (IOException ignored) {}
+            if (zis != null) try { zis.close(); } catch (IOException ignored) {}
         }
     }
 }

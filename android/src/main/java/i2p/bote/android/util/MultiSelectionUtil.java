@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2015 str4d
  * Copyright (C) 2013 The Android Open Source Project
  *
@@ -57,8 +57,8 @@ public class MultiSelectionUtil {
     }
 
     public interface Selector {
-        public boolean inActionMode();
-        public void selectItem(int position, long id);
+        boolean inActionMode();
+        void selectItem(int position, long id);
     }
 
     /**
@@ -87,6 +87,7 @@ public class MultiSelectionUtil {
             mListener = listener;
             mCallbacks = new Callbacks();
 
+            assert mAdapter != null;
             mAdapter.setSelector(this);
         }
 
@@ -98,8 +99,8 @@ public class MultiSelectionUtil {
         @Override
         public void selectItem(int position, long id) {
             if (mActionMode == null) {
-                mItemsToCheck = new HashSet<Pair<Integer, Long>>();
-                mItemsToCheck.add(new Pair<Integer, Long>(position, id));
+                mItemsToCheck = new HashSet<>();
+                mItemsToCheck.add(new Pair<>(position, id));
                 mActionMode = mActivity.startSupportActionMode(mCallbacks);
             } else {
                 mAdapter.toggleSelection(position);
@@ -140,7 +141,7 @@ public class MultiSelectionUtil {
             if (savedInstanceState != null) {
                 long[] checkedIds = savedInstanceState.getLongArray(getStateKey());
                 if (checkedIds != null && checkedIds.length > 0) {
-                    HashSet<Long> idsToCheckOnRestore = new HashSet<Long>();
+                    HashSet<Long> idsToCheckOnRestore = new HashSet<>();
                     for (long id : checkedIds) {
                         idsToCheckOnRestore.add(id);
                     }
@@ -160,10 +161,10 @@ public class MultiSelectionUtil {
          */
         public void saveInstanceState(Bundle outState) {
             if (mActionMode != null && mAdapter.hasStableIds()) {
-                List<Integer> selectedItems = mAdapter.getSelectedItems();
+                List selectedItems = mAdapter.getSelectedItems();
                 long[] selectedItemIds = new long[selectedItems.size()];
                 for (int i = 0; i < selectedItems.size(); i++) {
-                    selectedItemIds[i] = mAdapter.getItemId(selectedItems.get(i));
+                    selectedItemIds[i] = mAdapter.getItemId((Integer) selectedItems.get(i));
                 }
                 outState.putLongArray(getStateKey(), selectedItemIds);
             }
@@ -185,9 +186,9 @@ public class MultiSelectionUtil {
                 if (idsToCheckOnRestore.contains(mAdapter.getItemId(pos))) {
                     idsFound = true;
                     if (mItemsToCheck == null) {
-                        mItemsToCheck = new HashSet<Pair<Integer, Long>>();
+                        mItemsToCheck = new HashSet<>();
                     }
-                    mItemsToCheck.add(new Pair<Integer, Long>(pos, mAdapter.getItemId(pos)));
+                    mItemsToCheck.add(new Pair<>(pos, mAdapter.getItemId(pos)));
                 }
             }
 
@@ -210,6 +211,7 @@ public class MultiSelectionUtil {
                     // If there are some items to check, do it now
                     if (mItemsToCheck != null) {
                         for (Pair<Integer, Long> posAndId : mItemsToCheck) {
+                            assert mAdapter != null;
                             mAdapter.toggleSelection(posAndId.first);
                             // Notify the listener that the item has been checked
                             mListener.onItemCheckedStateChanged(mActionMode, posAndId.first,
@@ -238,6 +240,7 @@ public class MultiSelectionUtil {
                 mListener.onDestroyActionMode(actionMode);
 
                 // Clear all the checked items
+                assert mAdapter != null;
                 mAdapter.clearSelections();
 
                 // Clear the Action Mode
@@ -249,14 +252,14 @@ public class MultiSelectionUtil {
     /**
      * @see android.widget.AbsListView.MultiChoiceModeListener
      */
-    public static interface MultiChoiceModeListener extends ActionMode.Callback {
+    public interface MultiChoiceModeListener extends ActionMode.Callback {
 
         /**
          * @see android.widget.AbsListView.MultiChoiceModeListener#onItemCheckedStateChanged(
          *android.view.ActionMode, int, long, boolean)
          */
-        public void onItemCheckedStateChanged(ActionMode mode, int position, long id,
-                boolean checked);
+        void onItemCheckedStateChanged(ActionMode mode, int position, long id,
+                                       boolean checked);
     }
 
     public static abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
@@ -267,15 +270,15 @@ public class MultiSelectionUtil {
             selectedItems = new SparseBooleanArray();
         }
 
-        public void setSelector(Selector selector) {
+        void setSelector(Selector selector) {
             mSelector = selector;
         }
 
-        public Selector getSelector() {
+        protected Selector getSelector() {
             return mSelector;
         }
 
-        public void toggleSelection(int position) {
+        void toggleSelection(int position) {
             if (selectedItems.get(position, false)) {
                 selectedItems.delete(position);
             } else {
@@ -284,11 +287,11 @@ public class MultiSelectionUtil {
             notifyItemChanged(position);
         }
 
-        public boolean isSelected(int position) {
+        protected boolean isSelected(int position) {
             return selectedItems.get(position, false);
         }
 
-        public void clearSelections() {
+        void clearSelections() {
             selectedItems.clear();
             notifyDataSetChanged();
         }
@@ -299,7 +302,7 @@ public class MultiSelectionUtil {
 
         public List<Integer> getSelectedItems() {
             List<Integer> items =
-                    new ArrayList<Integer>(selectedItems.size());
+                    new ArrayList<>(selectedItems.size());
             for (int i = 0; i < selectedItems.size(); i++) {
                 items.add(selectedItems.keyAt(i));
             }

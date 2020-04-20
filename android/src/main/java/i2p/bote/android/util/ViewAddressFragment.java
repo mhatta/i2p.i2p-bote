@@ -8,12 +8,7 @@ import android.graphics.Rect;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,12 +22,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
+
+import java.util.Objects;
 
 import i2p.bote.android.Constants;
 import i2p.bote.android.R;
@@ -43,15 +46,14 @@ public abstract class ViewAddressFragment extends Fragment implements
 
     protected String mAddress;
 
-    Toolbar mToolbar;
+    private Toolbar mToolbar;
     protected ImageView mPicture;
     protected TextView mPublicName;
     protected TextView mDescription;
     protected TextView mCryptoImplName;
-    TextView mAddressField;
-    ImageView mAddressQrCode;
-    TextView mFingerprint;
-    ImageView mExpandedQrCode;
+    private TextView mAddressField;
+    private ImageView mAddressQrCode;
+    private ImageView mExpandedQrCode;
 
     // Hold a reference to the current animator,
     // so that it can be canceled mid-way.
@@ -66,6 +68,7 @@ public abstract class ViewAddressFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        assert getArguments() != null;
         mAddress = getArguments().getString(ADDRESS);
 
         // Retrieve and cache the system's default "short" animation time.
@@ -80,33 +83,28 @@ public abstract class ViewAddressFragment extends Fragment implements
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mToolbar = (Toolbar) view.findViewById(R.id.main_toolbar);
-        mPicture = (ImageView) view.findViewById(R.id.picture);
-        mPublicName = (TextView) view.findViewById(R.id.public_name);
-        mDescription = (TextView) view.findViewById(R.id.description);
-        mFingerprint = (TextView) view.findViewById(R.id.fingerprint);
-        mCryptoImplName = (TextView) view.findViewById(R.id.crypto_impl_name);
-        mAddressField = (TextView) view.findViewById(R.id.email_dest);
-        mAddressQrCode = (ImageView) view.findViewById(R.id.email_dest_qr_code);
-        mExpandedQrCode = (ImageView) view.findViewById(R.id.expanded_qr_code);
+        mToolbar = view.findViewById(R.id.main_toolbar);
+        mPicture = view.findViewById(R.id.picture);
+        mPublicName = view.findViewById(R.id.public_name);
+        mDescription = view.findViewById(R.id.description);
+        TextView mFingerprint = view.findViewById(R.id.fingerprint);
+        mCryptoImplName = view.findViewById(R.id.crypto_impl_name);
+        mAddressField = view.findViewById(R.id.email_dest);
+        mAddressQrCode = view.findViewById(R.id.email_dest_qr_code);
+        mExpandedQrCode = view.findViewById(R.id.expanded_qr_code);
 
         view.findViewById(R.id.copy_key).setOnClickListener(new View.OnClickListener() {
-            @SuppressWarnings("deprecation")
             @Override
             public void onClick(View view) {
-                Object clipboardService = getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) clipboardService;
-                    clipboard.setText(mAddress);
-                } else {
-                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) clipboardService;
-                    android.content.ClipData clip = android.content.ClipData.newPlainText(
-                            getString(R.string.bote_dest_for, getPublicName()), mAddress);
-                    clipboard.setPrimaryClip(clip);
-                }
+                Object clipboardService = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) clipboardService;
+                android.content.ClipData clip = android.content.ClipData.newPlainText(
+                        getString(R.string.bote_dest_for, getPublicName()), mAddress);
+                assert clipboard != null;
+                clipboard.setPrimaryClip(clip);
                 Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
             }
         });
@@ -116,8 +114,8 @@ public abstract class ViewAddressFragment extends Fragment implements
         } else {
             // No address provided, finish
             // Should not happen
-            getActivity().setResult(Activity.RESULT_CANCELED);
-            getActivity().finish();
+            requireActivity().setResult(Activity.RESULT_CANCELED);
+            requireActivity().finish();
         }
     }
 
@@ -137,10 +135,11 @@ public abstract class ViewAddressFragment extends Fragment implements
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
 
         // Set the action bar
+        assert activity != null;
         activity.setSupportActionBar(mToolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -160,7 +159,7 @@ public abstract class ViewAddressFragment extends Fragment implements
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.view_address, menu);
         menu.findItem(R.id.action_edit_address).setIcon(BoteHelper.getMenuIcon(getActivity(), GoogleMaterial.Icon.gmd_create));
     }
@@ -190,31 +189,15 @@ public abstract class ViewAddressFragment extends Fragment implements
     }
 
     private NdefRecord createNameRecord() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            return new NdefRecord(
-                    NdefRecord.TNF_EXTERNAL_TYPE,
-                    "i2p.bote:contact".getBytes(),
-                    new byte[0],
-                    getPublicName().getBytes()
-            );
-        else
-            return NdefRecord.createExternal(
-                    "i2p.bote", "contact", getPublicName().getBytes()
-            );
+        return NdefRecord.createExternal(
+                "i2p.bote", "contact", getPublicName().getBytes()
+        );
     }
 
     private NdefRecord createDestinationRecord() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            return new NdefRecord(
-                    NdefRecord.TNF_EXTERNAL_TYPE,
-                    "i2p.bote:contactDestination".getBytes(),
-                    new byte[0],
-                    mAddress.getBytes()
-            );
-        else
-            return NdefRecord.createExternal(
-                    "i2p.bote", "contactDestination", mAddress.getBytes()
-            );
+        return NdefRecord.createExternal(
+                "i2p.bote", "contactDestination", mAddress.getBytes()
+        );
     }
 
     /**
@@ -226,7 +209,7 @@ public abstract class ViewAddressFragment extends Fragment implements
                     protected Bitmap[] doInBackground(Void... unused) {
                         String qrCodeContent = Constants.EMAILDEST_SCHEME + ":" + mAddress;
                         // render with minimal size
-                        Bitmap qrCode = QrCodeUtils.getQRCodeBitmap(qrCodeContent, 0);
+                        Bitmap qrCode = QrCodeUtils.getQRCodeBitmap(qrCodeContent);
                         Bitmap[] scaled = new Bitmap[2];
 
                         // scale the image up to our actual size. we do this in code rather
@@ -236,7 +219,7 @@ public abstract class ViewAddressFragment extends Fragment implements
 
                         // scale for the expanded image
                         DisplayMetrics dm = new DisplayMetrics();
-                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+                        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
                         int smallestDimen = Math.min(dm.widthPixels, dm.heightPixels);
                         scaled[1] = Bitmap.createScaledBitmap(qrCode,
                                 smallestDimen, smallestDimen,
@@ -279,7 +262,7 @@ public abstract class ViewAddressFragment extends Fragment implements
         // bounds, since that's the origin for the positioning animation
         // properties (X, Y).
         mAddressQrCode.getGlobalVisibleRect(startBounds);
-        getActivity().findViewById(R.id.container)
+        requireActivity().findViewById(R.id.container)
                 .getGlobalVisibleRect(finalBounds, globalOffset);
         startBounds.offset(-globalOffset.x, -globalOffset.y);
         finalBounds.offset(-globalOffset.x, -globalOffset.y);

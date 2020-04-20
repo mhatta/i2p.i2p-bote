@@ -1,7 +1,6 @@
 package i2p.bote.android.util;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
@@ -31,7 +33,7 @@ public abstract class AuthenticatedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_authenticated, container, false);
 
-        mAuthenticatedView = (FrameLayout) view.findViewById(R.id.authenticated_view);
+        mAuthenticatedView = view.findViewById(R.id.authenticated_view);
         mAuthenticatedView.addView(onCreateAuthenticatedView(inflater, container, savedInstanceState));
 
         return view;
@@ -52,11 +54,11 @@ public abstract class AuthenticatedFragment extends Fragment {
             initializeFragment();
         }
 
-        getActivity().supportInvalidateOptionsMenu();
+        requireActivity().supportInvalidateOptionsMenu();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.authenticated_fragment, menu);
         mLogIn = menu.findItem(R.id.action_log_in);
         mClearPassword = menu.findItem(R.id.action_log_out);
@@ -66,7 +68,7 @@ public abstract class AuthenticatedFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         mLogIn.setVisible(I2PBote.getInstance().isPasswordRequired());
         mClearPassword.setVisible(I2PBote.getInstance().isPasswordInCache());
     }
@@ -80,7 +82,7 @@ public abstract class AuthenticatedFragment extends Fragment {
                     @Override
                     public void onPasswordVerified() {
                         initializeFragment();
-                        getActivity().supportInvalidateOptionsMenu();
+                        requireActivity().supportInvalidateOptionsMenu();
                     }
 
                     @Override
@@ -92,7 +94,7 @@ public abstract class AuthenticatedFragment extends Fragment {
             case R.id.action_log_out:
                 BoteHelper.clearPassword();
                 destroyFragment();
-                getActivity().supportInvalidateOptionsMenu();
+                requireActivity().supportInvalidateOptionsMenu();
                 return true;
 
             default:

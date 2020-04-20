@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 import i2p.bote.android.R;
 
@@ -33,7 +36,7 @@ public abstract class DataShipFragment extends Fragment {
     };
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof Callbacks))
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
@@ -59,21 +62,22 @@ public abstract class DataShipFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        assert getFragmentManager() != null;
         ShipWaiterFrag f = (ShipWaiterFrag) getFragmentManager().findFragmentByTag(SHIP_WAITER_TAG);
         if (f != null)
             f.setTargetFragment(this, SHIP_WAITER);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mError = (TextView) view.findViewById(R.id.error);
+        mError = view.findViewById(R.id.error);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getTitle());
+        requireActivity().setTitle(getTitle());
     }
 
     @Override
@@ -101,7 +105,7 @@ public abstract class DataShipFragment extends Fragment {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.dialog_status, container, false);
-            mStatus = (TextView) v.findViewById(R.id.status);
+            mStatus = v.findViewById(R.id.status);
 
             if (currentStatus != null && !currentStatus.isEmpty())
                 mStatus.setText(currentStatus);
@@ -155,15 +159,15 @@ public abstract class DataShipFragment extends Fragment {
         }
 
         @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            mExportFilename = (EditText) view.findViewById(R.id.export_filename);
-            mSuffix = (TextView) view.findViewById(R.id.suffix);
-            mEncrypt = (CheckBox) view.findViewById(R.id.encrypt);
+            mExportFilename = view.findViewById(R.id.export_filename);
+            mSuffix = view.findViewById(R.id.suffix);
+            mEncrypt = view.findViewById(R.id.encrypt);
             mPasswordEntry = view.findViewById(R.id.password_entry);
-            mPassword = (EditText) view.findViewById(R.id.password);
-            mConfirmPassword = (EditText) view.findViewById(R.id.password_confirm);
+            mPassword = view.findViewById(R.id.password);
+            mConfirmPassword = view.findViewById(R.id.password_confirm);
 
             mEncrypt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -186,18 +190,18 @@ public abstract class DataShipFragment extends Fragment {
                         String confirmPassword = mConfirmPassword.getText().toString();
 
                         if (password.isEmpty()) {
-                            mPassword.setError(getActivity().getString(R.string.this_field_is_required));
+                            mPassword.setError(requireActivity().getString(R.string.this_field_is_required));
                             mPassword.requestFocus();
                             return;
                         } else
                             mPassword.setError(null);
 
                         if (confirmPassword.isEmpty()) {
-                            mConfirmPassword.setError(getActivity().getString(R.string.this_field_is_required));
+                            mConfirmPassword.setError(requireActivity().getString(R.string.this_field_is_required));
                             mConfirmPassword.requestFocus();
                             return;
                         } else if (!password.equals(confirmPassword)) {
-                            mConfirmPassword.setError(getActivity().getString(R.string.passwords_do_not_match));
+                            mConfirmPassword.setError(requireActivity().getString(R.string.passwords_do_not_match));
                             mConfirmPassword.requestFocus();
                             return;
                         } else
@@ -209,7 +213,7 @@ public abstract class DataShipFragment extends Fragment {
                     ), exportFilename + suffix);
                     if (exportFile.exists()) {
                         // TODO ask to rename or overwrite
-                        mExportFilename.setError(getActivity().getString(R.string.file_exists));
+                        mExportFilename.setError(requireActivity().getString(R.string.file_exists));
                         mExportFilename.requestFocus();
                         return;
                     } else
@@ -229,6 +233,7 @@ public abstract class DataShipFragment extends Fragment {
             ExportWaiterFrag f = ExportWaiterFrag.newInstance(exportFile, password);
             f.setTask(getExportWaiter());
             f.setTargetFragment(ExportDataFragment.this, SHIP_WAITER);
+            assert getFragmentManager() != null;
             getFragmentManager().beginTransaction()
                     .replace(R.id.waiter_frag, f, SHIP_WAITER_TAG)
                     .commit();
@@ -258,6 +263,7 @@ public abstract class DataShipFragment extends Fragment {
             @Override
             public Object[] getParams() {
                 Bundle args = getArguments();
+                assert args != null;
                 return new Object[]{
                         args.getSerializable(SHIP_FILE),
                         args.getString(PASSWORD),
@@ -280,12 +286,12 @@ public abstract class DataShipFragment extends Fragment {
         }
 
         @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            mPassword = (EditText) view.findViewById(R.id.password);
-            mOverwrite = (CheckBox) view.findViewById(R.id.overwrite);
-            mReplace = (CheckBox) view.findViewById(R.id.replace);
+            mPassword = view.findViewById(R.id.password);
+            mOverwrite = view.findViewById(R.id.overwrite);
+            mReplace = view.findViewById(R.id.replace);
 
             mOverwrite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -320,7 +326,8 @@ public abstract class DataShipFragment extends Fragment {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri result = data.getData();
                     try {
-                        ParcelFileDescriptor pfd = getActivity().getContentResolver().openFileDescriptor(result, "r");
+                        assert result != null;
+                        ParcelFileDescriptor pfd = requireActivity().getContentResolver().openFileDescriptor(result, "r");
                         String password = mPassword.getText().toString();
                         if (password.isEmpty())
                             password = null;
@@ -346,6 +353,7 @@ public abstract class DataShipFragment extends Fragment {
                     importFile, password, append, replace);
             f.setTask(getImportWaiter());
             f.setTargetFragment(ImportDataFragment.this, SHIP_WAITER);
+            assert getFragmentManager() != null;
             getFragmentManager().beginTransaction()
                     .replace(R.id.waiter_frag, f, SHIP_WAITER_TAG)
                     .commit();
@@ -378,8 +386,9 @@ public abstract class DataShipFragment extends Fragment {
             @Override
             public Object[] getParams() {
                 Bundle args = getArguments();
+                assert args != null;
                 return new Object[]{
-                        ((ParcelFileDescriptor) args.getParcelable(SHIP_FILE_DESCRIPTOR))
+                        ((ParcelFileDescriptor) Objects.requireNonNull(args.getParcelable(SHIP_FILE_DESCRIPTOR)))
                                 .getFileDescriptor(),
                         args.getString(PASSWORD),
                         args.getBoolean(APPEND),

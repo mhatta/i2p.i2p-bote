@@ -4,14 +4,15 @@ import android.os.AsyncTask;
 
 public abstract class RobustAsyncTask<Params, Progress, Result> extends
         AsyncTask<Params, Progress, Result> {
-    TaskFragment<Params, Progress, Result> mDialog;
+    private TaskFragment<Params, Progress, Result> mDialog;
 
     void setFragment(TaskFragment<Params, Progress, Result> fragment) {
         mDialog = fragment;
     }
 
+    @SafeVarargs
     @Override
-    protected void onProgressUpdate(Progress... values) {
+    protected final void onProgressUpdate(Progress... values) {
         if (mDialog != null)
             mDialog.updateProgress(values);
     }

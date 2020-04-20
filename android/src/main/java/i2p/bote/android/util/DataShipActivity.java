@@ -3,6 +3,8 @@ package i2p.bote.android.util;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Objects;
+
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.R;
 
@@ -20,14 +22,15 @@ public abstract class DataShipActivity extends BoteActivityBase implements
         setContentView(R.layout.activity_data_ship);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             Bundle args = getIntent().getExtras();
+            assert args != null;
             mExporting = args.getBoolean(EXPORTING);
             DataShipFragment f = getDataShipFragment();
             getSupportFragmentManager().beginTransaction()

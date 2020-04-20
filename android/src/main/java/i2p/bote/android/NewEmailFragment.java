@@ -222,7 +222,7 @@ public class NewEmailFragment extends Fragment {
         });
 
         // Set up contacts auto-complete
-        List<Person> contacts = new ArrayList<Person>();
+        List<Person> contacts = new ArrayList<>();
         try {
             for (Contact contact : I2PBote.getInstance().getAddressBook().getAll()) {
                 contacts.add(new Person(contact.getName(), contact.getBase64Dest(),

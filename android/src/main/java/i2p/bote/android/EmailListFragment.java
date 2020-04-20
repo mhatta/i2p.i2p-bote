@@ -233,14 +233,14 @@ public class EmailListFragment extends AuthenticatedFragment implements
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.email_list, menu);
         mCheckEmail = menu.findItem(R.id.action_check_email);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         boolean passwordRequired = I2PBote.getInstance().isPasswordRequired();
         mNewEmail.setVisibility(passwordRequired ? View.GONE : View.VISIBLE);

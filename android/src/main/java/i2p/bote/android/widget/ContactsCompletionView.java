@@ -35,10 +35,11 @@ public class ContactsCompletionView extends TokenCompleteTextView {
         Person person = (Person) object;
 
         LayoutInflater l = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        assert l != null;
         LinearLayout view = (LinearLayout)l.inflate(R.layout.contact_token, (ViewGroup)ContactsCompletionView.this.getParent(), false);
         ((TextView)view.findViewById(R.id.contact_name)).setText(person.getName());
 
-        ImageView picView = (ImageView) view.findViewById(R.id.contact_picture);
+        ImageView picView = view.findViewById(R.id.contact_picture);
         Bitmap picture = person.getPicture();
         if (picture == null) {
             ViewGroup.LayoutParams lp = picView.getLayoutParams();

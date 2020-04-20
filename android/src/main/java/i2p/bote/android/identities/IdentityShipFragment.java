@@ -3,6 +3,8 @@ package i2p.bote.android.identities;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.io.FileDescriptor;
 
@@ -21,7 +23,7 @@ public abstract class IdentityShipFragment extends DataShipFragment {
 
     public static class ExportIdentitiesFragment extends ExportDataFragment {
         @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             mExportFilename.setText("identities");
         }

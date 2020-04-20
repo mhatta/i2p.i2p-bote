@@ -1,11 +1,11 @@
 package i2p.bote.android.widget;
 
 import android.content.Context;
-import androidx.core.view.ViewCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.AbsListView;
+
+import androidx.core.view.ViewCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * A descendant of {@link SwipeRefreshLayout} which supports multiple
@@ -67,21 +67,7 @@ public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
      * needed.
      */
     private static boolean canViewScrollUp(View view) {
-        if (android.os.Build.VERSION.SDK_INT >= 14) {
-            // For ICS and above we can call canScrollVertically() to determine this
-            return ViewCompat.canScrollVertically(view, -1);
-        } else {
-            if (view instanceof AbsListView) {
-                // Pre-ICS we need to manually check the first visible item and the child view's top
-                // value
-                final AbsListView listView = (AbsListView) view;
-                return listView.getChildCount() > 0 &&
-                        (listView.getFirstVisiblePosition() > 0
-                                || listView.getChildAt(0).getTop() < listView.getPaddingTop());
-            } else {
-                // For all other view types we just check the getScrollY() value
-                return view.getScrollY() > 0;
-            }
-        }
+        // For ICS and above we can call canScrollVertically() to determine this
+        return ViewCompat.canScrollVertically(view, -1);
     }
 }

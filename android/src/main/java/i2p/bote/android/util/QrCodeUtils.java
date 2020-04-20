@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2014 str4d
  * Copyright (C) 2013-2014 Dominik Schürmann <dominik@dominikschuermann.de>
  * Copyright (C) 2011 Andreas Schildbach
@@ -38,21 +38,20 @@ import java.util.Hashtable;
  * Copied from OpenKeychain
  * Originally copied from Bitcoin Wallet
  */
-public class QrCodeUtils {
+class QrCodeUtils {
 
     /**
      * Generate Bitmap with QR Code based on input.
      *
      * @param input The data to render as a QR code.
-     * @param size The preferred width and height of the QR code in pixels.
      * @return QR Code as Bitmap
      */
-    public static Bitmap getQRCodeBitmap(final String input, final int size) {
+    static Bitmap getQRCodeBitmap(final String input) {
         try {
-            final Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+            final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
             hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
-            final BitMatrix result = new QRCodeWriter().encode(input, BarcodeFormat.QR_CODE, size,
-                    size, hints);
+            final BitMatrix result = new QRCodeWriter().encode(input, BarcodeFormat.QR_CODE, 0,
+                    0, hints);
 
             final int width = result.getWidth();
             final int height = result.getHeight();

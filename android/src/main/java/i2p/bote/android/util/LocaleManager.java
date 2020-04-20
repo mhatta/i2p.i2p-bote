@@ -42,7 +42,7 @@ public class LocaleManager {
         String selectedLanguage = PreferenceManager.getDefaultSharedPreferences(context).getString(
                 "pref_language", DEFAULT_LANGUAGE
         );
-        String language[] = TextUtils.split(selectedLanguage, "_");
+        String[] language = TextUtils.split(selectedLanguage, "_");
 
         if (language[0].equals(DEFAULT_LANGUAGE))
             return Resources.getSystem().getConfiguration().locale;

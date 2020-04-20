@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.loader.content.AsyncTaskLoader;
 
 public abstract class BetterAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
-    protected T mData;
+    private T mData;
 
     public BetterAsyncTaskLoader(Context context) {
         super(context);

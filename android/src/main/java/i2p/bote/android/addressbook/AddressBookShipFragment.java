@@ -3,6 +3,8 @@ package i2p.bote.android.addressbook;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.io.FileDescriptor;
 
@@ -21,7 +23,7 @@ public abstract class AddressBookShipFragment extends DataShipFragment {
 
     public static class ExportAddressBookFragment extends ExportDataFragment {
         @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             mExportFilename.setText("addressBook");
         }
