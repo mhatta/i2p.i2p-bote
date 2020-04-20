@@ -4,12 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -34,7 +34,7 @@ import i2p.bote.packet.dht.Contact;
 
 public class AddressBookFragment extends AuthenticatedFragment implements
         LoaderManager.LoaderCallbacks<SortedSet<Contact>> {
-    OnContactSelectedListener mCallback;
+    private OnContactSelectedListener mCallback;
     private LoadingRecyclerView mContactsList;
     private ContactAdapter mAdapter;
 
@@ -42,11 +42,11 @@ public class AddressBookFragment extends AuthenticatedFragment implements
 
     // Container Activity must implement this interface
     public interface OnContactSelectedListener {
-        public void onContactSelected(Contact contact);
+        void onContactSelected(Contact contact);
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
 
         // This makes sure that the container activity has implemented
@@ -71,13 +71,13 @@ public class AddressBookFragment extends AuthenticatedFragment implements
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_contacts, container, false);
 
-        mContactsList = (LoadingRecyclerView) v.findViewById(R.id.contacts_list);
+        mContactsList = v.findViewById(R.id.contacts_list);
         View empty = v.findViewById(R.id.empty);
-        ProgressWheel loading = (ProgressWheel) v.findViewById(R.id.loading);
+        ProgressWheel loading = v.findViewById(R.id.loading);
         mContactsList.setLoadingView(empty, loading);
         mPromotedActions = v.findViewById(R.id.promoted_actions);
 
-        ImageButton b = (ImageButton) v.findViewById(R.id.action_new_contact);
+        ImageButton b = v.findViewById(R.id.action_new_contact);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +85,7 @@ public class AddressBookFragment extends AuthenticatedFragment implements
             }
         });
 
-        b = (ImageButton) v.findViewById(R.id.action_scan_qr_code);
+        b = v.findViewById(R.id.action_scan_qr_code);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +101,7 @@ public class AddressBookFragment extends AuthenticatedFragment implements
         super.onActivityCreated(savedInstanceState);
 
         mContactsList.setHasFixedSize(true);
-        mContactsList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mContactsList.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         // Use a linear layout manager
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -160,7 +160,7 @@ public class AddressBookFragment extends AuthenticatedFragment implements
 
     private void startNewContact() {
         Intent nci = new Intent(getActivity(), EditContactActivity.class);
-        getActivity().startActivityForResult(nci, AddressBookActivity.ALTER_CONTACT_LIST);
+        requireActivity().startActivityForResult(nci, AddressBookActivity.ALTER_CONTACT_LIST);
     }
 
     private void startScanQrCode() {
@@ -168,18 +168,19 @@ public class AddressBookFragment extends AuthenticatedFragment implements
         integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
     }
 
-    protected void updateContactList() {
+    void updateContactList() {
         getLoaderManager().restartLoader(0, null, this);
     }
 
     // LoaderManager.LoaderCallbacks<SortedSet<Contact>>
 
+    @NonNull
     public Loader<SortedSet<Contact>> onCreateLoader(int id, Bundle args) {
         return new AddressBookLoader(getActivity());
     }
 
     private static class AddressBookLoader extends BetterAsyncTaskLoader<SortedSet<Contact>> {
-        public AddressBookLoader(Context context) {
+        AddressBookLoader(Context context) {
             super(context);
         }
 
@@ -209,13 +210,13 @@ public class AddressBookFragment extends AuthenticatedFragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<SortedSet<Contact>> loader,
-            SortedSet<Contact> data) {
+    public void onLoadFinished(@NonNull Loader<SortedSet<Contact>> loader,
+                               SortedSet<Contact> data) {
         mAdapter.setContacts(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<SortedSet<Contact>> loader) {
+    public void onLoaderReset(@NonNull Loader<SortedSet<Contact>> loader) {
         mAdapter.setContacts(null);
     }
 }

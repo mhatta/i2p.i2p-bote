@@ -4,18 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 
@@ -35,7 +35,7 @@ import i2p.bote.fileencryption.PasswordException;
 
 public class IdentityListFragment extends AuthenticatedFragment implements
         LoaderManager.LoaderCallbacks<Collection<EmailIdentity>> {
-    OnIdentitySelectedListener mCallback;
+    private OnIdentitySelectedListener mCallback;
     private LoadingRecyclerView mIdentitiesList;
     private IdentityAdapter mAdapter;
 
@@ -47,7 +47,7 @@ public class IdentityListFragment extends AuthenticatedFragment implements
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
 
         // This makes sure that the container activity has implemented
@@ -72,9 +72,9 @@ public class IdentityListFragment extends AuthenticatedFragment implements
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_identities, container, false);
 
-        mIdentitiesList = (LoadingRecyclerView) v.findViewById(R.id.identities_list);
+        mIdentitiesList = v.findViewById(R.id.identities_list);
         View empty = v.findViewById(R.id.empty);
-        ProgressWheel loading = (ProgressWheel) v.findViewById(R.id.loading);
+        ProgressWheel loading = v.findViewById(R.id.loading);
         mIdentitiesList.setLoadingView(empty, loading);
 
         mNewIdentity = v.findViewById(R.id.action_new_identity);
@@ -93,7 +93,7 @@ public class IdentityListFragment extends AuthenticatedFragment implements
         super.onActivityCreated(savedInstanceState);
 
         mIdentitiesList.setHasFixedSize(true);
-        mIdentitiesList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mIdentitiesList.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         // Use a linear layout manager
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -152,21 +152,22 @@ public class IdentityListFragment extends AuthenticatedFragment implements
 
     private void startNewIdentity() {
         Intent nii = new Intent(getActivity(), EditIdentityActivity.class);
-        getActivity().startActivity(nii);
+        requireActivity().startActivity(nii);
     }
 
-    protected void updateIdentityList() {
+    void updateIdentityList() {
         getLoaderManager().restartLoader(0, null, this);
     }
 
     // LoaderManager.LoaderCallbacks<SortedSet<EmailIdentity>>
 
+    @NonNull
     public Loader<Collection<EmailIdentity>> onCreateLoader(int id, Bundle args) {
         return new IdentityLoader(getActivity());
     }
 
     private static class IdentityLoader extends BetterAsyncTaskLoader<Collection<EmailIdentity>> implements IdentitiesListener {
-        public IdentityLoader(Context context) {
+        IdentityLoader(Context context) {
             super(context);
         }
 
@@ -175,12 +176,8 @@ public class IdentityListFragment extends AuthenticatedFragment implements
             Collection<EmailIdentity> identities = null;
             try {
                 identities = I2PBote.getInstance().getIdentities().getAll();
-            } catch (PasswordException e) {
+            } catch (PasswordException | GeneralSecurityException | IOException e) {
                 // TODO handle, but should not get here
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
             return identities;
@@ -219,13 +216,13 @@ public class IdentityListFragment extends AuthenticatedFragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Collection<EmailIdentity>> loader,
-            Collection<EmailIdentity> data) {
+    public void onLoadFinished(@NonNull Loader<Collection<EmailIdentity>> loader,
+                               Collection<EmailIdentity> data) {
         mAdapter.setIdentities(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Collection<EmailIdentity>> loader) {
+    public void onLoaderReset(@NonNull Loader<Collection<EmailIdentity>> loader) {
         mAdapter.setIdentities(null);
     }
 }

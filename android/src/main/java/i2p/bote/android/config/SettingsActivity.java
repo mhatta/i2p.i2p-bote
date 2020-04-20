@@ -10,6 +10,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Objects;
+
 import i2p.bote.I2PBote;
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.EmailListActivity;
@@ -39,7 +41,7 @@ public class SettingsActivity extends BoteActivityBase implements
         setContentView(R.layout.activity_toolbar);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -89,17 +91,17 @@ public class SettingsActivity extends BoteActivityBase implements
         public void onCreatePreferences(Bundle paramBundle, String s) {
             addPreferencesFromResource(R.xml.settings);
 
-            findPreference(PREFERENCE_CATEGORY_NETWORK)
+            Objects.requireNonNull(findPreference(PREFERENCE_CATEGORY_NETWORK))
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_NETWORK));
-            findPreference(PREFERENCE_CATEGORY_IDENTITIES)
+            Objects.requireNonNull(findPreference(PREFERENCE_CATEGORY_IDENTITIES))
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_IDENTITIES));
-            findPreference(PREFERENCE_CATEGORY_PRIVACY)
+            Objects.requireNonNull(findPreference(PREFERENCE_CATEGORY_PRIVACY))
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_PRIVACY));
-            findPreference(PREFERENCE_CATEGORY_APP_PROTECTION)
+            Objects.requireNonNull(findPreference(PREFERENCE_CATEGORY_APP_PROTECTION))
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_APP_PROTECTION));
-            findPreference(PREFERENCE_CATEGORY_APPEARANCE)
+            Objects.requireNonNull(findPreference(PREFERENCE_CATEGORY_APPEARANCE))
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_APPEARANCE));
-            findPreference(PREFERENCE_CATEGORY_ADVANCED)
+            Objects.requireNonNull(findPreference(PREFERENCE_CATEGORY_ADVANCED))
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_ADVANCED));
         }
 
@@ -113,7 +115,7 @@ public class SettingsActivity extends BoteActivityBase implements
         private class CategoryClickListener implements Preference.OnPreferenceClickListener {
             private String category;
 
-            public CategoryClickListener(String category) {
+            CategoryClickListener(String category) {
                 this.category = category;
             }
 
@@ -151,7 +153,7 @@ public class SettingsActivity extends BoteActivityBase implements
 
             private void loadCategory() {
                 Fragment fragment = getFragmentForCategory(category);
-                getActivity().getSupportFragmentManager().beginTransaction()
+                requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fragment)
                         .addToBackStack(null)
                         .commit();

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Objects;
+
 import i2p.bote.android.R;
 
 public class AppProtectionPreferenceFragment extends PreferenceFragmentCompat {
@@ -23,13 +25,10 @@ public class AppProtectionPreferenceFragment extends PreferenceFragmentCompat {
 
         // Screen security only works from API 14
         Preference screenSecurityPreference = findPreference("pref_screen_security");
-        if (screenSecurityPreference != null &&
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            getPreferenceScreen().removePreference(screenSecurityPreference);
     }
 
     private void setupAppProtectionSettings() {
-        findPreference("pref_change_password").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Objects.requireNonNull(findPreference("pref_change_password")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivity(new Intent(getActivity(), SetPasswordActivity.class));

@@ -5,9 +5,9 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import i2p.bote.android.config.SettingsActivity;
@@ -34,7 +34,7 @@ public class EmailListActivityTest {
     @Rule
     public IntentsTestRule<EmailListActivity> mActivityRule = new IntentsTestRule<>(EmailListActivity.class);
 
-    @Before
+    @BeforeEach
     public void closeIntro() {
         try {
             // Close intro on first open
@@ -59,7 +59,7 @@ public class EmailListActivityTest {
         onView(withText(R.string.bote_needs_to_be_connected)).inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView()))) .check(matches(isDisplayed()));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void newEmail() {
         onView(withId(R.id.promoted_action)).perform(click());
         intended(hasComponent(NewEmailActivity.class.getName()));

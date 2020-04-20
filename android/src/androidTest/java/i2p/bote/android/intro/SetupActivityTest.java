@@ -7,7 +7,7 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import i2p.bote.android.R;
@@ -38,7 +38,7 @@ public class SetupActivityTest {
         intended(hasComponent(SetPasswordActivity.class.getName()));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void nextPageAfterSetPassword() {
         // Check we are on "Set password" page
         onView(withId(R.id.textView)).check(matches(withText(R.string.set_password)));
@@ -49,7 +49,7 @@ public class SetupActivityTest {
         onView(withId(R.id.textView)).check(matches(withText(R.string.create_identity)));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void createIdentity() {
         onView(withId(R.id.textView)).check(matches(withText(R.string.set_password)));
         onView(withId(R.id.button_skip)).perform(click());
@@ -71,7 +71,7 @@ public class SetupActivityTest {
         onView(withId(R.id.textView)).check(matches(withText(R.string.setup_finished)));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void setupFinished() {
         onView(withId(R.id.textView)).check(matches(withText(R.string.set_password)));
         onView(withId(R.id.button_skip)).perform(click());

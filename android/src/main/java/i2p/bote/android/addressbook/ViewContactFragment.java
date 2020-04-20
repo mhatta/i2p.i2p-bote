@@ -33,8 +33,8 @@ public class ViewContactFragment extends ViewAddressFragment {
             mContact = BoteHelper.getContact(mAddress);
             if (mContact == null) {
                 // No contact found, finish
-                getActivity().setResult(Activity.RESULT_CANCELED);
-                getActivity().finish();
+                requireActivity().setResult(Activity.RESULT_CANCELED);
+                requireActivity().finish();
             }
         } catch (PasswordException e) {
             // TODO Handle
@@ -86,14 +86,11 @@ public class ViewContactFragment extends ViewAddressFragment {
         try {
             String err = BoteHelper.deleteContact(mAddress);
             if (err == null) {
-                getActivity().setResult(Activity.RESULT_OK);
-                getActivity().finish();
+                requireActivity().setResult(Activity.RESULT_OK);
+                requireActivity().finish();
             } else
                 Toast.makeText(getActivity(), err, Toast.LENGTH_SHORT).show();
-        } catch (PasswordException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
+        } catch (PasswordException | GeneralSecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

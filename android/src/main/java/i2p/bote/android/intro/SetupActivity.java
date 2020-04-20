@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.R;
 import i2p.bote.android.config.SetPasswordActivity;
@@ -22,12 +24,12 @@ public class SetupActivity extends BoteActivityBase {
         setContentView(R.layout.activity_toolbar);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // If a user has chosen to enter the setup wizard, don't let them
         // accidentally exit it early.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
 
         if (savedInstanceState == null) {
@@ -86,6 +88,7 @@ public class SetupActivity extends BoteActivityBase {
         }
 
         private void nextPage() {
+            assert getFragmentManager() != null;
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new CreateIdentityFragment())
                     .commit();
@@ -133,6 +136,7 @@ public class SetupActivity extends BoteActivityBase {
         }
 
         private void nextPage() {
+            assert getFragmentManager() != null;
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SetupFinishedFragment())
                     .commit();
@@ -154,8 +158,8 @@ public class SetupActivity extends BoteActivityBase {
             rootView.findViewById(R.id.button_finish).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    getActivity().setResult(RESULT_OK);
-                    getActivity().finish();
+                    requireActivity().setResult(RESULT_OK);
+                    requireActivity().finish();
                 }
             });
             return rootView;

@@ -11,9 +11,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import android.test.ProviderTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.io.ByteArrayInputStream;
@@ -57,7 +57,7 @@ public class AttachmentProviderTests extends ProviderTestCase2<AttachmentProvide
         setContext(InstrumentationRegistry.getTargetContext());
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         testAndroidTestCaseSetupProperly();
@@ -70,7 +70,7 @@ public class AttachmentProviderTests extends ProviderTestCase2<AttachmentProvide
         getMockContentResolver().query(invalidUri, null, null, null, null);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void getTypeWithInvalidUriReturnsNull() {
         Uri invalidUri = Uri.parse(INVALID_URI);
         String type = getMockContentResolver().getType(invalidUri);
@@ -201,7 +201,7 @@ public class AttachmentProviderTests extends ProviderTestCase2<AttachmentProvide
         );
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         EmailFolder inbox = I2PBote.getInstance().getInbox();

@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.Constants;
@@ -21,11 +22,11 @@ public class EditContactActivity extends BoteActivityBase {
         setContentView(R.layout.activity_toolbar);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             EditContactFragment f;
@@ -62,6 +63,7 @@ public class EditContactActivity extends BoteActivityBase {
     @Override
     public void onNewIntent(Intent intent) {
         // onResume gets called after this to handle the intent
+        super.onNewIntent(intent);
         setIntent(intent);
     }
 

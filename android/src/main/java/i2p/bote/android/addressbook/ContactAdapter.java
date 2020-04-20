@@ -1,6 +1,8 @@
 package i2p.bote.android.addressbook;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,31 +24,31 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private AddressBookFragment.OnContactSelectedListener mListener;
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
-        public SimpleViewHolder(View itemView) {
+        SimpleViewHolder(View itemView) {
             super(itemView);
         }
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mPicture;
-        public TextView mName;
+        ImageView mPicture;
+        TextView mName;
 
-        public ContactViewHolder(View itemView) {
+        ContactViewHolder(View itemView) {
             super(itemView);
-            mPicture = (ImageView) itemView.findViewById(R.id.contact_picture);
-            mName = (TextView) itemView.findViewById(R.id.contact_name);
+            mPicture = itemView.findViewById(R.id.contact_picture);
+            mName = itemView.findViewById(R.id.contact_name);
         }
     }
 
-    public ContactAdapter(Context context, AddressBookFragment.OnContactSelectedListener listener) {
+    ContactAdapter(Context context, AddressBookFragment.OnContactSelectedListener listener) {
         mCtx = context;
         mListener = listener;
         setHasStableIds(true);
     }
 
-    public void setContacts(SortedSet<Contact> contacts) {
+    void setContacts(SortedSet<Contact> contacts) {
         if (contacts != null) {
-            mContacts = new ArrayList<Contact>();
+            mContacts = new ArrayList<>();
             mContacts.addAll(contacts);
         } else
             mContacts = null;
@@ -63,17 +65,16 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                       int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(viewType, parent, false);
-        switch (viewType) {
-            case R.layout.listitem_contact:
-                return new ContactViewHolder(v);
-            default:
-                return new SimpleViewHolder(v);
+        if (viewType == R.layout.listitem_contact) {
+            return new ContactViewHolder(v);
         }
+        return new SimpleViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

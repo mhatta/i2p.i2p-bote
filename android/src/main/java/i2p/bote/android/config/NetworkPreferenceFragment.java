@@ -2,6 +2,7 @@ package i2p.bote.android.config;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.preference.PreferenceManager;
 
 import java.util.Map;
@@ -27,7 +28,7 @@ public class NetworkPreferenceFragment extends CustomPreferenceFragment {
     @Override
     public void onPause() {
         Configuration config = I2PBote.getInstance().getConfiguration();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 
         Map<String, ?> all = prefs.getAll();
         for (String x : all.keySet()) {

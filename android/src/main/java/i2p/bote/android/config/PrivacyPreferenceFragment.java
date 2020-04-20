@@ -7,6 +7,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
 import java.util.Map;
+import java.util.Objects;
 
 import i2p.bote.Configuration;
 import i2p.bote.I2PBote;
@@ -30,7 +31,7 @@ public class PrivacyPreferenceFragment extends CustomPreferenceFragment {
     @Override
     public void onPause() {
         Configuration config = I2PBote.getInstance().getConfiguration();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 
         Map<String, ?> all = prefs.getAll();
         for (String x : all.keySet()) {
@@ -53,14 +54,15 @@ public class PrivacyPreferenceFragment extends CustomPreferenceFragment {
     }
 
     private void setupPrivacySettings() {
-        ListPreference numSendHops = (ListPreference) findPreference("numSendHops");
-        int value = Integer.valueOf(numSendHops.getValue());
+        ListPreference numSendHops = findPreference("numSendHops");
+        assert numSendHops != null;
+        int value = Integer.parseInt(numSendHops.getValue());
         numSendHops.setSummary(getResources().getQuantityString(R.plurals.pref_summ_numHops,
                 value, value));
         numSendHops.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int value = Integer.valueOf((String) newValue);
+                int value = Integer.parseInt((String) newValue);
                 preference.setSummary(getResources().getQuantityString(R.plurals.pref_summ_numHops,
                         value, value));
                 return true;

@@ -1,8 +1,8 @@
 package i2p.bote.android.config;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
+
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -29,10 +29,12 @@ public class AdvancedPreferenceFragment extends PreferenceFragmentCompat {
 
     private void setupAdvancedSettings() {
         final Context ctx = getPreferenceManager().getContext();
-        final PreferenceCategory i2pCat = (PreferenceCategory) findPreference("i2pCategory");
-        CheckBoxPreference routerAuto = (CheckBoxPreference) findPreference("i2pbote.router.auto");
+        final PreferenceCategory i2pCat = findPreference("i2pCategory");
+        CheckBoxPreference routerAuto = findPreference("i2pbote.router.auto");
 
+        assert routerAuto != null;
         if (!routerAuto.isChecked()) {
+            assert i2pCat != null;
             setupI2PCategory(ctx, i2pCat);
         }
 
@@ -40,8 +42,10 @@ public class AdvancedPreferenceFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final Boolean checked = (Boolean) newValue;
                 if (!checked) {
+                    assert i2pCat != null;
                     setupI2PCategory(ctx, i2pCat);
                 } else {
+                    assert i2pCat != null;
                     Preference p1 = i2pCat.findPreference("i2pbote.router.use");
                     Preference p2 = i2pCat.findPreference("i2pbote.i2cp.tcp.host");
                     Preference p3 = i2pCat.findPreference("i2pbote.i2cp.tcp.port");
@@ -64,8 +68,7 @@ public class AdvancedPreferenceFragment extends PreferenceFragmentCompat {
         i2pCat.addPreference(routerChoice);
         i2pCat.addPreference(hostField);
         i2pCat.addPreference(portField);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-            routerChoice.setSummary(routerChoice.getEntry());
+
 
         if ("remote".equals(routerChoice.getValue())) {
             hostField.setEnabled(true);
@@ -76,8 +79,6 @@ public class AdvancedPreferenceFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String val = newValue.toString();
                 int index = routerChoice.findIndexOfValue(val);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-                    routerChoice.setSummary(routerChoice.getEntries()[index]);
                 if (index == 2) {
                     hostField.setEnabled(true);
                     hostField.setText("127.0.0.1");

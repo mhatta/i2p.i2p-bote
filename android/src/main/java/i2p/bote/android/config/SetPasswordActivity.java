@@ -15,7 +15,7 @@ public class SetPasswordActivity extends BoteActivityBase implements
         setContentView(R.layout.activity_set_password);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back

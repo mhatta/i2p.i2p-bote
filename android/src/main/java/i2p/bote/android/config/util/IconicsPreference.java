@@ -25,8 +25,6 @@ public class IconicsPreference extends Preference {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void init(Context context, AttributeSet attrs) {
         // Icons only work on API 11+
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-            return;
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.IconicsPreference, 0, 0);

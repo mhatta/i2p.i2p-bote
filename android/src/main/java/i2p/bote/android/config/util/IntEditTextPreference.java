@@ -30,6 +30,6 @@ public class IntEditTextPreference extends EditTextPreference {
 
     @Override
     protected boolean persistString(String value) {
-        return persistInt(Integer.valueOf(value));
+        return persistInt(Integer.parseInt(value));
     }
 }

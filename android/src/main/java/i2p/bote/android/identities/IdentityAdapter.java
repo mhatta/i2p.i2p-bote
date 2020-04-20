@@ -1,6 +1,8 @@
 package i2p.bote.android.identities;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,23 +24,23 @@ public class IdentityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private IdentityListFragment.OnIdentitySelectedListener mListener;
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
-        public SimpleViewHolder(View itemView) {
+        SimpleViewHolder(View itemView) {
             super(itemView);
         }
     }
 
     public static class IdentityViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mPicture;
-        public TextView mName;
+        ImageView mPicture;
+        TextView mName;
 
-        public IdentityViewHolder(View itemView) {
+        IdentityViewHolder(View itemView) {
             super(itemView);
-            mPicture = (ImageView) itemView.findViewById(R.id.identity_picture);
-            mName = (TextView) itemView.findViewById(R.id.identity_name);
+            mPicture = itemView.findViewById(R.id.identity_picture);
+            mName = itemView.findViewById(R.id.identity_name);
         }
     }
 
-    public IdentityAdapter(Context context, IdentityListFragment.OnIdentitySelectedListener listener) {
+    IdentityAdapter(Context context, IdentityListFragment.OnIdentitySelectedListener listener) {
         mCtx = context;
         mListener = listener;
         setHasStableIds(true);
@@ -63,17 +65,16 @@ public class IdentityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                       int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(viewType, parent, false);
-        switch (viewType) {
-            case R.layout.listitem_identity:
-                return new IdentityViewHolder(v);
-            default:
-                return new SimpleViewHolder(v);
+        if (viewType == R.layout.listitem_identity) {
+            return new IdentityViewHolder(v);
         }
+        return new SimpleViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

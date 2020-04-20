@@ -3,6 +3,8 @@ package i2p.bote.android.config;
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Objects;
+
 import i2p.bote.android.R;
 
 public class AppearancePreferenceFragment extends PreferenceFragmentCompat {
@@ -22,7 +24,7 @@ public class AppearancePreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onResume() {
         super.onResume();
-        ((SettingsActivity) getActivity()).getSupportActionBar().setTitle(R.string.settings_label_appearance);
+        Objects.requireNonNull(((SettingsActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.settings_label_appearance);
     }
 
     @Override

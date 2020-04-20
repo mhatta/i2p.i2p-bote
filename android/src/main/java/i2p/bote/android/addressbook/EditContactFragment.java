@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
 import java.io.BufferedReader;
@@ -33,15 +35,15 @@ import i2p.bote.fileencryption.PasswordException;
 import i2p.bote.packet.dht.Contact;
 
 public class EditContactFragment extends EditPictureFragment {
-    public static final String CONTACT_DESTINATION = "contact_destination";
-    public static final String NEW_NAME = "new_name";
-    public static final String NEW_DESTINATION = "new_destination";
+    static final String CONTACT_DESTINATION = "contact_destination";
+    static final String NEW_NAME = "new_name";
+    static final String NEW_DESTINATION = "new_destination";
 
-    static final int REQUEST_DESTINATION_FILE = 3;
-    EditText mNameField;
-    EditText mDestinationField;
-    EditText mTextField;
-    TextView mError;
+    private static final int REQUEST_DESTINATION_FILE = 3;
+    private EditText mNameField;
+    private EditText mDestinationField;
+    private EditText mTextField;
+    private TextView mError;
     private String mDestination;
 
     public static EditContactFragment newInstance(String destination) {
@@ -65,6 +67,7 @@ public class EditContactFragment extends EditPictureFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        assert getArguments() != null;
         mDestination = getArguments().getString(CONTACT_DESTINATION);
     }
 
@@ -78,12 +81,12 @@ public class EditContactFragment extends EditPictureFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mNameField = (EditText) view.findViewById(R.id.contact_name);
-        mDestinationField = (EditText) view.findViewById(R.id.destination);
-        mTextField = (EditText) view.findViewById(R.id.text);
-        mError = (TextView) view.findViewById(R.id.error);
+        mNameField = view.findViewById(R.id.contact_name);
+        mDestinationField = view.findViewById(R.id.destination);
+        mTextField = view.findViewById(R.id.text);
+        mError = view.findViewById(R.id.error);
 
-        Button b = (Button) view.findViewById(R.id.import_destination_from_file);
+        Button b = view.findViewById(R.id.import_destination_from_file);
         if (mDestination != null) {
             mDestinationField.setVisibility(View.GONE);
             b.setVisibility(View.GONE);
@@ -115,8 +118,8 @@ public class EditContactFragment extends EditPictureFragment {
 
                 @Override
                 public void onPasswordCanceled() {
-                    getActivity().setResult(Activity.RESULT_CANCELED);
-                    getActivity().finish();
+                    requireActivity().setResult(Activity.RESULT_CANCELED);
+                    requireActivity().finish();
                 }
             });
         } else {
@@ -126,6 +129,7 @@ public class EditContactFragment extends EditPictureFragment {
     }
 
     private void initializeContact() {
+        assert getArguments() != null;
         String newDest = getArguments().getString(NEW_DESTINATION);
 
         if (mDestination != null) {
@@ -150,61 +154,54 @@ public class EditContactFragment extends EditPictureFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.edit_contact, menu);
         menu.findItem(R.id.action_save_contact).setIcon(BoteHelper.getMenuIcon(getActivity(), GoogleMaterial.Icon.gmd_save));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save_contact:
-                String picture = getPictureB64();
-                String name = mNameField.getText().toString();
-                String destination = mDestination == null ?
-                        mDestinationField.getText().toString() : mDestination;
-                String text = mTextField.getText().toString();
+        if (item.getItemId() == R.id.action_save_contact) {
+            String picture = getPictureB64();
+            String name = mNameField.getText().toString();
+            String destination = mDestination == null ?
+                    mDestinationField.getText().toString() : mDestination;
+            String text = mTextField.getText().toString();
 
-                // Check fields
-                if (destination.isEmpty()) {
-                    mDestinationField.setError(getActivity().getString(R.string.this_field_is_required));
-                    mDestinationField.requestFocus();
-                    return true;
-                } else {
-                    mDestinationField.setError(null);
-                }
-
-                mError.setText("");
-
-                try {
-                    String err = BoteHelper.saveContact(destination, name, picture, text);
-                    if (err == null) {
-                        if (mDestination == null) // Only set if adding new contact
-                            getActivity().setResult(Activity.RESULT_OK);
-                        getActivity().finish();
-                    } else {
-                        if (err.startsWith("No Email Destination found in string:") ||
-                                err.startsWith("Not a valid Email Destination:")) {
-                            mDestinationField.setError(getActivity().getString(R.string.not_a_valid_bote_address));
-                            mDestinationField.requestFocus();
-                        } else {
-                            mError.setText(err);
-                        }
-                    }
-                } catch (PasswordException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    mError.setText(e.getLocalizedMessage());
-                } catch (GeneralSecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    mError.setText(e.getLocalizedMessage());
-                }
+            // Check fields
+            if (destination.isEmpty()) {
+                mDestinationField.setError(requireActivity().getString(R.string.this_field_is_required));
+                mDestinationField.requestFocus();
                 return true;
+            } else {
+                mDestinationField.setError(null);
+            }
 
-            default:
-                return super.onOptionsItemSelected(item);
+            mError.setText("");
+
+            try {
+                String err = BoteHelper.saveContact(destination, name, picture, text);
+                if (err == null) {
+                    if (mDestination == null) // Only set if adding new contact
+                        requireActivity().setResult(Activity.RESULT_OK);
+                    requireActivity().finish();
+                } else {
+                    if (err.startsWith("No Email Destination found in string:") ||
+                            err.startsWith("Not a valid Email Destination:")) {
+                        mDestinationField.setError(requireActivity().getString(R.string.not_a_valid_bote_address));
+                        mDestinationField.requestFocus();
+                    } else {
+                        mError.setText(err);
+                    }
+                }
+            } catch (PasswordException | GeneralSecurityException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                mError.setText(e.getLocalizedMessage());
+            }
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -214,7 +211,9 @@ public class EditContactFragment extends EditPictureFragment {
                 Uri result = data.getData();
                 BufferedReader br;
                 try {
-                    ParcelFileDescriptor pfd = getActivity().getContentResolver().openFileDescriptor(result, "r");
+                    assert result != null;
+                    ParcelFileDescriptor pfd = requireActivity().getContentResolver().openFileDescriptor(result, "r");
+                    assert pfd != null;
                     br = new BufferedReader(
                             new InputStreamReader(
                                     new FileInputStream(pfd.getFileDescriptor()))

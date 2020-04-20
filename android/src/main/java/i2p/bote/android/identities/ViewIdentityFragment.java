@@ -33,16 +33,10 @@ public class ViewIdentityFragment extends ViewAddressFragment {
             mIdentity = BoteHelper.getIdentity(mAddress);
             if (mIdentity == null) {
                 // No identity found, finish
-                getActivity().setResult(Activity.RESULT_CANCELED);
-                getActivity().finish();
+                requireActivity().setResult(Activity.RESULT_CANCELED);
+                requireActivity().finish();
             }
-        } catch (PasswordException e) {
-            // TODO Handle
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Handle
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
+        } catch (PasswordException | IOException | GeneralSecurityException e) {
             // TODO Handle
             e.printStackTrace();
         }
@@ -91,15 +85,9 @@ public class ViewIdentityFragment extends ViewAddressFragment {
     public void onDeleteAddress() {
         try {
             BoteHelper.deleteIdentity(mAddress);
-            getActivity().setResult(Activity.RESULT_OK);
-            getActivity().finish();
-        } catch (PasswordException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
+            requireActivity().setResult(Activity.RESULT_OK);
+            requireActivity().finish();
+        } catch (PasswordException | IOException | GeneralSecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

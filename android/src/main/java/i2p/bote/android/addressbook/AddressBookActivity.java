@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.Objects;
+
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.Constants;
 import i2p.bote.android.R;
@@ -27,7 +29,7 @@ public class AddressBookActivity extends BoteActivityBase implements
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             AddressBookFragment f = new AddressBookFragment();
@@ -64,6 +66,7 @@ public class AddressBookActivity extends BoteActivityBase implements
         } else if (requestCode == ALTER_CONTACT_LIST) {
             if (resultCode == Activity.RESULT_OK) {
                 AddressBookFragment f = (AddressBookFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                assert f != null;
                 f.updateContactList();
             }
         } else {

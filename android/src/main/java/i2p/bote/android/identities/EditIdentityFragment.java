@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
 import java.io.IOException;
@@ -24,6 +26,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 import i2p.bote.I2PBote;
@@ -44,14 +47,14 @@ public class EditIdentityFragment extends EditPictureFragment {
     private Callbacks mCallbacks = sDummyCallbacks;
 
     public interface Callbacks {
-        public void onTaskFinished();
+        void onTaskFinished();
     }
     private static Callbacks sDummyCallbacks = new Callbacks() {
         public void onTaskFinished() {}
     };
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof Callbacks))
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
@@ -64,24 +67,24 @@ public class EditIdentityFragment extends EditPictureFragment {
         mCallbacks = sDummyCallbacks;
     }
 
-    public static final String IDENTITY_KEY = "identity_key";
+    static final String IDENTITY_KEY = "identity_key";
 
     // Code to identify the fragment that is calling onActivityResult().
-    static final int IDENTITY_WAITER = 3;
+    private static final int IDENTITY_WAITER = 3;
     // Tag so we can find the task fragment again, in another
     // instance of this fragment after rotation.
-    static final String IDENTITY_WAITER_TAG = "identityWaiterTask";
+    private static final String IDENTITY_WAITER_TAG = "identityWaiterTask";
 
-    static final int DEFAULT_CRYPTO_IMPL = 2;
+    private static final int DEFAULT_CRYPTO_IMPL = 2;
 
     private String mKey;
-    MenuItem mSave;
-    EditText mNameField;
-    EditText mDescField;
-    Spinner mCryptoField;
-    int mDefaultPos;
-    CheckBox mDefaultField;
-    TextView mError;
+    private MenuItem mSave;
+    private EditText mNameField;
+    private EditText mDescField;
+    private Spinner mCryptoField;
+    private int mDefaultPos;
+    private CheckBox mDefaultField;
+    private TextView mError;
 
     public static EditIdentityFragment newInstance(String key) {
         EditIdentityFragment f = new EditIdentityFragment();
@@ -96,6 +99,7 @@ public class EditIdentityFragment extends EditPictureFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        assert getFragmentManager() != null;
         IdentityWaiterFrag f = (IdentityWaiterFrag) getFragmentManager().findFragmentByTag(IDENTITY_WAITER_TAG);
         if (f != null)
             f.setTargetFragment(this, IDENTITY_WAITER);
@@ -111,13 +115,14 @@ public class EditIdentityFragment extends EditPictureFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        assert getArguments() != null;
         mKey = getArguments().getString(IDENTITY_KEY);
 
-        mNameField = (EditText) view.findViewById(R.id.public_name);
-        mDescField = (EditText) view.findViewById(R.id.description);
-        mDefaultField = (CheckBox) view.findViewById(R.id.default_identity);
-        mError = (TextView) view.findViewById(R.id.error);
-        mCryptoField = (Spinner) view.findViewById(R.id.crypto_impl);
+        mNameField = view.findViewById(R.id.public_name);
+        mDescField = view.findViewById(R.id.description);
+        mDefaultField = view.findViewById(R.id.default_identity);
+        mError = view.findViewById(R.id.error);
+        mCryptoField = view.findViewById(R.id.crypto_impl);
 
         if (I2PBote.getInstance().isPasswordRequired()) {
             // Request a password from the user.
@@ -129,8 +134,8 @@ public class EditIdentityFragment extends EditPictureFragment {
 
                 @Override
                 public void onPasswordCanceled() {
-                    getActivity().setResult(Activity.RESULT_CANCELED);
-                    getActivity().finish();
+                    requireActivity().setResult(Activity.RESULT_CANCELED);
+                    requireActivity().finish();
                 }
             });
         } else {
@@ -149,11 +154,7 @@ public class EditIdentityFragment extends EditPictureFragment {
             // If no identities, set this as default by default
             try {
                 mDefaultField.setChecked(I2PBote.getInstance().getIdentities().size() == 0);
-            } catch (PasswordException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
+            } catch (PasswordException | IOException | GeneralSecurityException e) {
                 e.printStackTrace();
             }
         } else {
@@ -169,13 +170,7 @@ public class EditIdentityFragment extends EditPictureFragment {
                 mNameField.setText(identity.getPublicName());
                 mDescField.setText(identity.getDescription());
                 mDefaultField.setChecked(identity.isDefaultIdentity());
-            } catch (PasswordException e) {
-                // TODO Handle
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Handle
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
+            } catch (PasswordException | IOException | GeneralSecurityException e) {
                 // TODO Handle
                 e.printStackTrace();
             }
@@ -183,12 +178,13 @@ public class EditIdentityFragment extends EditPictureFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.edit_identity, menu);
         mSave = menu.findItem(R.id.action_save_identity);
 
         mSave.setIcon(BoteHelper.getMenuIcon(getActivity(), GoogleMaterial.Icon.gmd_save));
 
+        assert getFragmentManager() != null;
         IdentityWaiterFrag f = (IdentityWaiterFrag) getFragmentManager().findFragmentByTag(IDENTITY_WAITER_TAG);
         if (f != null)
             setInterfaceEnabled(false);
@@ -196,8 +192,7 @@ public class EditIdentityFragment extends EditPictureFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.action_save_identity:
+        if (item.getItemId() == R.id.action_save_identity) {
             String picture = getPictureB64();
             String publicName = mNameField.getText().toString();
             String description = mDescField.getText().toString();
@@ -207,7 +202,8 @@ public class EditIdentityFragment extends EditPictureFragment {
             if (mKey == null)
                 cryptoImplId = ((CryptoImplementation) mCryptoField.getSelectedItem()).getId();
 
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(mNameField.getWindowToken(), 0);
 
             setInterfaceEnabled(false);
@@ -225,14 +221,13 @@ public class EditIdentityFragment extends EditPictureFragment {
                     setDefault);
             f.setTask(new IdentityWaiter());
             f.setTargetFragment(EditIdentityFragment.this, IDENTITY_WAITER);
+            assert getFragmentManager() != null;
             getFragmentManager().beginTransaction()
-            .replace(R.id.identity_waiter_frag, f, IDENTITY_WAITER_TAG)
-            .commit();
+                    .replace(R.id.identity_waiter_frag, f, IDENTITY_WAITER_TAG)
+                    .commit();
             return true;
-
-        default:
-            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -257,7 +252,7 @@ public class EditIdentityFragment extends EditPictureFragment {
     }
 
     private class CryptoAdapter extends ArrayAdapter<CryptoImplementation> {
-        public CryptoAdapter(Context context) {
+        CryptoAdapter(Context context) {
             super(context, android.R.layout.simple_spinner_item);
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -270,23 +265,24 @@ public class EditIdentityFragment extends EditPictureFragment {
             }
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             View v = super.getView(position, convertView, parent);
             setViewText(v, position);
             return v;
         }
 
         @Override
-        public View getDropDownView (int position, View convertView, ViewGroup parent) {
+        public View getDropDownView (int position, View convertView, @NonNull ViewGroup parent) {
             View v = super.getDropDownView(position, convertView, parent);
             setViewText(v, position);
             return v;
         }
 
         private void setViewText(View v, int position) {
-            TextView text = (TextView) v.findViewById(android.R.id.text1);
-            text.setText(getItem(position).getName());
+            TextView text = v.findViewById(android.R.id.text1);
+            text.setText(Objects.requireNonNull(getItem(position)).getName());
         }
     }
 
@@ -327,7 +323,7 @@ public class EditIdentityFragment extends EditPictureFragment {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.dialog_status, container, false);
-            mStatus = (TextView) v.findViewById(R.id.status);
+            mStatus = v.findViewById(R.id.status);
 
             if (currentStatus != null && !currentStatus.isEmpty())
                 mStatus.setText(currentStatus);
@@ -338,6 +334,7 @@ public class EditIdentityFragment extends EditPictureFragment {
         @Override
         public Object[] getParams() {
             Bundle args = getArguments();
+            assert args != null;
             return new Object[] {
                     args.getBoolean(CREATE_NEW),
                     args.getInt(CRYPTO_IMPL_ID),
@@ -394,13 +391,13 @@ public class EditIdentityFragment extends EditPictureFragment {
         }
     }
 
-    private class IdentityWaiter extends RobustAsyncTask<Object, String, Throwable> {
+    private static class IdentityWaiter extends RobustAsyncTask<Object, String, Throwable> {
         protected Throwable doInBackground(Object... params) {
             StatusListener<ChangeIdentityStatus> lsnr = new StatusListener<ChangeIdentityStatus>() {
                 public void updateStatus(ChangeIdentityStatus status, String... args) {
                     ArrayList<String> tmp = new ArrayList<>(Arrays.asList(args));
                     tmp.add(0, status.name());
-                    publishProgress(tmp.toArray(new String[tmp.size()]));
+                    publishProgress(tmp.toArray(new String[0]));
                 }
             };
             try {

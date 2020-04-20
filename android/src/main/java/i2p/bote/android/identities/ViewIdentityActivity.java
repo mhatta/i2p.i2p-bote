@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
-import android.os.Build;
 import android.os.Bundle;
 
 import i2p.bote.android.BoteActivityBase;
@@ -35,8 +34,7 @@ public class ViewIdentityActivity extends BoteActivityBase {
         }
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (mNfcAdapter != null &&
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (mNfcAdapter != null) {
             mNfcAdapter.setNdefPushMessageCallback(new NfcAdapter.CreateNdefMessageCallback() {
                 @Override
                 public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
@@ -46,33 +44,24 @@ public class ViewIdentityActivity extends BoteActivityBase {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     @Override
     public void onResume() {
         super.onResume();
 
-        if (mNfcAdapter != null &&
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            mNfcAdapter.enableForegroundNdefPush(this, getNdefMessage());
-        }
     }
 
     private NdefMessage getNdefMessage() {
         ViewIdentityFragment f = (ViewIdentityFragment) getSupportFragmentManager()
                 .findFragmentById(android.R.id.content);
+        assert f != null;
         return f.createNdefMessage();
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     @Override
     public void onPause() {
         super.onPause();
 
-        if (mNfcAdapter != null &&
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            mNfcAdapter.disableForegroundNdefPush(this);
-        }
     }
 }

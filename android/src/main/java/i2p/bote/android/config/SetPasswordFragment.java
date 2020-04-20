@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,33 +14,36 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import i2p.bote.I2PBote;
-import i2p.bote.fileencryption.PasswordIncorrectException;
-import i2p.bote.fileencryption.PasswordMismatchException;
-import i2p.bote.status.StatusListener;
 import i2p.bote.android.R;
 import i2p.bote.android.util.BoteHelper;
 import i2p.bote.android.util.RobustAsyncTask;
 import i2p.bote.android.util.TaskFragment;
+import i2p.bote.fileencryption.PasswordIncorrectException;
+import i2p.bote.fileencryption.PasswordMismatchException;
 import i2p.bote.status.ChangePasswordStatus;
+import i2p.bote.status.StatusListener;
 
 public class SetPasswordFragment extends Fragment {
     private Callbacks mCallbacks = sDummyCallbacks;
 
     public interface Callbacks {
-        public void onTaskFinished();
+        void onTaskFinished();
     }
     private static Callbacks sDummyCallbacks = new Callbacks() {
         public void onTaskFinished() {}
     };
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof Callbacks))
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
@@ -55,22 +57,23 @@ public class SetPasswordFragment extends Fragment {
     }
 
     // Code to identify the fragment that is calling onActivityResult().
-    static final int PASSWORD_WAITER = 0;
+    private static final int PASSWORD_WAITER = 0;
     // Tag so we can find the task fragment again, in another
     // instance of this fragment after rotation.
-    static final String PASSWORD_WAITER_TAG = "passwordWaiterTask";
+    private static final String PASSWORD_WAITER_TAG = "passwordWaiterTask";
 
-    MenuItem mSave;
-    EditText mOldField;
-    EditText mNewField;
-    EditText mConfirmField;
-    TextView mError;
+    private MenuItem mSave;
+    private EditText mOldField;
+    private EditText mNewField;
+    private EditText mConfirmField;
+    private TextView mError;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        assert getFragmentManager() != null;
         PasswordWaiterFrag f = (PasswordWaiterFrag) getFragmentManager().findFragmentByTag(PASSWORD_WAITER_TAG);
         if (f != null)
             f.setTargetFragment(this, PASSWORD_WAITER);
@@ -83,13 +86,13 @@ public class SetPasswordFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mOldField = (EditText) view.findViewById(R.id.password_old);
-        mNewField = (EditText) view.findViewById(R.id.password_new);
-        mConfirmField = (EditText) view.findViewById(R.id.password_confirm);
-        mError = (TextView) view.findViewById(R.id.error);
+        mOldField = view.findViewById(R.id.password_old);
+        mNewField = view.findViewById(R.id.password_new);
+        mConfirmField = view.findViewById(R.id.password_confirm);
+        mError = view.findViewById(R.id.error);
 
         if (!I2PBote.getInstance().getConfiguration().getPasswordFile().exists()) {
             mOldField.setVisibility(View.GONE);
@@ -98,13 +101,14 @@ public class SetPasswordFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.set_password, menu);
         mSave = menu.findItem(R.id.action_set_password);
 
         mSave.setIcon(BoteHelper.getMenuIcon(getActivity(), GoogleMaterial.Icon.gmd_save));
 
         // If task is running, disable the save button.
+        assert getFragmentManager() != null;
         PasswordWaiterFrag f = (PasswordWaiterFrag) getFragmentManager().findFragmentByTag(PASSWORD_WAITER_TAG);
         if (f != null)
             setInterfaceEnabled(false);
@@ -112,13 +116,13 @@ public class SetPasswordFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.action_set_password:
+        if (item.getItemId() == R.id.action_set_password) {
             String oldPassword = mOldField.getText().toString();
             String newPassword = mNewField.getText().toString();
             String confirmNewPassword = mConfirmField.getText().toString();
 
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(mNewField.getWindowToken(), 0);
 
             setInterfaceEnabled(false);
@@ -127,14 +131,13 @@ public class SetPasswordFragment extends Fragment {
             PasswordWaiterFrag f = PasswordWaiterFrag.newInstance(oldPassword, newPassword, confirmNewPassword);
             f.setTask(new PasswordWaiter());
             f.setTargetFragment(SetPasswordFragment.this, PASSWORD_WAITER);
+            assert getFragmentManager() != null;
             getFragmentManager().beginTransaction()
-                .replace(R.id.password_waiter_frag, f, PASSWORD_WAITER_TAG)
-                .commit();
+                    .replace(R.id.password_waiter_frag, f, PASSWORD_WAITER_TAG)
+                    .commit();
             return true;
-
-        default:
-            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -172,7 +175,7 @@ public class SetPasswordFragment extends Fragment {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.dialog_status, container, false);
-            mStatus = (TextView) v.findViewById(R.id.status);
+            mStatus = v.findViewById(R.id.status);
 
             if (currentStatus != null && !currentStatus.isEmpty())
                 mStatus.setText(currentStatus);
@@ -183,6 +186,7 @@ public class SetPasswordFragment extends Fragment {
         @Override
         public String[] getParams() {
             Bundle args = getArguments();
+            assert args != null;
             return args.getStringArray("params");
         }
 
@@ -240,13 +244,13 @@ public class SetPasswordFragment extends Fragment {
         }
     }
 
-    private class PasswordWaiter extends RobustAsyncTask<String, String, Throwable> {
+    private static class PasswordWaiter extends RobustAsyncTask<String, String, Throwable> {
         protected Throwable doInBackground(String... params) {
             StatusListener<ChangePasswordStatus> lsnr = new StatusListener<ChangePasswordStatus>() {
                 public void updateStatus(ChangePasswordStatus status, String... args) {
                     ArrayList<String> tmp = new ArrayList<>(Arrays.asList(args));
                     tmp.add(0, status.name());
-                    publishProgress(tmp.toArray(new String[tmp.size()]));
+                    publishProgress(tmp.toArray(new String[0]));
                 }
             };
             try {

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Objects;
+
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.R;
 import i2p.bote.email.EmailIdentity;
@@ -19,11 +21,11 @@ public class IdentityListActivity extends BoteActivityBase implements
         setContentView(R.layout.activity_toolbar);
 
         // Set the action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             IdentityListFragment f = new IdentityListFragment();
@@ -44,6 +46,7 @@ public class IdentityListActivity extends BoteActivityBase implements
         if (requestCode == ALTER_IDENTITY_LIST) {
             if (resultCode == Activity.RESULT_OK) {
                 IdentityListFragment f = (IdentityListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                assert f != null;
                 f.updateIdentityList();
             }
         } else {

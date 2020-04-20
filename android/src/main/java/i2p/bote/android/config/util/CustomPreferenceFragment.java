@@ -14,6 +14,7 @@ public abstract class CustomPreferenceFragment extends PreferenceFragmentCompat 
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
         // check if dialog is already showing
+        assert getFragmentManager() != null;
         if (getFragmentManager().findFragmentByTag(DIALOG_FRAGMENT_TAG) != null) {
             return;
         }

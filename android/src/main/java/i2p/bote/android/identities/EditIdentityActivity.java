@@ -4,6 +4,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import i2p.bote.android.BoteActivityBase;
 import i2p.bote.android.R;
 
@@ -19,7 +21,7 @@ public class EditIdentityActivity extends BoteActivityBase implements
         setSupportActionBar(toolbar);
 
         // Enable ActionBar app icon to behave as action to go back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             String key = null;
