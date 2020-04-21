@@ -96,6 +96,7 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.4.0'
 }
 
 project.ext.i2pbase = '../../i2p.i2p'

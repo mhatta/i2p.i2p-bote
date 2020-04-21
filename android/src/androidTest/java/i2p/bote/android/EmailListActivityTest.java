@@ -42,7 +42,7 @@ public class EmailListActivityTest {
             // Close nav drawer on first open
             // FIXME: 6/20/15 doesn't work
             onView(withClassName(equalTo(DrawerLayout.class.getName()))).perform(swipeRight());
-        } catch (NoMatchingViewException e) {
+        } catch (NoMatchingViewException ignored) {
         }
     }
 

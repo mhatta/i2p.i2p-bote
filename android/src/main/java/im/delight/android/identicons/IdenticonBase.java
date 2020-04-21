@@ -19,7 +19,7 @@ public abstract class IdenticonBase {
     private volatile int[][] mColors;
     private volatile boolean mReady;
 
-    public IdenticonBase() {
+    IdenticonBase() {
         mRowCount = getRowCount();
         mColumnCount = getColumnCount();
         mPaint = new Paint();
@@ -29,7 +29,7 @@ public abstract class IdenticonBase {
         mPaint.setDither(true);
     }
 
-    public static byte[] getHash(String input) {
+    private static byte[] getHash(String input) {
         byte[] mHash;
         // if the input was null
         if (input == null) {
@@ -50,7 +50,7 @@ public abstract class IdenticonBase {
         return mHash;
     }
 
-    protected void setupColors() {
+    private void setupColors() {
         mColors = new int[mRowCount][mColumnCount];
         int colorVisible = getIconColor();
         int colorInvisible = getBackgroundColor();
@@ -79,7 +79,7 @@ public abstract class IdenticonBase {
         mReady = true;
     }
 
-    public byte getByte(int index) {
+    byte getByte(int index) {
         if (mHash == null) {
             return -128;
         } else {

@@ -15,7 +15,7 @@ public class Identicon extends IdenticonBase {
         return 9;
     }
 
-    protected int getSymmetricColumnIndex(int col) {
+    private int getSymmetricColumnIndex(int col) {
         if (col < CENTER_COLUMN_INDEX) {
             return col;
         } else {
