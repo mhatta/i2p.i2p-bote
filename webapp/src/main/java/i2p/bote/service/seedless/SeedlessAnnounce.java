@@ -63,9 +63,7 @@ class SeedlessAnnounce extends I2PAppThread {
     private String announceString = "GET /Seedless/seedless HTTP/1.0\r\nX-Seedless: announce " + Base64.encode("i2p-bote X" + I2PBote.PROTOCOL_VERSION + "X") + "\r\n\r\n";
     private I2PSocketManager socketManager;
     private SeedlessScrapeServers seedlessScrapeServers;
-    private long lastTime;
-    private long timeSinceLastCheck;
-    
+
     /**
      *
      * @param socketManager
@@ -83,8 +81,8 @@ class SeedlessAnnounce extends I2PAppThread {
     public void run() {
         while (!Thread.interrupted())
             try {
-                lastTime = lastSeedlessAnnounce;
-                timeSinceLastCheck = System.currentTimeMillis() - lastTime;
+                long lastTime = lastSeedlessAnnounce;
+                long timeSinceLastCheck = System.currentTimeMillis() - lastTime;
                 if (lastTime == 0 || timeSinceLastCheck > this.interval) {
                     doSeedlessAnnounce();
                 } else {
@@ -118,12 +116,12 @@ class SeedlessAnnounce extends I2PAppThread {
         InputStream Iin;
         OutputStream Iout;
         BufferedReader data;
-        Boolean didsomething = false;
+        boolean didsomething = false;
         BufferedWriter output;
         while(successful > 0 && it.hasNext()) {
             lastSeedlessAnnounce = System.currentTimeMillis();
             String b32 = it.next();
-            Destination dest = null;
+            Destination dest;
             I2P = null;
 
             try {

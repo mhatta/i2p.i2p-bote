@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 str4d@mail.i2p
  * 
  * This file is part of I2P-Bote.
@@ -38,7 +38,7 @@ public class CSRFCheckTag extends BodyTagSupport {
         HttpServletResponse httpResponse = (HttpServletResponse)response;
 
         String method = httpRequest.getMethod();
-        if (method != "POST") {
+        if (!method.equals("POST")) {
             CsrfGuard csrfGuard = CsrfGuard.getInstance();
             csrfGuard.getLogger().log(String.format("CsrfGuard analyzing request %s with method %s", httpRequest.getRequestURI(), method));
             boolean valid = csrfGuard.isValidRequest(new POSTWrapper(httpRequest), httpResponse);

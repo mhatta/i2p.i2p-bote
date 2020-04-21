@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -82,13 +82,13 @@ public class BoteMailbox extends SimpleMailbox {
                 if (msg1date == null)
                     try {
                         msg1date = email1.getSentDate();
-                    } catch (MessagingException e) {}
+                    } catch (MessagingException ignored) {}
 
                 Date msg2date = email2.getReceivedDate();
                 if (msg2date == null)
                     try {
                         msg2date = email2.getSentDate();
-                    } catch (MessagingException e) {}
+                    } catch (MessagingException ignored) {}
 
                 if (msg1date != null && msg2date != null)
                     return msg1date.compareTo(msg2date);
@@ -122,7 +122,7 @@ public class BoteMailbox extends SimpleMailbox {
         }
     }
 
-    protected void startListening() {
+    private void startListening() {
         folderListener = new FolderListener() {
             public void elementAdded(String messageId) {
                 try {
@@ -160,7 +160,7 @@ public class BoteMailbox extends SimpleMailbox {
         folder.addFolderListener(folderListener);
     }
 
-    protected void stopListening() {
+    void stopListening() {
         folder.removeFolderListener(folderListener);
         folderListener = null;
     }
@@ -168,7 +168,7 @@ public class BoteMailbox extends SimpleMailbox {
     /** Synchronizes the <code>messages</code> field from the underlying {@link EmailFolder}. */
     private void updateMessages() {
         // Generate the updated list of messages
-        messages = Collections.synchronizedList(new ArrayList<BoteMessage>(messageMap.values()));
+        messages = Collections.synchronizedList(new ArrayList<>(messageMap.values()));
         // Update UIDs
         for (BoteMessage message : messages) {
             if (message.getUid() == null) {
@@ -208,7 +208,7 @@ public class BoteMailbox extends SimpleMailbox {
         folder.add(message.getEmail());
     }
     
-    void saveMetadata(BoteMessage message) throws IOException, MessagingException, PasswordException, GeneralSecurityException {
+    void saveMetadata(BoteMessage message) throws IOException, PasswordException, GeneralSecurityException {
         nextModSeqLock.writeLock().lock();
         try {
             folder.saveMetadata(message.getEmail());

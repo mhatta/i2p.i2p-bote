@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -41,8 +41,6 @@ import org.apache.james.mailbox.SubscriptionManager;
 import org.apache.james.mailbox.acl.GroupMembershipResolver;
 import org.apache.james.mailbox.acl.MailboxACLResolver;
 import org.apache.james.mailbox.exception.MailboxException;
-import org.apache.james.mailbox.exception.SubscriptionException;
-import org.apache.james.mailbox.exception.UnsupportedRightException;
 import org.apache.james.mailbox.model.MailboxACL;
 import org.apache.james.mailbox.model.MailboxACL.MailboxACLEntryKey;
 import org.apache.james.mailbox.model.MailboxACL.MailboxACLRight;
@@ -51,7 +49,6 @@ import org.apache.james.mailbox.model.MessageId;
 import org.apache.james.mailbox.model.SimpleMailboxACL;
 import org.apache.james.mailbox.store.Authenticator;
 import org.apache.james.mailbox.store.Authorizator;
-import org.apache.james.mailbox.store.RandomMailboxSessionIdGenerator;
 import org.apache.james.mailbox.store.StoreMailboxManager;
 import org.apache.james.mailbox.store.mail.model.impl.MessageParser;
 import org.apache.james.metrics.api.MetricFactory;
@@ -59,7 +56,6 @@ import org.apache.james.metrics.api.NoopMetricFactory;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -95,7 +91,7 @@ public class ImapService extends IMAPServer {
         Authenticator authenticator = createAuthenticator(passwordVerifier);
         Authorizator authorizator = new Authorizator() {
             @Override
-            public AuthorizationState canLoginAsOtherUser(String userId, String otherUserId) throws MailboxException {
+            public AuthorizationState canLoginAsOtherUser(String userId, String otherUserId) {
                 return AuthorizationState.UNKNOWN_USER;
             }
         };
@@ -139,9 +135,9 @@ public class ImapService extends IMAPServer {
                 mailboxSessionMapperFactory);
     }
 
-    ImapService(ImapDecoder decoder, ImapEncoder encoder, ImapProcessor processor,
-                ImapMetrics imapMetrics, Configuration configuration,
-                MapperFactory mailboxSessionMapperFactory)
+    private ImapService(ImapDecoder decoder, ImapEncoder encoder, ImapProcessor processor,
+                        ImapMetrics imapMetrics, Configuration configuration,
+                        MapperFactory mailboxSessionMapperFactory)
             throws ConfigurationException {
         super(decoder, encoder, processor, imapMetrics);
         this.mailboxSessionMapperFactory = mailboxSessionMapperFactory;
@@ -152,19 +148,19 @@ public class ImapService extends IMAPServer {
         sslKeyStore = configuration.getSSLKeyStoreFile();
         setFileSystem(new FileSystem() {
             @Override
-            public InputStream getResource(String resource) throws IOException {
+            public InputStream getResource(String resource) {
                 return null;
             }
             
             @Override
-            public File getFile(String fileURL) throws FileNotFoundException {
+            public File getFile(String fileURL) {
                 if (fileURL.equals(SSL_KEYSTORE_FILE))
                     return sslKeyStore;
                 return null;
             }
             
             @Override
-            public File getBasedir() throws FileNotFoundException {
+            public File getBasedir() {
                 return null;
             }
         });
@@ -191,7 +187,7 @@ public class ImapService extends IMAPServer {
             if (s != null)
                 try {
                     s.close();
-                } catch (IOException e) {}
+                } catch (IOException ignored) {}
         }
         configure(cfg);   // use the defaults for the rest
     }
@@ -201,27 +197,27 @@ public class ImapService extends IMAPServer {
         return new MailboxACLResolver() {
             
             @Override
-            public MailboxACL applyGlobalACL(MailboxACL resourceACL, boolean resourceOwnerIsGroup) throws UnsupportedRightException {
+            public MailboxACL applyGlobalACL(MailboxACL resourceACL, boolean resourceOwnerIsGroup) {
                 return SimpleMailboxACL.OWNER_FULL_ACL;
             }
 
             @Override
-            public boolean hasRight(String requestUser, GroupMembershipResolver groupMembershipResolver, MailboxACLRight right, MailboxACL resourceACL, String resourceOwner, boolean resourceOwnerIsGroup) throws UnsupportedRightException {
+            public boolean hasRight(String requestUser, GroupMembershipResolver groupMembershipResolver, MailboxACLRight right, MailboxACL resourceACL, String resourceOwner, boolean resourceOwnerIsGroup) {
                 return true;
             }
 
             @Override
-            public boolean isReadWrite(MailboxACLRights mailboxACLRights, Flags sharedFlags) throws UnsupportedRightException {
+            public boolean isReadWrite(MailboxACLRights mailboxACLRights, Flags sharedFlags) {
                 return true;
             }
 
             @Override
-            public MailboxACLRights[] listRights(MailboxACLEntryKey key, GroupMembershipResolver groupMembershipResolver, String resourceOwner, boolean resourceOwnerIsGroup) throws UnsupportedRightException {
+            public MailboxACLRights[] listRights(MailboxACLEntryKey key, GroupMembershipResolver groupMembershipResolver, String resourceOwner, boolean resourceOwnerIsGroup) {
                 return new MailboxACLRights[] {SimpleMailboxACL.FULL_RIGHTS};
             }
 
             @Override
-            public MailboxACLRights resolveRights(String requestUser, GroupMembershipResolver groupMembershipResolver, MailboxACL resourceACL, String resourceOwner, boolean resourceOwnerIsGroup) throws UnsupportedRightException {
+            public MailboxACLRights resolveRights(String requestUser, GroupMembershipResolver groupMembershipResolver, MailboxACL resourceACL, String resourceOwner, boolean resourceOwnerIsGroup) {
                 return SimpleMailboxACL.FULL_RIGHTS;
             }
         };
@@ -244,19 +240,19 @@ public class ImapService extends IMAPServer {
             }
             
             @Override
-            public void unsubscribe(MailboxSession session, String mailbox) throws SubscriptionException {
+            public void unsubscribe(MailboxSession session, String mailbox) {
             }
             
             @Override
-            public Collection<String> subscriptions(MailboxSession session) throws SubscriptionException {
-                Collection<String> folderNames = new ArrayList<String>();
+            public Collection<String> subscriptions(MailboxSession session) {
+                Collection<String> folderNames = new ArrayList<>();
                 for (EmailFolder folder: folderManager.getEmailFolders())
                     folderNames.add(folder.getName());
                 return folderNames;
             }
             
             @Override
-            public void subscribe(MailboxSession session, String mailbox) throws SubscriptionException {
+            public void subscribe(MailboxSession session, String mailbox) {
             }
         };
     }
@@ -283,7 +279,7 @@ public class ImapService extends IMAPServer {
                 return true;
             }
         };
-    };
+    }
 
     /** Starts the IMAP server in a new thread and returns. */
     @Override

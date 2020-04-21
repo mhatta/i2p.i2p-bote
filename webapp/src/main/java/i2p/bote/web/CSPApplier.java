@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 str4d@mail.i2p
  *
  * Based on a code sample from the OWASP website:
@@ -42,9 +42,9 @@ public class CSPApplier implements Filter {
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
      */
     @Override
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
         // Define CSP policies
-        List<String> cspPolicies = new ArrayList<String>();
+        List<String> cspPolicies = new ArrayList<>();
         String originLocationRef = "'self'";
         // --Disable default source in order to avoid browser fallback loading using 'default-src' locations
         cspPolicies.add("default-src 'none'");
@@ -79,7 +79,7 @@ public class CSPApplier implements Filter {
         cspPolicies.add("reflected-xss block");
 
         // Target formating
-        this.policies = cspPolicies.toString().replaceAll("(\\[|\\])", "").replaceAll(",", ";").trim();
+        this.policies = cspPolicies.toString().replaceAll("([\\[\\]])", "").replaceAll(",", ";").trim();
     }
 
     /**

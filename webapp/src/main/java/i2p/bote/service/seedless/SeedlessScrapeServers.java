@@ -49,10 +49,8 @@ class SeedlessScrapeServers extends I2PAppThread {
     private SeedlessParameters seedlessParameters;
     private long interval;   // in milliseconds
     private long lastSeedlessScrapeServers = 0;
-    private List<String> seedlessServers = new ArrayList<String>();
-    private long lastTime;
-    private long timeSinceLastCheck;
-    
+    private List<String> seedlessServers = new ArrayList<>();
+
     /**
      * @param seedlessParameters
      * @param interval In minutes
@@ -67,8 +65,8 @@ class SeedlessScrapeServers extends I2PAppThread {
     public void run() {
         while (!Thread.interrupted())
             try {
-                lastTime = lastSeedlessScrapeServers;
-                timeSinceLastCheck = System.currentTimeMillis() - lastTime;
+                long lastTime = lastSeedlessScrapeServers;
+                long timeSinceLastCheck = System.currentTimeMillis() - lastTime;
                 if (lastTime == 0 || timeSinceLastCheck > this.interval) {
                     doSeedlessScrapeServers();
                 } else {
@@ -87,8 +85,8 @@ class SeedlessScrapeServers extends I2PAppThread {
         HttpURLConnection h;
         int i;
         String foo;
-        List<String> metadatas = new ArrayList<String>();
-        List<String> ip32s = new ArrayList<String>();
+        List<String> metadatas = new ArrayList<>();
+        List<String> ip32s = new ArrayList<>();
         InputStream in;
         BufferedReader data;
         String line;
@@ -97,7 +95,7 @@ class SeedlessScrapeServers extends I2PAppThread {
         log.debug("doSeedlessScrapeServers");
         try {
             ProxyRequest proxy = new ProxyRequest();
-            h = proxy.doURLRequest(seedlessParameters.getSeedlessUrl(), seedlessParameters.getServersLocateHeader(), null, -1, "admin", seedlessParameters.getConsolePassword());
+            h = proxy.doURLRequest(seedlessParameters.getSeedlessUrl(), seedlessParameters.getServersLocateHeader(), seedlessParameters.getConsolePassword());
             if(h != null) {
                 i = h.getResponseCode();
                 if(i == 200) {
@@ -106,18 +104,17 @@ class SeedlessScrapeServers extends I2PAppThread {
                     while((line = data.readLine()) != null) {
                         metadatas.add(line);
                     }
-                    Iterator<String> it = metadatas.iterator();
-                    while(it.hasNext()) {
-                        foo = it.next();
+                    for (String metadata : metadatas) {
+                        foo = metadata;
                         ip32 = Base64.decodeToString(foo).split(" ")[0];
-                        if(!ip32s.contains(ip32)) {
+                        if (!ip32s.contains(ip32)) {
                             ip32s.add(ip32.trim());
                         }
                     }
                 }
             }
 
-        } catch(IOException ex) {
+        } catch(IOException ignored) {
         }
         Collections.shuffle(ip32s, new Random());
         seedlessServers = ip32s;

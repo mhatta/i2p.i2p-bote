@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -101,7 +101,7 @@ public class MultipartFilter implements Filter {
 
         DataSource dataSource = new DataSource() {
             @Override
-            public OutputStream getOutputStream() throws IOException {
+            public OutputStream getOutputStream() {
                 return null;
             }
             
@@ -121,7 +121,7 @@ public class MultipartFilter implements Filter {
             }
         };
         
-        Map<String, String[]> nonFileParameters = new HashMap<String, String[]>();
+        Map<String, String[]> nonFileParameters = new HashMap<>();
         
         try {
             // <nasty hack>
@@ -159,12 +159,8 @@ public class MultipartFilter implements Filter {
                     InputStream input = bodyPart.getInputStream();
                     File tempFile = File.createTempFile("i2pbote_attachment_", ".tmp");
                     tempFile.deleteOnExit();   // under normal circumstances, the temp files are deleted after the email is added to the outbox
-                    FileOutputStream output = new FileOutputStream(tempFile);
-                    try {
+                    try (FileOutputStream output = new FileOutputStream(tempFile)) {
                         Util.copy(input, output);
-                    }
-                    finally {
-                        output.close();
                     }
                     
                     UploadedFile uploadedFile = new UploadedFile(origFilename, tempFile.getAbsolutePath());
@@ -248,7 +244,6 @@ public class MultipartFilter implements Filter {
     private static HttpServletRequest wrapRequest(HttpServletRequest request, final Map<String, String[]> parameterMap) {
         return new HttpServletRequestWrapper(request) {
             // merge with the super parameters so parameters added in <jsp:forward> don't get lost
-            @SuppressWarnings("unchecked")
             public Map<String, String[]> getParameterMap() {
                 return merge(parameterMap, super.getParameterMap());
             }
@@ -267,7 +262,7 @@ public class MultipartFilter implements Filter {
             }
             
             private Map<String, String[]> merge(Map<String, String[]> map1, Map<String, String[]> map2) {
-                Map<String, Set<String>> mergedMap = new HashMap<String, Set<String>>();
+                Map<String, Set<String>> mergedMap = new HashMap<>();
                 
                 for (String key: map1.keySet())
                     addAll(mergedMap, key, map1.get(key));
@@ -275,7 +270,7 @@ public class MultipartFilter implements Filter {
                     addAll(mergedMap, key, map2.get(key));
                 
                 // convert Set<String> to String[]
-                Map<String, String[]> arrayMap = new HashMap<String, String[]>();
+                Map<String, String[]> arrayMap = new HashMap<>();
                 for (String key: mergedMap.keySet()) {
                     String[] value = mergedMap.get(key).toArray(new String[0]);
                     arrayMap.put(key, value);
@@ -287,7 +282,7 @@ public class MultipartFilter implements Filter {
             private void addAll(Map<String, Set<String>> map, String key, String[] valuesToAdd) {
                 Set<String> values = map.get(key);
                 if (values == null)
-                    values = new HashSet<String>();
+                    values = new HashSet<>();
                 values.addAll(Arrays.asList(valuesToAdd));
                 map.put(key, values);
             }

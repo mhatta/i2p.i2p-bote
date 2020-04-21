@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -47,7 +47,7 @@ public class MessageTag extends BodyTagSupport {
     private String var;
     private int scope = PageContext.PAGE_SCOPE;
     private boolean hide;
-    private List<String> parameters = new ArrayList<String>();   // holds values specified in <ib:param> tags
+    private List<String> parameters = new ArrayList<>();   // holds values specified in <ib:param> tags
     private PageContext pageContext;
 
     @Override
@@ -87,7 +87,7 @@ public class MessageTag extends BodyTagSupport {
                 break;
             String indexStr = translation.substring(curlyStart+1, curlyEnd);
             try {
-                int index = Integer.valueOf(indexStr);
+                int index = Integer.parseInt(indexStr);
                 if (parameters.size() <= index)
                     log.error("Parameter #" + index + " doesn't exist for message key <" + key + ">.");
                 else

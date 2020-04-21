@@ -40,9 +40,7 @@ class SeedlessRequestPeers extends I2PAppThread {
     private SeedlessParameters seedlessParameters;
     private long interval;   // in milliseconds
     private long lastSeedlessRequestPeers = 0;
-    private long lastTime;
-    private long timeSinceLastCheck;
-    
+
     /**
      *
      * @param interval In minutes
@@ -57,8 +55,8 @@ class SeedlessRequestPeers extends I2PAppThread {
     public void run() {
         while (!Thread.interrupted())
             try {
-                lastTime = lastSeedlessRequestPeers;
-                timeSinceLastCheck = System.currentTimeMillis() - lastTime;
+                long lastTime = lastSeedlessRequestPeers;
+                long timeSinceLastCheck = System.currentTimeMillis() - lastTime;
                 if (lastTime == 0 || timeSinceLastCheck > this.interval) {
                     doSeedlessRequestPeers();
                 } else {
@@ -78,12 +76,12 @@ class SeedlessRequestPeers extends I2PAppThread {
         log.debug("doSeedlessRequestPeers");
         try {
             ProxyRequest proxy = new ProxyRequest();
-            h = proxy.doURLRequest(seedlessParameters.getSeedlessUrl(), seedlessParameters.getPeersRequestHeader(), null, -1, "admin", seedlessParameters.getConsolePassword());
+            h = proxy.doURLRequest(seedlessParameters.getSeedlessUrl(), seedlessParameters.getPeersRequestHeader(), seedlessParameters.getConsolePassword());
             if(h != null) {
                 h.getResponseCode();
             }
 
-        } catch(IOException ex) {
+        } catch(IOException ignored) {
         }
         log.debug("doSeedlessRequestPeers Done.");
         lastSeedlessRequestPeers = System.currentTimeMillis();

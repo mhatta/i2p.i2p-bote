@@ -1,4 +1,4 @@
-/**
+/*
  *            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                    Version 2, December 2004
  *
@@ -23,15 +23,14 @@
  */
 package i2p.bote.service.seedless;
 
+import net.i2p.util.Log;
+
 import java.io.IOException;
 import java.net.Authenticator;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
-
-import net.i2p.util.Log;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  *
@@ -39,8 +38,6 @@ import net.i2p.util.Log;
  */
 class ProxyRequest {
     private Log log = new Log(ProxyRequest.class);
-    private URLConnection c = null;
-    private HttpURLConnection h = null;
 
     /**
      * Instance
@@ -54,23 +51,15 @@ class ProxyRequest {
      *
      * @param strURL A string representing the URL to request, eg, "http://sponge.i2p/"
      * @param header the X-Seedless: header to add to the request.
-     * @param strProxy A string representing either the IP address or host name of the proxy server.
-     * @param iProxyPort  An integer that indicates the proxy port or -1 to indicate the default port for the protocol.
      * @return HTTPURLConnection or null
      */
-    HttpURLConnection doURLRequest(String strURL, String header, String strProxy, int iProxyPort, String user, String pass) {
+    HttpURLConnection doURLRequest(String strURL, String header, String pass) {
         try {
-            URL url = null;
+            URL url;
             // System.out.println("HTTP Request: " + strURL);
-            URL urlOriginal = new URL(strURL);
-            if((null != strProxy) && (0 < strProxy.length())) {
-                URL urlProxy = new URL(urlOriginal.getProtocol(), strProxy, iProxyPort, strURL); // The original URL is passed as "the file on the host".
-                url = urlProxy;
-            } else {
-                url = urlOriginal;
-            }
+            url = new URL(strURL);
             if(pass != null) {
-                final String login = user;
+                final String login = "admin";
                 final String password = pass;
 
                 Authenticator.setDefault(new Authenticator() {
@@ -81,7 +70,7 @@ class ProxyRequest {
                 });
             }
 
-            c = url.openConnection();
+            URLConnection c = url.openConnection();
             c.setUseCaches(false);
             c.setConnectTimeout(1000 * 45); // Eepproxy will time out in 1 minute
             if(header != null) {
@@ -89,13 +78,11 @@ class ProxyRequest {
             }
             if(c instanceof HttpURLConnection) {
                 // instanceof returns true only if the object is not null.
-                h = (HttpURLConnection)c;
+                HttpURLConnection h = (HttpURLConnection) c;
                 h.connect();
                 return h;
             }
             return null;
-        } catch(MalformedURLException ex) {
-            log.debug("Can't get URL \"" + strURL + "\"", ex);
         } catch(IOException ex) {
             log.debug("Can't get URL \"" + strURL + "\"", ex);
         }

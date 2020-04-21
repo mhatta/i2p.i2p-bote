@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -32,6 +32,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.Date;
@@ -151,7 +152,6 @@ public class BoteMessage implements MailboxMessage {
                     stream.write(CRLF);
                     if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
                         // write headers
-                        @SuppressWarnings("unchecked")
                         Enumeration<Header> headers = part.getAllHeaders();
                         while (headers.hasMoreElements()) {
                             Header header = headers.nextElement();
@@ -242,7 +242,6 @@ public class BoteMessage implements MailboxMessage {
                 email.setReplyTo(replyToAddrs);
             }
 
-            @SuppressWarnings("unchecked")
             List<String> headerLines = Collections.list(email.getAllHeaderLines());
             StringBuilder oneString = new StringBuilder();
             for (String headerLine: headerLines) {
@@ -259,7 +258,7 @@ public class BoteMessage implements MailboxMessage {
             email.setRecipients(RecipientType.BCC, bcc);
             email.setReplyTo(replyTo);
 
-            byte[] bytes = oneString.toString().getBytes("UTF-8");   // should only contain ASCII which is compatible
+            byte[] bytes = oneString.toString().getBytes(StandardCharsets.UTF_8);   // should only contain ASCII which is compatible
             return new ByteArrayInputStream(bytes);
         } catch (MessagingException e) {
             throw new IOException(e);
@@ -284,8 +283,7 @@ public class BoteMessage implements MailboxMessage {
         try {
             String nameAndDest = GeneralHelper.getImapNameAndDestination(address.toString());
             return new InternetAddress(nameAndDest);
-        } catch (PasswordException e) {
-        } catch (GeneralSecurityException e) {
+        } catch (PasswordException | GeneralSecurityException ignored) {
         }
         return null;
     }
@@ -333,7 +331,7 @@ public class BoteMessage implements MailboxMessage {
     @Override
     public Long getTextualLineCount() {
         try {
-            return Long.valueOf(email.getLineCount());
+            return (long) email.getLineCount();
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

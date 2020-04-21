@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -38,6 +38,7 @@ import java.security.GeneralSecurityException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -96,7 +97,7 @@ public class JSPHelper extends GeneralHelper {
      * @return A map whose keys start with "nofilter_recipient", sorted by key
      */
     public static SortedMap<String, String> getSortedRecipientParams(Map<String, String> parameters) {
-        SortedMap<String, String> newMap = new TreeMap<String, String>();
+        SortedMap<String, String> newMap = new TreeMap<>();
         for (String key: parameters.keySet()) {
             if (key == null)
                 continue;
@@ -118,7 +119,7 @@ public class JSPHelper extends GeneralHelper {
 
         // Convert request.getParameterMap() to a Map<String, String>
         Map<String, String[]> parameterArrayMap = request.getParameterMap();
-        Map<String, String> parameterStringMap = new HashMap<String, String>();
+        Map<String, String> parameterStringMap = new HashMap<>();
         for (Map.Entry<String, String[]> parameter: parameterArrayMap.entrySet()) {
             String[] value = parameter.getValue();
             if (value!=null && value.length>0)
@@ -133,19 +134,19 @@ public class JSPHelper extends GeneralHelper {
         if (action!=null && action.startsWith("removeRecipient")) {
             String indexString = action.substring("removeRecipient".length());
             if (isNumeric(indexString))
-                indexToRemove = Integer.valueOf(indexString);
+                indexToRemove = Integer.parseInt(indexString);
         }
 
         // make an Iterator over the selectedContact values
         String[] newAddressesArray = request.getParameterValues("nofilter_selectedContact");
         Iterator<String> newAddresses;
         if (newAddressesArray == null)
-            newAddresses = new ArrayList<String>().iterator();
+            newAddresses = Collections.emptyIterator();
         else
             newAddresses = Arrays.asList(newAddressesArray).iterator();
 
         // make selectedContact values and oldAddresses into one List
-        List<RecipientAddress> mergedAddresses = new ArrayList<RecipientAddress>();
+        List<RecipientAddress> mergedAddresses = new ArrayList<>();
         int i = 0;
         for (String address: oldAddresses.values()) {
             // don't add it if it needs to be removed
@@ -345,12 +346,9 @@ public class JSPHelper extends GeneralHelper {
                 title = "I2P-Bote: " + getNameAndShortDestination(email.getOneFromAddress());
                 body = email.getSubject();
             }
-        } catch (PasswordException e) {
-        } catch (MessagingException e) {
-        } catch (IOException e) {
-        } catch (GeneralSecurityException e) {
+        } catch (PasswordException | GeneralSecurityException | IOException | MessagingException ignored) {
         }
-        if (body == "")
+        if (body.equals(""))
             body = _t("New email received");
         return "<script>\nnotifTitle=\"" + title + "\";\nnotifBody=\"" + body + "\";\n</script>";
     }

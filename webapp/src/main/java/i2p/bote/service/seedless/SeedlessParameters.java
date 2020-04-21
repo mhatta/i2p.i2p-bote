@@ -42,7 +42,6 @@ class SeedlessParameters {
     private static SeedlessParameters instance;
     
     private boolean ready;
-    private String addr;
     private String svcURL;
     private String cpass;
     private String peersReqHeader;
@@ -69,7 +68,7 @@ class SeedlessParameters {
         
         ContextHelper ctx = new ContextHelper(null);
         // 1: Get the console IP:port
-        addr = ctx.getConsoleAddress();
+        String addr = ctx.getConsoleAddress();
         if(addr == null) {
             log.error("No router console found, trying default host/port: " + DEFAULT_ADDR);
             addr = DEFAULT_ADDR;
@@ -90,7 +89,7 @@ class SeedlessParameters {
         while(tries > 0) {
             try {
                 ProxyRequest proxy = new ProxyRequest();
-                h = proxy.doURLRequest(url, null, null, -1, "admin", apass);
+                h = proxy.doURLRequest(url, null, apass);
                 if(h != null) {
                     i = h.getResponseCode();
                     if(i == 200) {
@@ -99,7 +98,7 @@ class SeedlessParameters {
                     }
                 }
 
-            } catch(IOException ex) {
+            } catch(IOException ignored) {
             }
 
             tries--;
@@ -114,7 +113,7 @@ class SeedlessParameters {
                 tries--;
                 try {
                     ProxyRequest proxy = new ProxyRequest();
-                    h = proxy.doURLRequest(svcurl, "stat ping!", null, -1, "admin", apass);
+                    h = proxy.doURLRequest(svcurl, "stat ping!", apass);
                     if(h != null) {
                         i = h.getResponseCode();
                         if(i == 200) {
@@ -123,7 +122,7 @@ class SeedlessParameters {
                         }
                     }
 
-                } catch(IOException ex) {
+                } catch(IOException ignored) {
                 }
                 if(!ready) {
                     try {
@@ -169,7 +168,7 @@ class SeedlessParameters {
     private static class ContextHelper {
         Object _context;
 
-        public ContextHelper(String contextId) {
+        ContextHelper(String contextId) {
             _context = getContext(contextId);
         }
 
@@ -201,10 +200,7 @@ class SeedlessParameters {
                 }
                 // not found, so just give them the first we can find
                 return contexts.get(0);
-            } catch (ClassNotFoundException e) {
-            } catch (NoSuchMethodException e) {
-            } catch (IllegalAccessException e) {
-            } catch (InvocationTargetException e) {
+            } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
             }
 
             return null;
@@ -232,19 +228,15 @@ class SeedlessParameters {
                             if(host.contains(",")) {
                                 String checks[] = host.split(",");
                                 host = null;
-                                for(int h = 0; h < checks.length; h++) {
-                                    if(!checks[h].contains(":")) {
-                                        host = checks[h];
+                                for (String check : checks) {
+                                    if (!check.contains(":")) {
+                                        host = check;
                                     }
                                 }
                             }
                         }
                     }
-                } catch (ClassNotFoundException e) {
-                } catch (NoSuchMethodException e) {
-                } catch (NoSuchFieldException e) {
-                } catch (IllegalAccessException e) {
-                } catch (InvocationTargetException e) {
+                } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException | IllegalAccessException | InvocationTargetException ignored) {
                 }
             }
             return (host != null && port != null) ? host + ":" + port : null;
@@ -263,10 +255,7 @@ class SeedlessParameters {
                 if (password != null) {
                     password = password.trim();
                 }
-            } catch (ClassNotFoundException e) {
-            } catch (NoSuchMethodException e) {
-            } catch (IllegalAccessException e) {
-            } catch (InvocationTargetException e) {
+            } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
             }
             return password;
         }

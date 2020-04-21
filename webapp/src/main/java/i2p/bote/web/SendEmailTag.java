@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -49,8 +49,8 @@ public class SendEmailTag extends BodyTagSupport {
     
     private Log log = new Log(SendEmailTag.class);
     private String senderAddress;
-    private List<Recipient> recipients = new ArrayList<Recipient>();
-    private List<Attachment> attachments = new ArrayList<Attachment>();
+    private List<Recipient> recipients = new ArrayList<>();
+    private List<Attachment> attachments = new ArrayList<>();
     private String subject;
     private String message;
     private boolean includeSentTime;

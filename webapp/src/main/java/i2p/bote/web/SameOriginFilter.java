@@ -19,7 +19,7 @@ public class SameOriginFilter implements Filter {
     private static final Log log = new Log(SameOriginFilter.class);
 
     @Override
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
     }
 
     @Override

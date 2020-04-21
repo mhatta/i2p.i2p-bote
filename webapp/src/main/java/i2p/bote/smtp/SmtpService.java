@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,11 +21,17 @@
 
 package i2p.bote.smtp;
 
-import i2p.bote.Configuration;
-import i2p.bote.MailSender;
-import i2p.bote.email.Email;
-import i2p.bote.fileencryption.PasswordException;
-import i2p.bote.fileencryption.PasswordVerifier;
+import net.i2p.util.Log;
+import net.i2p.util.StrongTls;
+
+import org.subethamail.smtp.MessageContext;
+import org.subethamail.smtp.MessageHandler;
+import org.subethamail.smtp.MessageHandlerFactory;
+import org.subethamail.smtp.RejectException;
+import org.subethamail.smtp.auth.EasyAuthenticationHandlerFactory;
+import org.subethamail.smtp.auth.LoginFailedException;
+import org.subethamail.smtp.auth.UsernamePasswordValidator;
+import org.subethamail.smtp.server.SMTPServer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,19 +47,11 @@ import javax.mail.internet.InternetAddress;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-import net.i2p.data.DataFormatException;
-import net.i2p.util.Log;
-import net.i2p.util.StrongTls;
-
-import org.subethamail.smtp.MessageContext;
-import org.subethamail.smtp.MessageHandler;
-import org.subethamail.smtp.MessageHandlerFactory;
-import org.subethamail.smtp.RejectException;
-import org.subethamail.smtp.TooMuchDataException;
-import org.subethamail.smtp.auth.EasyAuthenticationHandlerFactory;
-import org.subethamail.smtp.auth.LoginFailedException;
-import org.subethamail.smtp.auth.UsernamePasswordValidator;
-import org.subethamail.smtp.server.SMTPServer;
+import i2p.bote.Configuration;
+import i2p.bote.MailSender;
+import i2p.bote.email.Email;
+import i2p.bote.fileencryption.PasswordException;
+import i2p.bote.fileencryption.PasswordVerifier;
 
 /**
  * IMAP implementation for I2P-Bote using <a href="http://code.google.com/p/subethasmtp/">
@@ -136,7 +134,7 @@ public class SmtpService extends SMTPServer {
                 
                 /** Receives the email data from the client and queues it for sending. */
                 @Override
-                public void data(InputStream data) throws RejectException, TooMuchDataException, IOException
+                public void data(InputStream data) throws RejectException, IOException
                 {
                     try {
                         Email email = new Email(data, false);
@@ -145,15 +143,9 @@ public class SmtpService extends SMTPServer {
                         email.removeBoteSuffixes();
                         
                         mailSender.sendEmail(email);
-                    } catch (IOException e) {
-                        throw e;
-                    } catch (AddressException e) {
+                    } catch (AddressException | PasswordException e) {
                         throw new RejectException(e.getLocalizedMessage());
-                    } catch (PasswordException e) {
-                        throw new RejectException(e.getLocalizedMessage());
-                    } catch(MessagingException e) {
-                        throw new IOException(e);
-                    } catch (GeneralSecurityException e) {
+                    } catch(MessagingException | GeneralSecurityException e) {
                         throw new IOException(e);
                     }
                 }
@@ -182,7 +174,7 @@ public class SmtpService extends SMTPServer {
             if (!SMTP_USER.equals(username))
                 throw new LoginFailedException();
             
-            byte[] passwordBytes = password.toString().getBytes();
+            byte[] passwordBytes = password.getBytes();
             try {
                 passwordVerifier.tryPassword(passwordBytes);
             } catch (PasswordException e) {

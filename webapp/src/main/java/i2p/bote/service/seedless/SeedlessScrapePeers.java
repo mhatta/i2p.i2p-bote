@@ -24,21 +24,20 @@
 
 package i2p.bote.service.seedless;
 
+import net.i2p.I2PAppContext;
+import net.i2p.data.Base64;
+import net.i2p.data.Destination;
+import net.i2p.util.I2PAppThread;
+import net.i2p.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import net.i2p.I2PAppContext;
-import net.i2p.data.Base64;
-import net.i2p.data.Destination;
-import net.i2p.util.I2PAppThread;
-import net.i2p.util.Log;
 
 /**
  * 
@@ -50,9 +49,7 @@ class SeedlessScrapePeers extends I2PAppThread {
     private long interval;   // in milliseconds
     private long lastSeedlessScrapePeers = 0;
     private List<Destination> peers;
-    private long lastTime;
-    private long timeSinceLastCheck;
-    
+
     /**
      *
      * @param interval In minutes
@@ -61,15 +58,15 @@ class SeedlessScrapePeers extends I2PAppThread {
         super("SeedlsScpPrs");
         this.seedlessParameters = seedlessParameters;
         this.interval = TimeUnit.MINUTES.toMillis(interval);
-        peers = new ArrayList<Destination>();
+        peers = new ArrayList<>();
     }
 
     @Override
     public void run() {
         while (!Thread.interrupted())
             try {
-                lastTime = lastSeedlessScrapePeers;
-                timeSinceLastCheck = System.currentTimeMillis() - lastTime;
+                long lastTime = lastSeedlessScrapePeers;
+                long timeSinceLastCheck = System.currentTimeMillis() - lastTime;
                 if (lastTime == 0 || timeSinceLastCheck > this.interval) {
                     doSeedlessScrapePeers();
                 } else {
@@ -88,8 +85,8 @@ class SeedlessScrapePeers extends I2PAppThread {
         HttpURLConnection h;
         int i;
         String foo;
-        List<String> metadatas = new ArrayList<String>();
-        List<String> ip32s = new ArrayList<String>();
+        List<String> metadatas = new ArrayList<>();
+        List<String> ip32s = new ArrayList<>();
         InputStream in;
         BufferedReader data;
         String line;
@@ -98,7 +95,7 @@ class SeedlessScrapePeers extends I2PAppThread {
 
         try {
             ProxyRequest proxy = new ProxyRequest();
-            h = proxy.doURLRequest(seedlessParameters.getSeedlessUrl(), seedlessParameters.getPeersLocateHeader(), null, -1, "admin", seedlessParameters.getConsolePassword());
+            h = proxy.doURLRequest(seedlessParameters.getSeedlessUrl(), seedlessParameters.getPeersLocateHeader(), seedlessParameters.getConsolePassword());
             if(h != null) {
                 i = h.getResponseCode();
                 if(i == 200) {
@@ -107,18 +104,17 @@ class SeedlessScrapePeers extends I2PAppThread {
                     while((line = data.readLine()) != null) {
                         metadatas.add(line);
                     }
-                    Iterator<String> it = metadatas.iterator();
-                    while(it.hasNext()) {
-                        foo = it.next();
+                    for (String metadata : metadatas) {
+                        foo = metadata;
                         ip32 = Base64.decodeToString(foo).split(" ")[0].trim();
-                        if(!ip32s.contains(ip32)) {
+                        if (!ip32s.contains(ip32)) {
                             ip32s.add(ip32);
                         }
                     }
                 }
             }
 
-        } catch(IOException ex) {
+        } catch(IOException ignored) {
         }
         
         for (String b32Peer: ip32s) {

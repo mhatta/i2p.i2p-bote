@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -44,8 +44,9 @@ public class QuoteTag extends SimpleTagSupport {
         try {
             StringBuilder quotation = new StringBuilder();
             String[] lines = text.split("\r?\n|\r");
-            for (String line: lines)
-                quotation = quotation.append("&gt; ").append(line).append("\n");
+            for (String line: lines) {
+                quotation.append("&gt; ").append(line).append("\n");
+            }
             out.println(quotation);
         } catch (IOException e) {
             log.error("Can't write output to HTML page", e);

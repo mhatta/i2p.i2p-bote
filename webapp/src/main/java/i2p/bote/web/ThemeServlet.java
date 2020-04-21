@@ -61,12 +61,8 @@ public class ThemeServlet extends HttpServlet {
         File resource = new File(themeDir, path);
         if (!resource.exists())
             return;
-        FileInputStream inputStream = new FileInputStream(resource);
-        try {
+        try (FileInputStream inputStream = new FileInputStream(resource)) {
             Util.copy(inputStream, response.getOutputStream());
-        }
-        finally {
-            inputStream.close();
         }
     }
 }

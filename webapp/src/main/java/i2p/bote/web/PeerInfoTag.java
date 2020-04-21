@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2015  str4d@mail.i2p
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
@@ -194,7 +194,7 @@ public class PeerInfoTag extends SimpleTagSupport {
 
         JFreeChart dhtChart = new JFreeChart(
                 _t("Kademlia Peers:"), JFreeChart.DEFAULT_TITLE_FONT,
-                plot, numDhtPeers == 0 ? false : true);
+                plot, numDhtPeers != 0);
         return ServletUtilities.saveChartAsPNG(dhtChart, 400, 300, null);
     }
 
@@ -236,7 +236,7 @@ public class PeerInfoTag extends SimpleTagSupport {
 
         JFreeChart chart = new JFreeChart(
                 _t("Relay Peers:"), JFreeChart.DEFAULT_TITLE_FONT,
-                plot, relayPeers.length == 0 ? false : true);
+                plot, relayPeers.length != 0);
         return ServletUtilities.saveChartAsPNG(chart, 400, 300, null);
     }
 
@@ -245,11 +245,9 @@ public class PeerInfoTag extends SimpleTagSupport {
         if (reason == null) {
             return "";
         }
-        switch (reason.getReason()) {
-            case WRONG_PROTO_VER:
-                return _t("Wrong protocol version:") + " " + reason.getArgs()[0];
-            default:
-                return "";
+        if (reason.getReason() == BanReason.Reason.WRONG_PROTO_VER) {
+            return _t("Wrong protocol version:") + " " + reason.getArgs()[0];
         }
+        return "";
     }
 }

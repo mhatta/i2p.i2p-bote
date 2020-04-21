@@ -13,18 +13,16 @@ public class CSRFLogger implements ILogger {
 
     @Override
     public void log(String msg) {
-        LOGGER.info(msg.replaceAll("(\\r|\\n)", ""));
+        LOGGER.info(msg.replaceAll("([\\r\\n])", ""));
     }
 
     @Override
     public void log(LogLevel level, String msg) {
         // Remove CR and LF characters to prevent CRLF injection
-        String sanitizedMsg = msg.replaceAll("(\\r|\\n)", "");
+        String sanitizedMsg = msg.replaceAll("([\\r\\n])", "");
         
         switch(level) {
             case Trace:
-                LOGGER.debug(sanitizedMsg);
-                break;
             case Debug:
                 LOGGER.debug(sanitizedMsg);
                 break;
@@ -54,12 +52,10 @@ public class CSRFLogger implements ILogger {
     public void log(LogLevel level, Exception exception) {
             switch(level) {
             case Trace:
-                LOGGER.debug(exception.getLocalizedMessage(), exception);
+                case Debug:
+                    LOGGER.debug(exception.getLocalizedMessage(), exception);
                 break;
-            case Debug:
-                LOGGER.debug(exception.getLocalizedMessage(), exception);
-                break;
-            case Info:
+                case Info:
                 LOGGER.info(exception.getLocalizedMessage(), exception);
                 break;
             case Warning:

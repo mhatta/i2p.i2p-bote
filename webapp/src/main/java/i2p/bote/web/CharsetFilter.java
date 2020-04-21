@@ -1,4 +1,4 @@
-/**
+/*
  * Presumably under the Apache License, v2.0 which is compatible with GPL v3.
  */
 
@@ -22,7 +22,7 @@ public class CharsetFilter implements Filter {
     private String encoding;
 
     @Override
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
         encoding = config.getInitParameter("requestEncoding");
         if (encoding == null)
             encoding = "UTF-8";

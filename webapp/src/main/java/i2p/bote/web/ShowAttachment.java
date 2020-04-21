@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -64,7 +64,7 @@ public class ShowAttachment extends HttpServlet {
         if (email == null)
             throw new ServletException("Message ID <" + messageID + "> not found in folder <" + folderName + ">.");
         
-        List<Part> parts = null;
+        List<Part> parts;
         try {
             parts = email.getParts();
         }
@@ -75,9 +75,9 @@ public class ShowAttachment extends HttpServlet {
         String partIndexStr = request.getParameter("part");
         int partIndex = -1;
         try {
-            partIndex = Integer.valueOf(partIndexStr);
+            partIndex = Integer.parseInt(partIndexStr);
         }
-        catch (NumberFormatException e) {
+        catch (NumberFormatException ignored) {
         }
         if (partIndex<0 || partIndex>=parts.size())
             throw new ServletException("Invalid part index: <" + partIndexStr + ">, must be a number between 0 and " + (parts.size()-1));
