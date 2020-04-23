@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -45,10 +45,10 @@ import net.i2p.util.Log;
  */
 public class I2PPacketDispatcher implements I2PSessionMuxedListener {
     private Log log = new Log(I2PPacketDispatcher.class);
-    private List<PacketListener> packetListeners;
+    private final List<PacketListener> packetListeners;
 
     public I2PPacketDispatcher() {
-        packetListeners = new ArrayList<PacketListener>();
+        packetListeners = new ArrayList<>();
     }
     
     public void addPacketListener(PacketListener listener) {

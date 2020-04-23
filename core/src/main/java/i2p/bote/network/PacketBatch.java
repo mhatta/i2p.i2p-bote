@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -48,8 +48,8 @@ public class PacketBatch implements Iterable<PacketBatchItem> {
     private CountDownLatch firstReplyReceivedSignal;
 
     public PacketBatch() {
-        outgoingPackets = new ConcurrentHashMap<UniqueId, PacketBatchItem>();
-        incomingPackets = new ConcurrentHashMap<Destination, DataPacket>();
+        outgoingPackets = new ConcurrentHashMap<>();
+        incomingPackets = new ConcurrentHashMap<>();
         sentSignal = new CountDownLatch(0);
         firstReplyReceivedSignal = new CountDownLatch(1);
     }

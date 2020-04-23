@@ -98,7 +98,7 @@ public class EmailMetadata extends Properties {
             return null;
         else {
             try {
-                long milliseconds = Long.valueOf(dateStr);
+                long milliseconds = Long.parseLong(dateStr);
                 return new Date(milliseconds);
             }
             catch (NumberFormatException e) {
@@ -305,7 +305,7 @@ public class EmailMetadata extends Properties {
     
     /** Returns the DHT keys of all email packets which haven't been deleted from the DHT */
     public Collection<PacketInfo> getUndeliveredPacketKeys() {
-        Collection<PacketInfo> packets = new ArrayList<PacketInfo>();
+        Collection<PacketInfo> packets = new ArrayList<>();
         for (Object property: keySet())
             if (property instanceof String) {
                 String delFlagProperty = (String)property;
@@ -334,7 +334,7 @@ public class EmailMetadata extends Properties {
     }
     
     /** Contains a DHT key and a verification hash for an email packet. */
-    public class PacketInfo {
+    public static class PacketInfo {
         public Hash dhtKey;
         public Hash delVerificationHash;
         

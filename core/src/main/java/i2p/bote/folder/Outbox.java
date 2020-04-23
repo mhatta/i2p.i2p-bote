@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Outbox extends EmailFolder {
     public static class EmailStatus {
-        public static enum Status {
+        public enum Status {
             QUEUED,
             SENDING,
             SENT_TO,
@@ -98,7 +98,7 @@ public class Outbox extends EmailFolder {
     
     public Outbox(File storageDir, PasswordHolder passwordHolder) {
         super(storageDir, passwordHolder);
-        statusMap = new ConcurrentHashMap<String, EmailStatus>();
+        statusMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -135,7 +135,6 @@ public class Outbox extends EmailFolder {
      * If no email exists under the message ID, or if no status is set,
      * the default status is returned.
      * @param messageId The message ID of the email
-     * @see #getDefaultStatus()
      */
     private EmailStatus getStatus(String messageId) {
         if (statusMap.containsKey(messageId))
@@ -149,7 +148,6 @@ public class Outbox extends EmailFolder {
      * If the email doesn't exist in the outbox, or if no status is set,
      * the default status is returned.
      * @param email
-     * @see #getDefaultStatus()
      */
     public EmailStatus getStatus(Email email) {
         String messageId = email.getMessageID();

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,24 +21,13 @@
 
 package i2p.bote.folder;
 
-import i2p.bote.UniqueId;
-import i2p.bote.Util;
-import i2p.bote.email.AddressDisplayFilter;
-import i2p.bote.email.Email;
-import i2p.bote.email.EmailAttribute;
-import i2p.bote.email.EmailMetadata;
-import i2p.bote.fileencryption.DerivedKey;
-import i2p.bote.fileencryption.EncryptedInputStream;
-import i2p.bote.fileencryption.EncryptedOutputStream;
-import i2p.bote.fileencryption.FileEncryptionUtil;
-import i2p.bote.fileencryption.PasswordException;
-import i2p.bote.fileencryption.PasswordHolder;
+import net.i2p.util.Log;
+import net.i2p.util.SecureFileOutputStream;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,8 +40,18 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
-import net.i2p.util.Log;
-import net.i2p.util.SecureFileOutputStream;
+import i2p.bote.UniqueId;
+import i2p.bote.Util;
+import i2p.bote.email.AddressDisplayFilter;
+import i2p.bote.email.Email;
+import i2p.bote.email.EmailAttribute;
+import i2p.bote.email.EmailMetadata;
+import i2p.bote.fileencryption.DerivedKey;
+import i2p.bote.fileencryption.EncryptedInputStream;
+import i2p.bote.fileencryption.EncryptedOutputStream;
+import i2p.bote.fileencryption.FileEncryptionUtil;
+import i2p.bote.fileencryption.PasswordException;
+import i2p.bote.fileencryption.PasswordHolder;
 
 /**
  * Stores emails in a directory on the file system.<br/>
@@ -71,7 +70,7 @@ public class EmailFolder extends Folder<Email> {
     public EmailFolder(File storageDir, PasswordHolder passwordHolder) {
         super(storageDir, EMAIL_FILE_EXTENSION);
         this.passwordHolder = passwordHolder;
-        folderListeners = new ArrayList<FolderListener>();
+        folderListeners = new ArrayList<>();
     }
 
     /**
@@ -93,12 +92,8 @@ public class EmailFolder extends Folder<Email> {
         // write out the email file
         File emailFile = getEmailFile(email);
         log.info("Mail folder <" + storageDir + ">: storing email file: <" + emailFile.getAbsolutePath() + ">");
-        OutputStream emailOutputStream = new BufferedOutputStream(new EncryptedOutputStream(new SecureFileOutputStream(emailFile), passwordHolder));
-        try {
+        try (OutputStream emailOutputStream = new BufferedOutputStream(new EncryptedOutputStream(new SecureFileOutputStream(emailFile), passwordHolder))) {
             email.writeTo(emailOutputStream);
-        }
-        finally {
-            emailOutputStream.close();
         }
         
         saveMetadata(email);
@@ -107,7 +102,7 @@ public class EmailFolder extends Folder<Email> {
             listener.elementAdded(email.getMessageID());
     }
     
-    public void changePassword(byte[] oldPassword, DerivedKey newKey) throws FileNotFoundException, IOException, GeneralSecurityException, PasswordException {
+    public void changePassword(byte[] oldPassword, DerivedKey newKey) throws IOException, GeneralSecurityException, PasswordException {
         for (File emailFile: getFilenames()) {   // getFilenames() only returns email files but not metadata files
             FileEncryptionUtil.changePassword(emailFile, oldPassword, newKey);
             File metadataFile = getMetadataFile(emailFile);
@@ -196,10 +191,7 @@ public class EmailFolder extends Folder<Email> {
             } catch (PasswordException e) {
                 log.error("Can't compare emails because the password is not available.", e);
                 return 0;
-            } catch (IOException e) {
-                log.error("Can't compare emails.", e);
-                return 0;
-            } catch (GeneralSecurityException e) {
+            } catch (IOException | GeneralSecurityException e) {
                 log.error("Can't compare emails.", e);
                 return 0;
             }
@@ -280,7 +272,7 @@ public class EmailFolder extends Folder<Email> {
         if (oldMetaFile.exists()) {
             File newMetaFile = getMetadataFile(newEmailFile);
             try {
-                success &= move(oldMetaFile, newMetaFile);
+                success = move(oldMetaFile, newMetaFile);
             }
             catch (IOException e) {
                 log.error("Cannot move metadata file <" + oldMetaFile.getAbsolutePath() + "> to <" + newMetaFile.getAbsolutePath() + ">", e);
@@ -368,8 +360,7 @@ public class EmailFolder extends Folder<Email> {
 
     private EmailMetadata getMetadata(File file) throws IOException, GeneralSecurityException, PasswordException {
         InputStream metadataStream = new BufferedInputStream(new EncryptedInputStream(new FileInputStream(file), passwordHolder));
-        EmailMetadata metadata = new EmailMetadata(metadataStream);
-        return metadata;
+        return new EmailMetadata(metadataStream);
     }
     
     /**
@@ -455,23 +446,19 @@ public class EmailFolder extends Folder<Email> {
         }
     }
     
-    public void saveMetadata(Email email) throws PasswordException, FileNotFoundException, IOException, GeneralSecurityException {
+    public void saveMetadata(Email email) throws PasswordException, IOException, GeneralSecurityException {
         EmailMetadata metadata = email.getMetadata();
         File metaFile = getMetadataFile(email.getMessageID());
         saveMetadata(metadata, metaFile);
     }
     
-    private void saveMetadata(EmailMetadata metadata, File file) throws PasswordException, FileNotFoundException, IOException, GeneralSecurityException {
+    private void saveMetadata(EmailMetadata metadata, File file) throws PasswordException, IOException, GeneralSecurityException {
         log.info("Mail folder <" + storageDir + ">: storing metadata file: <" + file.getAbsolutePath() + ">");
-        OutputStream emailOutputStream = new BufferedOutputStream(new EncryptedOutputStream(new SecureFileOutputStream(file), passwordHolder));
-        try {
+        try (OutputStream emailOutputStream = new BufferedOutputStream(new EncryptedOutputStream(new SecureFileOutputStream(file), passwordHolder))) {
             metadata.writeTo(emailOutputStream);
         } catch (IOException e) {
             log.error("Can't write metadata to file <" + file.getAbsolutePath() + ">", e);
             throw e;
-        } finally {
-            if (emailOutputStream != null)
-                emailOutputStream.close();
         }
 
         for (FolderListener listener: folderListeners)
@@ -491,10 +478,7 @@ public class EmailFolder extends Folder<Email> {
         
         File emailFile = getEmailFile(messageId);
         boolean deleted;
-        if (emailFile != null)
-            deleted = emailFile.delete();
-        else
-            deleted = false;
+        deleted = emailFile.delete();
         
         for (FolderListener listener: folderListeners)
             listener.elementRemoved(messageId);
@@ -512,22 +496,17 @@ public class EmailFolder extends Folder<Email> {
     
     @Override
     protected Email createFolderElement(File emailFile) throws Exception {
-        InputStream emailStream = null;
-        try {
-            emailStream = new BufferedInputStream(new EncryptedInputStream(new FileInputStream(emailFile), passwordHolder));
+        try (InputStream emailStream = new BufferedInputStream(new EncryptedInputStream(new FileInputStream(emailFile), passwordHolder))) {
             InputStream metadataStream = null;
             File metadataFile = getMetadataFile(emailFile);
             if (metadataFile.exists())
                 metadataStream = new BufferedInputStream(new EncryptedInputStream(new FileInputStream(metadataFile), passwordHolder));
-            Email email = new Email(emailStream, metadataStream, passwordHolder);
-            
+            Email email = new Email(emailStream, metadataStream);
+
             String messageIdString = emailFile.getName().substring(0, 44);
             email.setMessageID(messageIdString);
-            
+
             return email;
-        } finally {
-            if (emailStream != null)
-                emailStream.close();
         }
     }
 }

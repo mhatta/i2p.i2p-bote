@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2014  str4d@mail.i2p
  * 
  * This file is part of I2P-Bote.
@@ -21,7 +21,7 @@ package i2p.bote.email;
 import javax.activation.DataHandler;
 
 public interface Attachment {
-    public String getFileName();
-    public DataHandler getDataHandler();
-    public boolean clean();
+    String getFileName();
+    DataHandler getDataHandler();
+    boolean clean();
 }

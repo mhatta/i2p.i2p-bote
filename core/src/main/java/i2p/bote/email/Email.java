@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -68,7 +68,6 @@ import i2p.bote.crypto.CryptoFactory;
 import i2p.bote.crypto.CryptoImplementation;
 import i2p.bote.crypto.KeyUpdateHandler;
 import i2p.bote.fileencryption.PasswordException;
-import i2p.bote.fileencryption.PasswordHolder;
 import i2p.bote.packet.dht.UnencryptedEmailPacket;
 
 public class Email extends MimeMessage {
@@ -79,7 +78,7 @@ public class Email extends MimeMessage {
         "Content-Transfer-Encoding", "In-Reply-To", "X-HashCash", "X-Priority", SIGNATURE_HEADER
     };
     private static final int MAX_HEADER_LENGTH = 998;   // Maximum length of a header line, see RFC 5322
-    private enum CompressionAlgorithm {UNCOMPRESSED, LZMA};   // The first byte in a compressed email
+    private enum CompressionAlgorithm {UNCOMPRESSED, LZMA}   // The first byte in a compressed email
     
     private Log log = new Log(Email.class);
     private UniqueId messageId;
@@ -102,13 +101,10 @@ public class Email extends MimeMessage {
      * empty.
      * @param emailStream
      * @param metadataStream
-     * @param passwordHolder
      * @throws MessagingException
      * @throws IOException
-     * @throws PasswordException 
-     * @throws GeneralSecurityException 
      */
-    public Email(InputStream emailStream, InputStream metadataStream, PasswordHolder passwordHolder) throws MessagingException, IOException, PasswordException, GeneralSecurityException {
+    public Email(InputStream emailStream, InputStream metadataStream) throws MessagingException, IOException {
         this(emailStream, false);
         if (metadataStream != null)
             metadata = new EmailMetadata(metadataStream);
@@ -144,10 +140,9 @@ public class Email extends MimeMessage {
 
     /**
      * Copy constructor 
-     * @throws IOException 
      * @throws MessagingException
      */
-    public Email(Email original) throws MessagingException, IOException {
+    public Email(Email original) throws MessagingException {
         super(original);
         messageId = original.messageId;
         metadata = original.metadata;
@@ -285,7 +280,7 @@ public class Email extends MimeMessage {
         if (SystemVersion.isAndroid()) {
             String suffix = "droidjavamailuser@localhost";
 
-            StringBuffer s = new StringBuffer();
+            StringBuilder s = new StringBuilder();
 
             // Unique string is <hashcode>.<id>.<currentTime>.JavaMail.<suffix>
             s.append(s.hashCode()).append('.').
@@ -336,7 +331,7 @@ public class Email extends MimeMessage {
         StringBuilder folded = new StringBuilder();
         int used = SIGNATURE_HEADER.length() + 2;   // account for header name and ": " between name and value
         while (used+signature.length() > MAX_HEADER_LENGTH) {
-            folded.append(signature.substring(0, MAX_HEADER_LENGTH));
+            folded.append(signature, 0, MAX_HEADER_LENGTH);
             signature = signature.substring(MAX_HEADER_LENGTH);
             if (!signature.isEmpty())
                 folded.append("\r\n ");
@@ -425,9 +420,9 @@ public class Email extends MimeMessage {
         if (_index < 0)
             return false;
         String cryptoImplIdString = unfoldedSignatureHeader.substring(0, _index);
-        int cryptoImplId = 0;
+        int cryptoImplId;
         try {
-            cryptoImplId = Integer.valueOf(cryptoImplIdString);
+            cryptoImplId = Integer.parseInt(cryptoImplIdString);
         }
         catch (NumberFormatException e) {
             return false;
@@ -440,6 +435,7 @@ public class Email extends MimeMessage {
             removeHeader(SIGNATURE_HEADER);   // remove the signature before verifying
             byte[] signature = Base64.decode(base64Signature);
             EmailDestination senderDestination = new EmailDestination(getOneFromAddress());
+            assert cryptoImpl != null;
             return cryptoImpl.verify(toByteArray(), signature, senderDestination.getPublicSigningKey());
         } catch (Exception e) {
             log.error("Cannot verify email signature. Email: [" + this + "]", e);
@@ -503,7 +499,7 @@ public class Email extends MimeMessage {
     }*/
     
     public Collection<Address> getAllFromAddresses() throws MessagingException {
-        Collection<Address> addresses = new ArrayList<Address>();
+        Collection<Address> addresses = new ArrayList<>();
 
         Address[] from = getFrom();
         if (from != null)
@@ -511,13 +507,13 @@ public class Email extends MimeMessage {
 
         Address sender = getSender();
         if (sender != null)
-            addresses.addAll(Arrays.asList(sender));
+            addresses.addAll(Collections.singletonList(sender));
 
         return addresses;
     }
     
     public Collection<Address> getAllAddresses(boolean includeFrom) throws MessagingException {
-        Collection<Address> addresses = new ArrayList<Address>();
+        Collection<Address> addresses = new ArrayList<>();
 
         // If we want to check validity, fetch these separately
         // (because these can contain 'anonymous').
@@ -604,7 +600,6 @@ public class Email extends MimeMessage {
      * @throws MessagingException 
      */
     private void scrubHeaders() throws MessagingException {
-        @SuppressWarnings("unchecked")
         List<Header> nonMatchingHeaders = Collections.list(getNonMatchingHeaders(HEADER_WHITELIST));
         for (Header header: nonMatchingHeaders)
             if (header != null) {
@@ -633,8 +628,8 @@ public class Email extends MimeMessage {
     }
 
     private void removeRecipientNames(Address[] recipients) {
-        for (int i = 0; i < recipients.length; i++) {
-            removeRecipientName((InternetAddress) recipients[i]);
+        for (Address recipient : recipients) {
+            removeRecipientName((InternetAddress) recipient);
         }
     }
 
@@ -644,7 +639,7 @@ public class Email extends MimeMessage {
         if (dest != null)
             try {
                 address.setPersonal(null);
-            } catch (UnsupportedEncodingException e) {}
+            } catch (UnsupportedEncodingException ignored) {}
         // If there is no email destination, assume it is an external address and don't change it
     }
 
@@ -685,8 +680,8 @@ public class Email extends MimeMessage {
     }
 
     private void removeBoteSuffixes(Address[] addresses) {
-        for (int i = 0; i < addresses.length; i++) {
-            removeBoteSuffix((InternetAddress) addresses[i]);
+        for (Address address : addresses) {
+            removeBoteSuffix((InternetAddress) address);
         }
     }
 
@@ -722,7 +717,7 @@ public class Email extends MimeMessage {
         return messageId.toBase64();
     }
 
-    /** @see EmailMetadata#setRecent(recent) */
+    /** @see "EmailMetadata#setRecent(recent)" */
     public void setRecent(boolean recent) {
         metadata.setRecent(recent);
     }
@@ -830,7 +825,7 @@ public class Email extends MimeMessage {
      * @throws PasswordException If the private signing key cannot be updated
      */
     public Collection<UnencryptedEmailPacket> createEmailPackets(EmailIdentity senderIdentity, KeyUpdateHandler keyUpdateHandler, String bccToKeep, int maxPacketSize) throws MessagingException, GeneralSecurityException, PasswordException {
-        ArrayList<UnencryptedEmailPacket> packets = new ArrayList<UnencryptedEmailPacket>();
+        ArrayList<UnencryptedEmailPacket> packets = new ArrayList<>();
         
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String[] bccHeaders = null;
@@ -859,13 +854,11 @@ public class Email extends MimeMessage {
         
         int packetIndex = 0;
         try {
-            while (true) {
+            do {
                 UnencryptedEmailPacket packet = new UnencryptedEmailPacket(inputStream, messageId, packetIndex, maxPacketSize);
                 packets.add(packet);
                 packetIndex++;
-                if (inputStream.available() <= 0)
-                    break;
-            }
+            } while (inputStream.available() > 0);
         }
         catch (IOException e) {
             log.error("Can't read from ByteArrayInputStream.", e);
@@ -880,8 +873,8 @@ public class Email extends MimeMessage {
     }
     
     /**
-     * Like {@link writeTo(OutputStream)}, but compresses the data if it reduces the size.
-     * @param input
+     * Like {@link "writeTo(OutputStream)"}, but compresses the data if it reduces the size.
+     * @param outputStream
      * @throws IOException 
      * @throws MessagingException 
      * @see Encoder
@@ -928,7 +921,8 @@ public class Email extends MimeMessage {
         CompressionAlgorithm compressionAlgorithm = null;
         if (compressionAlgOrdinal>=0 && compressionAlgOrdinal<CompressionAlgorithm.values().length)
             compressionAlgorithm = CompressionAlgorithm.values()[compressionAlgOrdinal];
-        
+
+        assert compressionAlgorithm != null;
         switch(compressionAlgorithm) {
         case UNCOMPRESSED:
             return inputStream;
@@ -1036,22 +1030,22 @@ public class Email extends MimeMessage {
      * @see Part
      */
     private List<Part> getAllSubparts(Part part) throws MessagingException, IOException {
-        List<Part> parts = new ArrayList<Part>();
-        addSubhierarchy(parts, part, 0);
+        List<Part> parts = new ArrayList<>();
+        addSubhierarchy(parts, part);
         return parts;
     } 
 
     // TODO limit recursion depth
-    private void addSubhierarchy(List<Part> parts, Part part, int depth) throws MessagingException, IOException {
+    private void addSubhierarchy(List<Part> parts, Part part) throws MessagingException, IOException {
         if (part.isMimeType("message/rfc822")) {   // nested message
             Part subpart = (Part)part.getContent();
-            addSubhierarchy(parts, subpart, depth);
+            addSubhierarchy(parts, subpart);
         }
         else if (part.isMimeType("multipart/*")) {
             Multipart subparts = (Multipart)part.getContent();
             for (int i=0; i<subparts.getCount(); i++) {
                 Part subpart = subparts.getBodyPart(i);
-                addSubhierarchy(parts, subpart, depth);
+                addSubhierarchy(parts, subpart);
             }
         }
         else
@@ -1062,20 +1056,22 @@ public class Email extends MimeMessage {
     public String toString() {
         StringBuilder result = new StringBuilder("MsgId: ").append(getMessageID());
         try {
-            result = result.append("From: ").append(getOneFromAddress());
-            result = result.append("Recipients: ");
+            result.append("From: ").append(getOneFromAddress());
+            result.append("Recipients: ");
             for (Address recipient: getAllRecipients()) {
                 if (result.length() > 1000) {
-                    result = result.append("...");
+                    result.append("...");
                     break;
                 }
-                if (result.length() > 0)
-                    result = result.append(", ");
+                if (result.length() > 0) {
+                    result.append(", ");
+                }
                 String recipientAddress = recipient.toString();
-                if (recipientAddress.length() > 20)
-                    result = result.append(recipientAddress).append("...");
-                else
-                    result = result.append(recipientAddress);
+                if (recipientAddress.length() > 20) {
+                    result.append(recipientAddress).append("...");
+                } else {
+                    result.append(recipientAddress);
+                }
             }
         } catch (MessagingException e) {
             log.error("Error getting sender or recipients.");

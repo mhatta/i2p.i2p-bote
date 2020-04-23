@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -29,10 +29,9 @@ public class EmailAddressResolver {
      * Looks up a key pair for an email address. This method blocks.
      * The local address book is searched first, then the distributed
      * email directory.
-     * @param emailAddress
      * @return An <code>EmailDestination</code>, or <code>null</code> if none is found
      */
-    public EmailDestination getDestination(String emailAddress) {
+    public EmailDestination getDestination() {
         // TODO
         return null;
     }

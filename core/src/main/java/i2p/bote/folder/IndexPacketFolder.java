@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -176,7 +176,6 @@ public class IndexPacketFolder extends DeletionAwareDhtFolder<IndexPacket> imple
         DeletionInfoPacket delInfo = createDelInfoPacket(delFileName);
         IndexPacketDeleteRequest delRequest = null;
         if (delInfo != null) {
-            delRequest = null;
             for (IndexPacketEntry entry: indexPacketToStore) {
                 DeletionRecord delRecord = delInfo.getEntry(entry.emailPacketKey);
                 if (delRecord != null) {
@@ -231,6 +230,7 @@ public class IndexPacketFolder extends DeletionAwareDhtFolder<IndexPacket> imple
         log.debug("Processing delete request: " + delRequest);
         if (!(delRequest instanceof IndexPacketDeleteRequest))
             log.error("Invalid type of delete request for IndexPacketFolder: " + delRequest.getClass());
+        assert delRequest instanceof IndexPacketDeleteRequest;
         IndexPacketDeleteRequest indexPacketDelRequest = (IndexPacketDeleteRequest)delRequest;
         
         Hash destHash = indexPacketDelRequest.getEmailDestHash();

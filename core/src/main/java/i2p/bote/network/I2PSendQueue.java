@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -74,7 +74,7 @@ public class I2PSendQueue extends I2PAppThread implements PacketListener {
         this.i2pSession = i2pSession;
         i2pReceiver.addPacketListener(this);
         packetQueue = new PacketQueue();
-        runningBatches = new ConcurrentHashSet<PacketBatch>();
+        runningBatches = new ConcurrentHashSet<>();
         datagramMaker = new I2PDatagramMaker(i2pSession);
     }
 
@@ -270,11 +270,11 @@ public class I2PSendQueue extends I2PAppThread implements PacketListener {
         private Comparator<ScheduledPacket> comparator;
         
         public PacketQueue() {
-            queue = new ArrayList<ScheduledPacket>();
+            queue = new ArrayList<>();
             comparator = new Comparator<ScheduledPacket>() {
                 @Override
                 public int compare(ScheduledPacket packet1, ScheduledPacket packet2) {
-                    return new Long(packet1.earliestSendTime).compareTo(packet2.earliestSendTime);
+                    return Long.compare(packet1.earliestSendTime, packet2.earliestSendTime);
                 }
             };
         }

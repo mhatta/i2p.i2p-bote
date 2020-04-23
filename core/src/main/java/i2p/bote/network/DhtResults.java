@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -36,7 +36,7 @@ public class DhtResults implements Iterable<DhtStorablePacket> {
     private int totalResponses;
 
     public DhtResults() {
-        map = new ConcurrentHashMap<Destination, DhtStorablePacket>();
+        map = new ConcurrentHashMap<>();
         totalResponses = -1;
     }
     

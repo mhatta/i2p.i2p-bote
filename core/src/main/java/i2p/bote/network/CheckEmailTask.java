@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,6 +21,22 @@
 
 package i2p.bote.network;
 
+import net.i2p.data.Destination;
+import net.i2p.data.Hash;
+import net.i2p.util.Log;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import i2p.bote.UniqueId;
 import i2p.bote.Util;
 import i2p.bote.email.EmailIdentity;
@@ -36,23 +52,6 @@ import i2p.bote.packet.dht.IndexPacketEntry;
 import i2p.bote.packet.dht.UnencryptedEmailPacket;
 import i2p.bote.service.RelayPeerManager;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import net.i2p.data.Destination;
-import net.i2p.data.Hash;
-import net.i2p.util.Log;
-
 /**
  * Gets email packets from the DHT for one email identity. A separate thread is used for
  * each packet in order to speed things up, and because the packets are in different places
@@ -66,7 +65,6 @@ public class CheckEmailTask implements Callable<Boolean> {
     private Log log = new Log(CheckEmailTask.class);
     private EmailIdentity identity;
     private DHT dht;
-    private RelayPeerManager peerManager;
     private I2PSendQueue sendQueue;
     private Destination localDestination;
     private IncompleteEmailFolder incompleteEmailFolder;
@@ -89,7 +87,6 @@ public class CheckEmailTask implements Callable<Boolean> {
             IncompleteEmailFolder incompleteEmailFolder, EmailPacketFolder emailPacketFolder, IndexPacketFolder indexPacketFolder) {
         this.identity = identity;
         this.dht = dht;
-        this.peerManager = peerManager;
         this.sendQueue = sendQueue;
         localDestination = sendQueue.getLocalDestination();
         this.incompleteEmailFolder = incompleteEmailFolder;
@@ -102,7 +99,7 @@ public class CheckEmailTask implements Callable<Boolean> {
      * of receiving an email packet.
      */
     @Override
-    public Boolean call() throws InterruptedException, ExecutionException, TimeoutException, GeneralSecurityException {
+    public Boolean call() throws InterruptedException, ExecutionException, TimeoutException {
         log.debug("Querying the DHT for index packets with key " + identity.getHash());
         // Use findAll rather than findOne because some peers might have an incomplete set of
         // Email Packet keys, and because we want to send IndexPacketDeleteRequests to all of them.
@@ -117,7 +114,7 @@ public class CheckEmailTask implements Callable<Boolean> {
         newEmail = false;
         indexPacketDeleteRequest = new IndexPacketDeleteRequest(identity.getHash());
 
-        Collection<Future<?>> futureResults = new ArrayList<Future<?>>();
+        Collection<Future<?>> futureResults = new ArrayList<>();
         ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS, EMAIL_PACKET_TASK_THREAD_FACTORY);
         for (IndexPacketEntry entry: mergedPacket) {
             Runnable task = new EmailPacketTask(entry.emailPacketKey);
@@ -165,7 +162,7 @@ public class CheckEmailTask implements Callable<Boolean> {
      * @return An <code>IndexPacket</code> containing all entries from the packets in the <code>Collection</code>
      */
     private Collection<IndexPacket> getIndexPackets(Collection<DhtStorablePacket> dhtPackets) {
-        Collection<IndexPacket> indexPackets = new ArrayList<IndexPacket>();
+        Collection<IndexPacket> indexPackets = new ArrayList<>();
         for (DhtStorablePacket packet: dhtPackets)
             if (packet instanceof IndexPacket)
                 indexPackets.add((IndexPacket)packet);
@@ -196,7 +193,7 @@ public class CheckEmailTask implements Callable<Boolean> {
             boolean emailCompleted = false;
             // Use findAll rather than findOne because after we receive an email packet, we want
             // to send delete requests to as many of the storage nodes as possible.
-            DhtResults results = null;
+            DhtResults results;
             try {
                 results = dht.findAll(emailPacketKey, EncryptedEmailPacket.class);
             } catch (InterruptedException e) {

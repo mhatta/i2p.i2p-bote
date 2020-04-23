@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -76,7 +76,7 @@ class KBucket extends AbstractBucket {
     
     /**
      * @param lastLookupTime
-     * @see getLastLookupTime
+     * @see "getLastLookupTime"
      */
     public void setLastLookupTime(long lastLookupTime) {
         this.lastLookupTime = lastLookupTime;
@@ -104,7 +104,7 @@ class KBucket extends AbstractBucket {
      * @return
      */
     private boolean canSplit(Destination destination) {
-        return depth%KademliaConstants.B!=0 || rangeContains(destination);
+        return rangeContains(destination);
     }
     
     /**
@@ -153,8 +153,7 @@ class KBucket extends AbstractBucket {
      * @param peer
      */
     private void addOrUpdateReplacement(KademliaPeer peer) {
-        if (replacementCache.contains(peer))
-            replacementCache.remove(peer);
+        replacementCache.remove(peer);
         replacementCache.add(0, peer);
         
         while (replacementCache.size() > REPLACEMENT_CACHE_MAX_SIZE)
@@ -183,7 +182,7 @@ class KBucket extends AbstractBucket {
      * tree, with the old bucket representing the left branch and the new bucket
      * representing the right branch.
      * @return The new bucket
-     * @see split(BigInteger)
+     * @see "split(BigInteger)"
      */
     KBucket split() {
         BigInteger pivot = startId.add(endId).divide(BigInteger.valueOf(2));
@@ -219,9 +218,9 @@ class KBucket extends AbstractBucket {
         if (depth == 0)
             return "(None)";
         
-        String binary = startId.toString(2);
+        StringBuilder binary = new StringBuilder(startId.toString(2));
         while (binary.length() < Hash.HASH_LENGTH*8)
-            binary = "0" + binary;
+            binary.insert(0, "0");
         return binary.substring(0, depth);
     }
     

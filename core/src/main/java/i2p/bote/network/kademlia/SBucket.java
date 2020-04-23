@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -43,8 +43,6 @@ class SBucket extends AbstractBucket {
         distanceComparator = new PeerDistanceComparator(localDestinationHash);
         
         int numSections = (KademliaConstants.S - 1) / KademliaConstants.K + 1;
-        if (numSections < 1)
-            numSections = 1;
         sections = new BucketSection[numSections];
         for (int i=0; i<numSections; i++)
             sections[i] = new BucketSection(BigInteger.ZERO, BigInteger.ZERO, 0);
@@ -77,8 +75,7 @@ class SBucket extends AbstractBucket {
                         log.error("insertionPoint > size(), this shouldn't happen.");
                     if (insertionPoint < size()) {   // if destination is closer than an existing sibling, replace the furthest away sibling and return the removed sibling
                         peers.add(insertionPoint, new KademliaPeer(peer));
-                        KademliaPeer removedPeer = peers.remove(size() - 1);
-                        return removedPeer;
+                        return peers.remove(size() - 1);
                     }
                     else   // insertionPoint==size(), this means the new peer is further away than all other siblings
                         return peer;

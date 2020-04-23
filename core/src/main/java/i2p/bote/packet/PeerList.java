@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -52,7 +52,7 @@ public class PeerList extends DataPacket {
         ByteBuffer buffer = ByteBuffer.wrap(data, HEADER_LENGTH, data.length-HEADER_LENGTH);
         
         int numPeers = buffer.getShort() & 0xFFFF;
-        peers = new ArrayList<Destination>();
+        peers = new ArrayList<>();
         for (int i=0; i<numPeers; i++) {
             Destination peer = Util.createDestination(buffer);
             peers.add(peer);

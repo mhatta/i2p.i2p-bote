@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -28,6 +28,7 @@ import net.i2p.data.Hash;
 import net.i2p.util.Log;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -43,7 +44,7 @@ import i2p.bote.crypto.PublicKeyPair;
 import i2p.bote.util.SortedProperties;
 
 public class EmailIdentity extends EmailDestination {
-    private final static Charset UTF8 = Charset.forName("UTF-8");
+    private final static Charset UTF8 = StandardCharsets.UTF_8;
     
     private PrivateKey privateEncryptionKey;
     private PrivateKey privateSigningKey;
@@ -202,7 +203,7 @@ public class EmailIdentity extends EmailDestination {
         this.fingerprint = fingerprint;
     }
     
-    public Fingerprint getFingerprint() throws GeneralSecurityException {
+    public Fingerprint getFingerprint() {
         return fingerprint;
     }
     
@@ -265,16 +266,16 @@ public class EmailIdentity extends EmailDestination {
     }
 
     public interface IdentityConfig {
-        public int getRelayRedundancy();
-        public void setRelayMinDelay(int minDelay);
-        public int getRelayMinDelay();
-        public void setRelayMaxDelay(int maxDelay);
-        public int getRelayMaxDelay();
-        public void setNumStoreHops(int numHops);
-        public int getNumStoreHops();
+        int getRelayRedundancy();
+        void setRelayMinDelay(int minDelay);
+        int getRelayMinDelay();
+        void setRelayMaxDelay(int maxDelay);
+        int getRelayMaxDelay();
+        void setNumStoreHops(int numHops);
+        int getNumStoreHops();
     }
 
-    private class IdentityConfigImpl implements IdentityConfig {
+    private static class IdentityConfigImpl implements IdentityConfig {
         private static final String PARAMETER_INCLUDE_IN_GLOBAL_CHECK_MAIL = "includeInGlobalCheck";
 
         private static final boolean DEFAULT_INCLUDE_IN_GLOBAL_CHECK_MAIL = true;
@@ -336,7 +337,7 @@ public class EmailIdentity extends EmailDestination {
          * the global "Check mail" button.
          */
         public boolean getIncludeInGlobalCheck() {
-            return getBooleanParameter(PARAMETER_INCLUDE_IN_GLOBAL_CHECK_MAIL, DEFAULT_INCLUDE_IN_GLOBAL_CHECK_MAIL);
+            return getBooleanParameter();
         }
 
         // Per-identity overrides of default configuration
@@ -395,12 +396,12 @@ public class EmailIdentity extends EmailDestination {
                     configuration == null ? -1 : configuration.getNumStoreHops());
         }
 
-        private boolean getBooleanParameter(String parameterName, boolean defaultValue) {
+        private boolean getBooleanParameter() {
             try {
-                return Util.getBooleanParameter(properties, parameterName, defaultValue);
+                return Util.getBooleanParameter(properties, IdentityConfigImpl.PARAMETER_INCLUDE_IN_GLOBAL_CHECK_MAIL, IdentityConfigImpl.DEFAULT_INCLUDE_IN_GLOBAL_CHECK_MAIL);
             } catch (IllegalArgumentException e) {
                 log.warn("getBooleanParameter failed, using default", e);
-                return defaultValue;
+                return IdentityConfigImpl.DEFAULT_INCLUDE_IN_GLOBAL_CHECK_MAIL;
             }
         }
 

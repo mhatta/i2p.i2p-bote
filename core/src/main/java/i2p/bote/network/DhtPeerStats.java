@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * Copyright (C) 2017  str4d@mail.i2p
  * 

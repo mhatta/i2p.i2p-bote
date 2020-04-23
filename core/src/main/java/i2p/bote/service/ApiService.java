@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2016 str4d@mail.i2p
  * 
  * This file is part of I2P-Bote.
@@ -19,11 +19,11 @@
 package i2p.bote.service;
 
 public interface ApiService {
-    public static final int IMAP = 0;
-    public static final int SMTP = 1;
+    int IMAP = 0;
+    int SMTP = 1;
 
-    public void start(int type);
-    public void stop(int type);
-    public void stopAll();
-    public void printRunningThreads();
+    void start(int type);
+    void stop(int type);
+    void stopAll();
+    void printRunningThreads();
 }

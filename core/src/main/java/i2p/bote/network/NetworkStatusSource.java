@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -38,7 +38,7 @@ public interface NetworkStatusSource {
     Exception getConnectError();
     
     /**
-     * Returns <code>true</code> if the application has sucessfully
+     * Returns <code>true</code> if the application has successfully
      * connected to I2P and the DHT.
      */
     boolean isConnected();

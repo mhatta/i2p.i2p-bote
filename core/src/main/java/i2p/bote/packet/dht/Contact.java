@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -51,7 +52,7 @@ import com.lambdaworks.codec.Base64;
  */
 @TypeCode('C')
 public class Contact extends DhtStorablePacket {
-    private final static Charset UTF8 = Charset.forName("UTF-8");
+    private final static Charset UTF8 = StandardCharsets.UTF_8;
     
     private Log log = new Log(Contact.class);
     private String name;

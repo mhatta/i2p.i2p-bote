@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -51,7 +51,7 @@ public class IndexPacketDeleteRequest extends DeleteRequest {
 
     public IndexPacketDeleteRequest(Hash emailDestHash) {
         this.emailDestHash = emailDestHash;
-        entries = new HashMap<Hash, UniqueId>();
+        entries = new HashMap<>();
     }
     
     public IndexPacketDeleteRequest(byte[] data) {
@@ -59,7 +59,7 @@ public class IndexPacketDeleteRequest extends DeleteRequest {
         ByteBuffer buffer = ByteBuffer.wrap(data, HEADER_LENGTH, data.length-HEADER_LENGTH);
 
         emailDestHash = readHash(buffer);
-        entries = new HashMap<Hash, UniqueId>();
+        entries = new HashMap<>();
         int numEntries = buffer.getShort() & 0xFFFF;
         for (int i=0; i<numEntries; i++) {
             Hash dhtKey = readHash(buffer);

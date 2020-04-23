@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -24,5 +24,5 @@ package i2p.bote.network;
 // TODO comment
 public enum NetworkStatus {
 
-    NOT_STARTED, DELAY, CONNECTING, CONNECTED, ERROR;
+    NOT_STARTED, DELAY, CONNECTING, CONNECTED, ERROR
 }

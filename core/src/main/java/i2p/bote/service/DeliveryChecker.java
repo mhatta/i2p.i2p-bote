@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -46,7 +46,7 @@ import net.i2p.util.Log;
 public class DeliveryChecker extends I2PAppThread {
     private Log log = new Log(DeliveryChecker.class);
     private DHT dht;
-    private EmailFolder sentFolder;
+    private final EmailFolder sentFolder;
     private Configuration configuration;
     private NetworkStatusSource networkStatusSource;
     

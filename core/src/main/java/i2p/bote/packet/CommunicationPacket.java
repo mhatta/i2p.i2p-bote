@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -39,8 +39,7 @@ import net.i2p.util.Log;
 public abstract class CommunicationPacket extends I2PBotePacket {
     private static final byte[] PACKET_PREFIX = new byte[] {(byte)0x6D, (byte)0x30, (byte)0x52, (byte)0xE9};
     protected static final int HEADER_LENGTH = PACKET_PREFIX.length + 2 + UniqueId.LENGTH;   // length of the common packet header in the byte array representation; this is where subclasses start reading
-    
-    private Log log = new Log(CommunicationPacket.class);
+
     private UniqueId packetId;
     private CountDownLatch sentSignal;
     private long sentTime;
@@ -65,6 +64,7 @@ public abstract class CommunicationPacket extends I2PBotePacket {
         super(data[5]);   // byte 5 is the protocol version in a communication packet
         if (!isPrefixValid(data)) {
             byte[] prefix = Arrays.copyOf(data, PACKET_PREFIX.length);
+            Log log = new Log(CommunicationPacket.class);
             log.error("Packet prefix invalid. Expected: " + Arrays.toString(PACKET_PREFIX) + ", actual: " + Arrays.toString(prefix));
         }
 
@@ -105,10 +105,7 @@ public abstract class CommunicationPacket extends I2PBotePacket {
             return commPacketType.getConstructor(byte[].class).newInstance(data);
         }
         catch (Exception e) {
-            if (e instanceof MalformedPacketException)
-                throw (MalformedPacketException)e;
-            else
-                throw new MalformedPacketException("Can't instantiate packet for type code <" + packetTypeCode + ">", e);
+            throw new MalformedPacketException("Can't instantiate packet for type code <" + packetTypeCode + ">", e);
         }
     }
     

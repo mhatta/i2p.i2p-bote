@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -150,9 +150,9 @@ public class Ping {
         else if ("listen".equalsIgnoreCase(args[0]))
             ping.listen();
         else {
-            int numBytes = args.length>=2 ? Integer.valueOf(args[1]) : DEFAULT_NUM_BYTES;
-            int numPings = args.length>=3 ? Integer.valueOf(args[2]) : DEFAULT_NUM_PINGS;
-            int interval = args.length>=4 ? Integer.valueOf(args[3]) : DEFAULT_INTERVAL;
+            int numBytes = args.length>=2 ? Integer.parseInt(args[1]) : DEFAULT_NUM_BYTES;
+            int numPings = args.length>=3 ? Integer.parseInt(args[2]) : DEFAULT_NUM_PINGS;
+            int interval = args.length>=4 ? Integer.parseInt(args[3]) : DEFAULT_INTERVAL;
             ping.doPing(args[0], numBytes, numPings, interval);
         }
     }

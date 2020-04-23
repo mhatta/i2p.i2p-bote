@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -105,6 +105,7 @@ public class EmailPacketFolder extends DeletionAwareDhtFolder<EncryptedEmailPack
         log.debug("Processing delete request: " + delRequest);
         if (!(delRequest instanceof EmailPacketDeleteRequest))
             log.error("Invalid type of delete request for EmailPacketFolder: " + delRequest.getClass());
+        assert delRequest instanceof EmailPacketDeleteRequest;
         EmailPacketDeleteRequest emailPacketDelRequest = (EmailPacketDeleteRequest)delRequest;
         
         // see if the packet exists

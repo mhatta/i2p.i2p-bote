@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -165,7 +165,6 @@ public abstract class Folder<T> {
              * If there are no more files, <code>currentElement</code> is set to <code>null</code>.
              * <p/>
              * <code>currentFile</code> is set to the last file read.
-             * @param updateCurrentFile
              * @throws PasswordException
              */
             void findNextElement() throws PasswordException {

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -81,12 +81,12 @@ public class DhtPacketFolder<T extends DhtStorablePacket> extends PacketFolder<T
                 return filenameMatches(name, base64Key);
             }
         });
-        
+
+        assert files != null;
         if (files.length > 1)
             log.warn("More than one packet files found for DHT key " + dhtKey);
         if (files.length > 0) {
-            File file = files[0];
-            return file;
+            return files[0];
         }
         return null;
     }

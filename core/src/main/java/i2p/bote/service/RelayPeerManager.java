@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -82,7 +82,7 @@ public class RelayPeerManager extends I2PAppThread implements PacketListener {
         this.peerFile = peerFile;
         this.sendQueue = sendQueue;
         this.localDestination = localDestination;
-        peers = new HashSet<RelayPeer>();
+        peers = new HashSet<>();
         
         // Read the updateable peer file if it exists
         if (peerFile.exists()) {
@@ -131,7 +131,7 @@ public class RelayPeerManager extends I2PAppThread implements PacketListener {
             Destination destination = new Destination(fields[0]);
             RelayPeer peer = new RelayPeer(destination);
             for (int i=1; i<fields.length; i++) {
-                boolean didRespond = Boolean.valueOf(fields[i]);
+                boolean didRespond = Boolean.parseBoolean(fields[i]);
                 peer.addReachabilitySample(didRespond);
             }
             return peer;
@@ -204,7 +204,7 @@ public class RelayPeerManager extends I2PAppThread implements PacketListener {
 
     /** Returns all high-reachability peers */
     private List<Destination> getGoodPeers() {
-        List<Destination> goodPeers = new ArrayList<Destination>();
+        List<Destination> goodPeers = new ArrayList<>();
         synchronized(peers) {
             for (RelayPeer peer: peers)
                 if (peer.getReachability() > MIN_REACHABILITY)
@@ -230,7 +230,7 @@ public class RelayPeerManager extends I2PAppThread implements PacketListener {
         while (!Thread.interrupted()) {
             try {
                 // ask all peers for their peer lists
-                Set<RelayPeer> peersToQuery = new HashSet<RelayPeer>(peers);
+                Set<RelayPeer> peersToQuery = new HashSet<>(peers);
                 PacketBatch batch = new PacketBatch();
                 for (RelayPeer peer: peersToQuery)
                     batch.putPacket(new PeerListRequest(), peer);   // don't reuse request packets because PacketBatch will not add the same one more than once
@@ -256,7 +256,7 @@ public class RelayPeerManager extends I2PAppThread implements PacketListener {
                 }
                 
                 // make a Set with the new peers
-                Set<Destination> receivedPeers = new HashSet<Destination>();
+                Set<Destination> receivedPeers = new HashSet<>();
                 BanList banList = BanList.getInstance();
                 for (DataPacket response: batch.getResponses().values()) {
                     if (!(response instanceof PeerList))
@@ -313,8 +313,7 @@ public class RelayPeerManager extends I2PAppThread implements PacketListener {
             // respond to PeerListRequests
             if (packet instanceof PeerListRequest) {
                 // send up to MAX_PEERS_TO_SEND high-reachability peers minus the sender itself
-                List<Destination> peersToSend = new ArrayList<Destination>();
-                peersToSend.addAll(getGoodPeers(MAX_PEERS_TO_SEND));
+                List<Destination> peersToSend = new ArrayList<>(getGoodPeers(MAX_PEERS_TO_SEND));
                 peersToSend.remove(sender);
                 PeerList response = new PeerList(peersToSend);
                 log.debug("Sending a PeerList containing " + peersToSend.size() + " peers in response to a PeerListRequest from " + Util.toShortenedBase32(sender));

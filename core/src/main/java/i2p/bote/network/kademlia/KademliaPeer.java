@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -27,7 +27,6 @@ import net.i2p.data.Hash;
 import net.i2p.util.Log;
 
 class KademliaPeer extends Destination {
-    private Log log = new Log(KademliaPeer.class);
     private Hash destinationHash;
     private long firstSeen;
     private volatile int consecutiveTimeouts;
@@ -41,6 +40,7 @@ class KademliaPeer extends Destination {
         
         // initialize KademliaPeer-specific fields
         destinationHash = destination.calculateHash();
+        Log log = new Log(KademliaPeer.class);
         if (destinationHash == null)
             log.error("calculateHash() returned null!");
         

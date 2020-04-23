@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -55,7 +55,6 @@ public class RelayPacketFolder extends PacketFolder<RelayRequest> {
             long sendTime = System.currentTimeMillis() + packet.getDelay();
             String filename = sendTime + "_" + base64Hash + PACKET_FILE_EXTENSION;
             add(packet, filename);
-            return;
         }
     }
     
@@ -66,7 +65,8 @@ public class RelayPacketFolder extends PacketFolder<RelayRequest> {
                 return name.contains(base64Hash);
             }
         });
-        
+
+        assert files != null;
         return files.length > 0;
     }
     
@@ -86,6 +86,6 @@ public class RelayPacketFolder extends PacketFolder<RelayRequest> {
     
     private long getSendTime(String filename) throws NumberFormatException {
         String[] parts = filename.split("_");
-        return Long.valueOf(parts[0]);
+        return Long.parseLong(parts[0]);
     }
 }

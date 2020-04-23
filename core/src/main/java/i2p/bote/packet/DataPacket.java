@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -56,7 +56,7 @@ public abstract class DataPacket extends I2PBotePacket {
     
     /**
      * Creates a {@link #DataPacket} object from a file, using the same format as the
-     * {@link #createPacket(byte[])} method.
+     * {@link "#createPacket(byte[])"} method.
      * @param file
      * @throws MalformedPacketException
      */
@@ -67,8 +67,7 @@ public abstract class DataPacket extends I2PBotePacket {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
-            DataPacket packet = createPacket(Util.readBytes(inputStream));
-            return packet;
+            return createPacket(Util.readBytes(inputStream));
         }
         catch (IOException e) {
             throw new MalformedPacketException("Can't read packet file: " + file.getAbsolutePath(), e);
@@ -101,9 +100,9 @@ public abstract class DataPacket extends I2PBotePacket {
             throw new MalformedPacketException("Type code is not a DataPacket type code: <" + packetTypeCode + ">");
         
         Class<? extends DataPacket> dataPacketType = packetType.asSubclass(DataPacket.class);
-        DataPacket packet = null;
+        DataPacket packet;
         try {
-            packet = dataPacketType.getConstructor(byte[].class).newInstance(data);
+            packet = dataPacketType.getConstructor(byte[].class).newInstance((Object) data);
         }
         catch (Exception e) {
             throw new MalformedPacketException("Can't instantiate packet for type code <" + packetTypeCode + ">", e);

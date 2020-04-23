@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -72,9 +71,9 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
     private I2PSendQueue sendQueue;
     private Destination localDestination;   // The I2P destination of the local node
     private Comparator<Destination> peerComparator;
-    private SortedSet<Destination> responses;   // sorted by distance to the key to look up
-    private SortedSet<Destination> notQueriedYet;   // peers that are yet to be queried; sorted by distance to the key to look up
-    private Map<Destination, FindClosePeersPacket> pendingRequests;
+    private final SortedSet<Destination> responses;   // sorted by distance to the key to look up
+    private final SortedSet<Destination> notQueriedYet;   // peers that are yet to be queried; sorted by distance to the key to look up
+    private final Map<Destination, FindClosePeersPacket> pendingRequests;
     private long startTime;
     
     /**
@@ -91,9 +90,9 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
         this.bucketManager = bucketManager;
         
         peerComparator = new HashDistanceComparator(key);
-        responses = Collections.synchronizedSortedSet(new TreeSet<Destination>(peerComparator));   // nodes that have responded to a query
-        notQueriedYet = Collections.synchronizedSortedSet(new TreeSet<Destination>(peerComparator));   // peers we haven't contacted yet
-        pendingRequests = new ConcurrentHashMap<Destination, FindClosePeersPacket>();   // outstanding queries
+        responses = Collections.synchronizedSortedSet(new TreeSet<>(peerComparator));   // nodes that have responded to a query
+        notQueriedYet = Collections.synchronizedSortedSet(new TreeSet<>(peerComparator));   // peers we haven't contacted yet
+        pendingRequests = new ConcurrentHashMap<>();   // outstanding queries
     }
     
     public List<Destination> call() throws InterruptedException {
@@ -126,7 +125,7 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
     
                 // handle timeouts
                 for (Map.Entry<Destination, FindClosePeersPacket> request: pendingRequests.entrySet())
-                    if (hasTimedOut(request.getValue(), REQUEST_TIMEOUT)) {
+                    if (hasTimedOut(request.getValue())) {
                         Destination peer = request.getKey();
                         log.debug("FindCloseNodes request to peer " + Util.toShortenedBase32(peer) + " timed out.");
                         bucketManager.noResponse(peer);
@@ -137,9 +136,8 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
             } while (!isDone());
             log.debug("Node lookup for " + key + " found " + responses.size() + " nodes (may include local node).");
             synchronized (responses) {
-                Iterator<Destination> i = responses.iterator();
-                while (i.hasNext())
-                    log.debug("  Node: " + Util.toBase32(i.next()));
+                for (Destination respons : responses)
+                    log.debug("  Node: " + Util.toBase32(respons));
             }
         }
         finally {
@@ -167,7 +165,7 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
             }
         }
         if (kthClosestResult != null) {
-            Destination closestUnqueriedPeer = null;
+            Destination closestUnqueriedPeer;
             synchronized(notQueriedYet) {
                 if (notQueriedYet.isEmpty())
                     return true;
@@ -183,10 +181,7 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
         }
         
         // Check for thread interruption
-        if (Thread.currentThread().isInterrupted())
-            return true;
-        
-        return false;
+        return Thread.currentThread().isInterrupted();
     }
     
     private long getTime() {
@@ -197,9 +192,9 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
         return getTime() > startTime + timeout;
     }
     
-    private boolean hasTimedOut(CommunicationPacket request, long timeout) {
+    private boolean hasTimedOut(CommunicationPacket request) {
         long sentTime = request.getSentTime();
-        return sentTime>0 && hasTimedOut(sentTime, timeout);
+        return sentTime>0 && hasTimedOut(sentTime, ClosestNodesLookupTask.REQUEST_TIMEOUT);
     }
     
     /**
@@ -210,11 +205,10 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
      * If no peers were found, an empty <code>List</code> is returned.
      */
     private List<Destination> getResults() {
-        List<Destination> resultsList = new ArrayList<Destination>();
+        List<Destination> resultsList = new ArrayList<>();
         synchronized (responses) {
-            Iterator<Destination> i = responses.iterator();
-            while (i.hasNext()) {
-                resultsList.add(i.next());
+            for (Destination respons : responses) {
+                resultsList.add(respons);
                 if (resultsList.size() >= K)
                     break;
             }
@@ -260,8 +254,8 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
             BigInteger dest2Distance = KademliaUtil.getDistance(dest2.calculateHash(), reference);
             return dest1Distance.compareTo(dest2Distance);
         }
-    };
-    
+    }
+
     private class IncomingPacketHandler implements PacketListener {
         @Override
         public void packetReceived(CommunicationPacket packet, Destination sender, long receiveTime) {
@@ -276,7 +270,7 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
                         responses.add(sender);
                         DataPacket payload = responsePacket.getPayload();
                         if (payload instanceof PeerList)
-                            updatePeers((PeerList)payload, sender, receiveTime);
+                            updatePeers((PeerList)payload, sender);
                         
                         pendingRequests.remove(sender);
                     }
@@ -291,9 +285,8 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
          * and adds the <code>sender</code> to <code>responses</code>.
          * @param peerListPacket
          * @param sender
-         * @param receiveTime
          */
-        private void updatePeers(PeerList peerListPacket, Destination sender, long receiveTime) {
+        private void updatePeers(PeerList peerListPacket, Destination sender) {
             log.debug("Peer List Packet received: #peers=" + peerListPacket.getPeers().size() + ", sender="+ Util.toShortenedBase32(sender));
 
             // update the list of peers to query
@@ -314,5 +307,5 @@ public class ClosestNodesLookupTask implements Callable<List<Destination>> {
                     return packet;
             return null;
         }
-    };
+    }
 }

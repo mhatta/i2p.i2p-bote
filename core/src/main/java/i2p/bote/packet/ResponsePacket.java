@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -51,7 +51,7 @@ public class ResponsePacket extends CommunicationPacket {
     public static Collection<ResponsePacket> create(DataPacket payload, StatusCode statusCode, UniqueId packetId) {
         if (payload instanceof Splittable && payload.isTooBig()) {
             Collection<? extends DataPacket> dataPackets = ((Splittable)payload).split();
-            ArrayList<ResponsePacket> responsePackets = new ArrayList<ResponsePacket>();
+            ArrayList<ResponsePacket> responsePackets = new ArrayList<>();
             for (DataPacket dataPacket: dataPackets)
                 responsePackets.add(new ResponsePacket(dataPacket, statusCode, packetId));
             return responsePackets;

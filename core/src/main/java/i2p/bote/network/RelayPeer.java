@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -54,7 +54,7 @@ public class RelayPeer extends Destination {
         setPublicKey(destination.getPublicKey());
         
         // initialize RelayPeer-specific data
-        samples = new LinkedList<Boolean>();
+        samples = new LinkedList<>();
     }
     
     /**

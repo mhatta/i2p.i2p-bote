@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,23 +21,21 @@
 
 package i2p.bote.packet.dht;
 
-import i2p.bote.crypto.CryptoFactory;
-import i2p.bote.crypto.CryptoImplementation;
-import i2p.bote.email.EmailDestination;
-import i2p.bote.email.EmailIdentity;
-import i2p.bote.packet.TypeCode;
+import net.i2p.crypto.SHA256Generator;
+import net.i2p.data.Hash;
+import net.i2p.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
 
-import net.i2p.crypto.SHA256Generator;
-import net.i2p.data.Hash;
-import net.i2p.util.Log;
+import i2p.bote.crypto.CryptoFactory;
+import i2p.bote.crypto.CryptoImplementation;
+import i2p.bote.email.EmailDestination;
+import i2p.bote.email.EmailIdentity;
+import i2p.bote.packet.TypeCode;
 
 /**
  * An <code>EncryptedEmailPacket</code> contains an encrypted <code>UnencryptedEmailPacket</code>
@@ -83,10 +81,8 @@ public class EncryptedEmailPacket extends DhtStorablePacket {
      * Creates an <code>EncryptedEmailPacket</code> from raw datagram data.
      * To read the encrypted parts of the packet, {@link #decrypt(EmailIdentity)} must be called first.
      * @param data
-     * @throws InvalidAlgorithmParameterException 
-     * @throws NoSuchAlgorithmException 
      */
-    public EncryptedEmailPacket(byte[] data) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    public EncryptedEmailPacket(byte[] data) {
         super(data);
         ByteBuffer buffer = ByteBuffer.wrap(data, HEADER_LENGTH, data.length-HEADER_LENGTH);
         
@@ -154,8 +150,7 @@ public class EncryptedEmailPacket extends DhtStorablePacket {
      * The {@link CryptoImplementation} in the <code>EmailIdentity</code> must be the same as the one
      * in this <code>EncryptedEmailPacket</code>.
      * @param identity
-     * @throws GeneralSecurityException 
-     * @throws InvalidCipherTextException 
+     * @throws GeneralSecurityException
      */
     public UnencryptedEmailPacket decrypt(EmailIdentity identity) throws GeneralSecurityException {
         if (cryptoImpl != identity.getCryptoImpl())

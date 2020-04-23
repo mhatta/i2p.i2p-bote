@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -44,7 +44,7 @@ public class BanList {
     }
     
     private BanList() {
-        bannedPeers = new ConcurrentHashMap<Destination, BanReason>();
+        bannedPeers = new ConcurrentHashMap<>();
     }
     
     private void ban(Destination destination, BanReason reason) {
@@ -64,7 +64,7 @@ public class BanList {
     }
 
     public Collection<BannedPeer> getAll() {
-        Collection<BannedPeer> peerCollection = new ArrayList<BannedPeer>();
+        Collection<BannedPeer> peerCollection = new ArrayList<>();
         for (Entry<Destination, BanReason> entry: bannedPeers.entrySet())
             peerCollection.add(new BannedPeer(entry.getKey(), entry.getValue()));
         return peerCollection;

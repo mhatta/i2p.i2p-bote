@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,8 +21,6 @@
 
 package i2p.bote.network.kademlia;
 
-import static i2p.bote.network.kademlia.KademliaConstants.REPLICATE_INTERVAL;
-import static i2p.bote.network.kademlia.KademliaConstants.REPLICATE_VARIANCE;
 import i2p.bote.network.DhtStorageHandler;
 import i2p.bote.network.I2PPacketDispatcher;
 import i2p.bote.network.I2PSendQueue;
@@ -77,7 +75,6 @@ class ReplicateThread extends I2PAppThread implements PacketListener {
     private I2PPacketDispatcher i2pReceiver;
     private BucketManager bucketManager;
     private Random rng;
-    private long nextReplicationTime;
     private Set<DhtStorageHandler> dhtStores;
     private Set<Hash> keysToSkip;   // all DHT keys that have been re-stored since the last replication
     private Map<Hash, DeleteRequest> receivedDeleteRequests;   // Matching keys in this Map cause the delete request
@@ -91,20 +88,17 @@ class ReplicateThread extends I2PAppThread implements PacketListener {
         this.i2pReceiver = i2pReceiver;
         this.bucketManager = bucketManager;
         rng = new Random();
-        dhtStores = new ConcurrentHashSet<DhtStorageHandler>();
-        keysToSkip = new ConcurrentHashSet<Hash>();
-        receivedDeleteRequests = new ConcurrentHashMap<Hash, DeleteRequest>();
+        dhtStores = new ConcurrentHashSet<>();
+        keysToSkip = new ConcurrentHashSet<>();
+        receivedDeleteRequests = new ConcurrentHashMap<>();
     }
     
     void addDhtStoreToReplicate(DhtStorageHandler dhtStore) {
         dhtStores.add(dhtStore);
     }
     
-    private long randomTime(long min, long max) {
-        if (min < max)
-            return min + rng.nextLong() % (max-min);
-        else
-            return min;
+    private long randomTime() {
+        return (long) 3300000 + rng.nextLong() % ((long) 3900000 - (long) 3300000);
     }
 
     private void replicate() throws InterruptedException {
@@ -170,21 +164,20 @@ class ReplicateThread extends I2PAppThread implements PacketListener {
     
     /**
      * Informs the <code>ReplicationThread</code> that a packet has been stored in a local folder.
-     * @param folder
      * @param packet
      */
-    public void packetStored(DhtStorageHandler folder, DhtStorablePacket packet) {
+    public void packetStored(DhtStorablePacket packet) {
         keysToSkip.add(packet.getDhtKey());
     }
     
     @Override
     public void run() {
-        nextReplicationTime = System.currentTimeMillis();
+        long nextReplicationTime = System.currentTimeMillis();
         
         while (!Thread.interrupted()) {
             try {
                 replicate();
-                long waitTime = randomTime(REPLICATE_INTERVAL-REPLICATE_VARIANCE, REPLICATE_INTERVAL+REPLICATE_VARIANCE);
+                long waitTime = randomTime();
                 nextReplicationTime += waitTime;
                 log.debug("Next replication at " + new Date(nextReplicationTime));
                 TimeUnit.SECONDS.sleep(waitTime);

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -56,14 +56,13 @@ public class IncompleteEmailFolder extends PacketFolder<UnencryptedEmailPacket> 
         super(storageDir);
         this.inbox = inbox;
         this.messageIdCache = messageIdCache;
-        newEmailListeners = new ArrayList<NewEmailListener>();
+        newEmailListeners = new ArrayList<>();
     }
 
     public synchronized int getNumIncompleteEmails() {
-        Set<String> messages = new HashSet<String>();
+        Set<String> messages = new HashSet<>();
         File[] packets = getFilenames();
-        for (int i = 0; i < packets.length; i++) {
-            File packet = packets[i];
+        for (File packet : packets) {
             String messageId = packet.getName().split("_")[0];
             messages.add(messageId);
         }
@@ -105,12 +104,12 @@ public class IncompleteEmailFolder extends PacketFolder<UnencryptedEmailPacket> 
 
     private void assemble(File[] packetFiles) {
         // No need to do this in a separate thread, just call run()
-        new AssembleTask(packetFiles, inbox).run();
+        new AssembleTask(packetFiles).run();
     }
     
     /**
      * Returns all filenames that match a given message ID. Not to be confused with
-     * the {@link #retrieve(net.i2p.data.Hash)} method, which takes a DHT key.
+     * the {@link "#retrieve(net.i2p.data.Hash)"} method, which takes a DHT key.
      * @param messageId
      */
     private File[] getAllMatchingFiles(UniqueId messageId) {
@@ -131,7 +130,7 @@ public class IncompleteEmailFolder extends PacketFolder<UnencryptedEmailPacket> 
     private class AssembleTask implements Runnable {
         File[] packetFiles;
         
-        public AssembleTask(File[] packetFiles, EmailFolder inbox) {
+        public AssembleTask(File[] packetFiles) {
             this.packetFiles = packetFiles;
         }
 
@@ -143,7 +142,7 @@ public class IncompleteEmailFolder extends PacketFolder<UnencryptedEmailPacket> 
             Arrays.sort(packets, new Comparator<UnencryptedEmailPacket>() {
                 @Override
                 public int compare(UnencryptedEmailPacket packet1, UnencryptedEmailPacket packet2) {
-                    return Integer.valueOf(packet1.getFragmentIndex()).compareTo(packet2.getFragmentIndex());
+                    return Integer.compare(packet1.getFragmentIndex(), packet2.getFragmentIndex());
                 }
             });
 
@@ -168,12 +167,11 @@ public class IncompleteEmailFolder extends PacketFolder<UnencryptedEmailPacket> 
             }
             catch (Exception e) {
                 log.error("Error assembling/storing email, or deleting email packets. ", e);
-                return;
             }
         }
         
         private Collection<UnencryptedEmailPacket> getEmailPackets(File[] files) {
-            Collection<UnencryptedEmailPacket> packets = new ArrayList<UnencryptedEmailPacket>();
+            Collection<UnencryptedEmailPacket> packets = new ArrayList<>();
             for (File file: files) {
                 try {
                     I2PBotePacket packet = DataPacket.createPacket(file);
@@ -192,13 +190,8 @@ public class IncompleteEmailFolder extends PacketFolder<UnencryptedEmailPacket> 
     // FolderElement implementation
     @Override
     protected UnencryptedEmailPacket createFolderElement(File file) throws IOException {
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
+        try (FileInputStream inputStream = new FileInputStream(file)) {
             return new UnencryptedEmailPacket(inputStream);
-        } finally {
-            if (inputStream != null)
-                inputStream.close();
         }
     }
 

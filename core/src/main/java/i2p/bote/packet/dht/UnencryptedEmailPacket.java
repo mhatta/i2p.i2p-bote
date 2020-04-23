@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -127,7 +127,7 @@ public class UnencryptedEmailPacket extends DataPacket {
     }
     
     private void verify() {
-        if (fragmentIndex<0 || fragmentIndex>=numFragments || numFragments<1)
+        if (fragmentIndex < 0 || fragmentIndex >= numFragments)
             log.error("Illegal values: fragmentIndex=" + fragmentIndex + " numFragments="+numFragments);
         // TODO more sanity checks?
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2014  str4d@mail.i2p
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
@@ -58,7 +58,7 @@ public class FileAttachment implements Attachment {
      * Returns the MIME type for an <code>Attachment</code>. MIME detection is done with
      * JRE classes, so only a small number of MIME types are supported.<p/>
      * It might be worthwhile to use the mime-util library which does a much better job:
-     * {@link http://sourceforge.net/projects/mime-util/files/}.
+     * {@link "http://sourceforge.net/projects/mime-util/files/"}.
      */
     private void loadMimeType() {
         MimetypesFileTypeMap mimeTypeMap = new MimetypesFileTypeMap();

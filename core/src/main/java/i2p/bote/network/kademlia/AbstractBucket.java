@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -41,7 +41,7 @@ abstract class AbstractBucket implements Iterable<KademliaPeer> {
     static final BigInteger MIN_HASH_VALUE = BigInteger.ZERO;   // system-wide minimum hash value
     static final BigInteger MAX_HASH_VALUE = BigInteger.ONE.shiftLeft(Hash.HASH_LENGTH*8).subtract(BigInteger.ONE);   // system-wide maximum hash value
 
-    protected List<KademliaPeer> peers;   // peers are sorted most recently seen to least recently seen
+    protected final List<KademliaPeer> peers;   // peers are sorted most recently seen to least recently seen
     protected int capacity;
     
     public AbstractBucket(int capacity) {
@@ -51,7 +51,7 @@ abstract class AbstractBucket implements Iterable<KademliaPeer> {
 
     /**
      * Removes a peer from the bucket. If the peer doesn't exist in the bucket, nothing happens.
-     * @param node
+     * @param destination
      */
     void remove(Destination destination) {
         peers.remove(destination);

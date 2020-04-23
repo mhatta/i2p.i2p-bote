@@ -123,7 +123,7 @@ public abstract class DeletionAwareDhtFolder<T extends DhtStorablePacket> extend
     /** Overridden to only return real DHT packets, not Deletion Info Packets. */
     @Override
     protected File[] getFilenames() {
-        List<File> filteredNames = new ArrayList<File>();
+        List<File> filteredNames = new ArrayList<>();
         for (File file: super.getFilenames())
             if (!file.getName().startsWith(DEL_FILE_PREFIX))
                 filteredNames.add(file);

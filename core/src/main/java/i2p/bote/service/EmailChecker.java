@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -63,9 +63,8 @@ public class EmailChecker extends I2PAppThread {
     private I2PSendQueue sendQueue;
     private DHT dht;
     private RelayPeerManager peerManager;
-    private ThreadFactory mailCheckThreadFactory;
     private ExecutorService mailCheckExecutor;
-    private Map<EmailIdentity, Future<Boolean>> pendingMailCheckTasks;
+    private final Map<EmailIdentity, Future<Boolean>> pendingMailCheckTasks;
     private volatile long lastMailCheckTime;   // the time when the last mail check started (completed or not)
     private volatile long previousMailCheckTime;   // the time when the last completed mail check started
     private long interval;   // in milliseconds
@@ -95,7 +94,7 @@ public class EmailChecker extends I2PAppThread {
         this.sendQueue = sendQueue;
         this.dht = dht;
         this.peerManager = peerManager;
-        mailCheckThreadFactory = Util.createThreadFactory("ChkEmailTask", CheckEmailTask.THREAD_STACK_SIZE);
+        ThreadFactory mailCheckThreadFactory = Util.createThreadFactory("ChkEmailTask", CheckEmailTask.THREAD_STACK_SIZE);
         mailCheckExecutor = new ThreadPoolExecutor(
                 0,
                 configuration.getMaxConcurIdCheckMail(),
@@ -230,9 +229,7 @@ public class EmailChecker extends I2PAppThread {
                             checkForMail();
                         } catch (PasswordException e) {
                             log.debug("Can't auto-check for email because a password is set.");
-                        } catch (IOException e) {
-                            log.debug("Can't auto-check for email.", e);
-                        } catch (GeneralSecurityException e) {
+                        } catch (IOException | GeneralSecurityException e) {
                             log.debug("Can't auto-check for email.", e);
                         }
                     TimeUnit.MINUTES.sleep(1);

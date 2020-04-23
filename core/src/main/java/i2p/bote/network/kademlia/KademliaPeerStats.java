@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -57,7 +57,7 @@ class KademliaPeerStats implements DhtPeerStats {
         };
         header = Arrays.asList(headerArray);
         
-        data = new ArrayList<DhtPeerStatsRow>();
+        data = new ArrayList<>();
         addPeerData(renderer, sBucket, localDestinationHash);
         for (KBucket kBucket: kBuckets)
             addPeerData(renderer, kBucket, localDestinationHash);
@@ -140,7 +140,7 @@ class KademliaPeerStats implements DhtPeerStats {
         public List<String> toStrings() {
             Locale locale = new Locale(I2PBote.getLanguage());
             DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale);
-            List<String> row = new ArrayList<String>();
+            List<String> row = new ArrayList<>();
             row.add(String.valueOf(peer));
             row.add(Util.toBase32(destination));
             row.add(bucketPrefix);
@@ -149,7 +149,7 @@ class KademliaPeerStats implements DhtPeerStats {
                     renderer.translateContent(Content.YES)+"("+consecTimeouts+")" :
                     renderer.translateContent(Content.NO)));
             String firstSeen = formatter.format(this.firstSeen);
-            row.add(String.valueOf(firstSeen));
+            row.add(firstSeen);
             return row;
         }
     }

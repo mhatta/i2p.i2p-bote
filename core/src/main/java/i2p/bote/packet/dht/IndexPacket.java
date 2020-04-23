@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -74,7 +74,7 @@ public class IndexPacket extends DhtStorablePacket implements Iterable<IndexPack
      */
     public IndexPacket(Hash destinationHash) {
         this.destinationHash = destinationHash;
-        entries = new ArrayList<IndexPacketEntry>();
+        entries = new ArrayList<>();
     }
     
     /**
@@ -90,7 +90,7 @@ public class IndexPacket extends DhtStorablePacket implements Iterable<IndexPack
         IndexPacket firstPacket = indexPackets.iterator().next();
         destinationHash = firstPacket.getDhtKey();
         
-        entries = new ArrayList<IndexPacketEntry>();
+        entries = new ArrayList<>();
         for (IndexPacket packet: indexPackets) {
             for (IndexPacketEntry entry: packet)
                 put(entry);
@@ -107,7 +107,7 @@ public class IndexPacket extends DhtStorablePacket implements Iterable<IndexPack
     
     public IndexPacket(byte[] data) {
         super(data);
-        entries = new ArrayList<IndexPacketEntry>();
+        entries = new ArrayList<>();
         ByteBuffer buffer = ByteBuffer.wrap(data, HEADER_LENGTH, data.length-HEADER_LENGTH);
         
         try {

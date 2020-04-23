@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 
@@ -73,14 +74,11 @@ public abstract class ExportableData {
     public void export(File exportFile, String password) throws IOException, GeneralSecurityException, PasswordException {
         initializeIfNeeded();
 
-        OutputStream exportStream = new FileOutputStream(exportFile);
-        try {
+        try (OutputStream exportStream = new FileOutputStream(exportFile)) {
             export(exportStream, password);
         } catch (IOException e) {
             log.error("Can't export data to file <" + exportFile.getAbsolutePath() + ">.", e);
             throw e;
-        } finally {
-            exportStream.close();
         }
     }
 
@@ -93,9 +91,9 @@ public abstract class ExportableData {
             PasswordCache cache = new PasswordCache(I2PBote.getInstance().getConfiguration());
             cache.setPassword(password.getBytes());
             DerivedKey derivedKey = cache.getKey();
-            writer = new OutputStreamWriter(new EncryptedOutputStream(exportStream, derivedKey), "UTF-8");
+            writer = new OutputStreamWriter(new EncryptedOutputStream(exportStream, derivedKey), StandardCharsets.UTF_8);
         } else
-            writer = new OutputStreamWriter(exportStream, "UTF-8");
+            writer = new OutputStreamWriter(exportStream, StandardCharsets.UTF_8);
 
         Properties properties = saveToProperties();
         properties.store(writer, null);

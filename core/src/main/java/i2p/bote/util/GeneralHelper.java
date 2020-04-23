@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,9 +21,27 @@
 
 package i2p.bote.util;
 
+import net.i2p.util.Log;
+import net.i2p.util.RandomSource;
+import net.i2p.util.SystemVersion;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.regex.Pattern;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import javax.mail.Address;
+import javax.mail.MessagingException;
+
 import i2p.bote.Configuration;
 import i2p.bote.I2PBote;
-import i2p.bote.status.StatusListener;
 import i2p.bote.Util;
 import i2p.bote.addressbook.AddressBook;
 import i2p.bote.crypto.CryptoFactory;
@@ -44,27 +62,7 @@ import i2p.bote.network.NetworkStatus;
 import i2p.bote.packet.dht.Contact;
 import i2p.bote.service.EmailChecker;
 import i2p.bote.status.ChangeIdentityStatus;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.security.GeneralSecurityException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.regex.Pattern;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import javax.mail.Address;
-import javax.mail.MessagingException;
-
-import net.i2p.data.Destination;
-import net.i2p.util.Log;
-import net.i2p.util.RandomSource;
-import net.i2p.util.SystemVersion;
+import i2p.bote.status.StatusListener;
 
 /**
  * General helper functions used by all UIs.
@@ -88,7 +86,7 @@ public class GeneralHelper {
                 SecretKeySpec key = new SecretKeySpec(new byte[32], "AES");
                 cipher.init(Cipher.ENCRYPT_MODE, key);
                 unlimited = true;
-            } catch (GeneralSecurityException gse) {
+            } catch (GeneralSecurityException ignored) {
             }
         }
         _isUnlimited = unlimited;
@@ -111,11 +109,11 @@ public class GeneralHelper {
         return I2PBote.getInstance().getConnectError();
     }
 
-    public Identities getIdentities() throws PasswordException {
+    public Identities getIdentities() {
         return I2PBote.getInstance().getIdentities();
     }
 
-    public AddressBook getAddressBook() throws PasswordException {
+    public AddressBook getAddressBook() {
         return I2PBote.getInstance().getAddressBook();
     }
 
@@ -150,7 +148,7 @@ public class GeneralHelper {
      * @param key A base64-encoded Email Destination key
      * @param description
      * @param publicName
-     * @param picture
+     * @param pictureBase64
      * @param emailAddress
      * @param setDefault If this is <code>true</code>, the identity becomes the new default identity. Otherwise, the default stays the same.
      * @throws GeneralSecurityException 
@@ -245,7 +243,7 @@ public class GeneralHelper {
     }
 
     /** @see {@link I2PBote#getWordListLocales() */
-    public List<String> getWordListLocales() throws UnsupportedEncodingException, IOException, URISyntaxException {
+    public List<String> getWordListLocales() throws IOException, URISyntaxException {
         return I2PBote.getInstance().getWordListLocales();
     }
 
@@ -523,7 +521,7 @@ public class GeneralHelper {
         return name.isEmpty() ? extractName(address) : name;
     }
 
-    private static AddressDisplayFilter getAddressDisplayFilter() throws PasswordException {
+    private static AddressDisplayFilter getAddressDisplayFilter() {
         Identities identities = I2PBote.getInstance().getIdentities();
         if (ADDRESS_DISPLAY_FILTER == null)
             ADDRESS_DISPLAY_FILTER = new AddressDisplayFilter(identities, getInstance().getAddressBook());

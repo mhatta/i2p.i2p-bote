@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,29 +21,21 @@
 
 package i2p.bote.email;
 
-import i2p.bote.I2PBote;
-import i2p.bote.crypto.KeyUpdateHandler;
-import i2p.bote.fileencryption.DerivedKey;
-import i2p.bote.fileencryption.EncryptedInputStream;
-import i2p.bote.fileencryption.EncryptedOutputStream;
-import i2p.bote.fileencryption.FileEncryptionUtil;
-import i2p.bote.fileencryption.PasswordCache;
-import i2p.bote.fileencryption.PasswordException;
-import i2p.bote.fileencryption.PasswordHolder;
-import i2p.bote.util.ExportableData;
-import i2p.bote.util.SortedProperties;
+import com.lambdaworks.codec.Base64;
+
+import net.i2p.data.Hash;
+import net.i2p.util.Log;
+import net.i2p.util.SecureFileOutputStream;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,11 +45,15 @@ import java.util.Properties;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.i2p.data.Hash;
-import net.i2p.util.Log;
-import net.i2p.util.SecureFileOutputStream;
-
-import com.lambdaworks.codec.Base64;
+import i2p.bote.crypto.KeyUpdateHandler;
+import i2p.bote.fileencryption.DerivedKey;
+import i2p.bote.fileencryption.EncryptedInputStream;
+import i2p.bote.fileencryption.EncryptedOutputStream;
+import i2p.bote.fileencryption.FileEncryptionUtil;
+import i2p.bote.fileencryption.PasswordException;
+import i2p.bote.fileencryption.PasswordHolder;
+import i2p.bote.util.ExportableData;
+import i2p.bote.util.SortedProperties;
 
 /**
  * Holds a set of {@link EmailIdentity} objects that are sorted by name.<br/>
@@ -91,7 +87,7 @@ public class Identities extends ExportableData implements KeyUpdateHandler {
     public Identities(File identitiesFile, PasswordHolder passwordHolder) {
         this.identitiesFile = identitiesFile;
         this.passwordHolder = passwordHolder;
-        identitiesListeners = new ArrayList<IdentitiesListener>();
+        identitiesListeners = new ArrayList<>();
     }
 
     protected void initializeIfNeeded() throws PasswordException, IOException, GeneralSecurityException {
@@ -121,7 +117,7 @@ public class Identities extends ExportableData implements KeyUpdateHandler {
         
         if (!identitiesFile.exists()) {
             log.debug("Identities file does not exist: <" + identitiesFile.getAbsolutePath() + ">");
-            identities = new TreeSet<EmailIdentity>(new IdentityComparator());
+            identities = new TreeSet<>(new IdentityComparator());
             return;
         }
         
@@ -150,7 +146,7 @@ public class Identities extends ExportableData implements KeyUpdateHandler {
     protected boolean loadFromProperties(Properties properties, boolean append, boolean replace) throws GeneralSecurityException {
         String defaultIdentityStr = properties.getProperty(PREF_DEFAULT);
         if (identities == null || !append)
-            identities = new TreeSet<EmailIdentity>(new IdentityComparator());
+            identities = new TreeSet<>(new IdentityComparator());
         int index = 0;
         while (true) {
             String prefix = IDENTITY_PREFIX + index + ".";
@@ -175,7 +171,7 @@ public class Identities extends ExportableData implements KeyUpdateHandler {
             }
             identity.loadConfig(properties, prefix + CONFIGURATION_PREFIX, true);
 
-            if (append && replace && identities.contains(identity))
+            if (append && replace)
                 identities.remove(identity);
             identities.add(identity);
 
@@ -192,16 +188,13 @@ public class Identities extends ExportableData implements KeyUpdateHandler {
     /** Saves all identities to file. */
     public void save() throws IOException, GeneralSecurityException, PasswordException {
         initializeIfNeeded();
-            
-        OutputStream encryptedStream = new EncryptedOutputStream(new SecureFileOutputStream(identitiesFile), passwordHolder);
-        try {
+
+        try (OutputStream encryptedStream = new EncryptedOutputStream(new SecureFileOutputStream(identitiesFile), passwordHolder)) {
             Properties properties = saveToProperties();
-            properties.store(new OutputStreamWriter(encryptedStream, "UTF-8"), null);
+            properties.store(new OutputStreamWriter(encryptedStream, StandardCharsets.UTF_8), null);
         } catch (IOException e) {
             log.error("Can't save email identities to file <" + identitiesFile.getAbsolutePath() + ">.", e);
             throw e;
-        } finally {
-            encryptedStream.close();
         }
     }
 
@@ -269,7 +262,7 @@ public class Identities extends ExportableData implements KeyUpdateHandler {
         }
     }
     
-    public void changePassword(byte[] oldPassword, DerivedKey newKey) throws FileNotFoundException, IOException, GeneralSecurityException, PasswordException {
+    public void changePassword(byte[] oldPassword, DerivedKey newKey) throws IOException, GeneralSecurityException, PasswordException {
         if (identitiesFile.exists())
             FileEncryptionUtil.changePassword(identitiesFile, oldPassword, newKey);
     }

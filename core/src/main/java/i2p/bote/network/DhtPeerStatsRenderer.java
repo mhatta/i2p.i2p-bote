@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017  str4d@mail.i2p
  *
  * This file is part of I2P-Bote.

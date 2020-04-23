@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -129,7 +129,7 @@ public class KademliaDHT extends I2PAppThread implements DHT, PacketListener {
         readySignal = new CountDownLatch(1);
         localDestination = sendQueue.getLocalDestination();
         localDestinationHash = localDestination.calculateHash();
-        initialPeers = new ConcurrentHashSet<KademliaPeer>();
+        initialPeers = new ConcurrentHashSet<>();
         // Read the built-in peer file
         URL builtInPeerFile = PeerFileAnchor.getBuiltInPeersFile();
         List<String> builtInPeers = Util.readLines(builtInPeerFile);
@@ -143,7 +143,7 @@ public class KademliaDHT extends I2PAppThread implements DHT, PacketListener {
             log.info("Peer file doesn't exist, using built-in peers only (File not found: <" + peerFile.getAbsolutePath() + ">)");
         
         bucketManager = new BucketManager(localDestinationHash);
-        storageHandlers = new ConcurrentHashMap<Class<? extends DhtStorablePacket>, DhtStorageHandler>();
+        storageHandlers = new ConcurrentHashMap<>();
         replicateThread = new ReplicateThread(localDestination, sendQueue, i2pReceiver, bucketManager);
     }
     
@@ -361,8 +361,8 @@ public class KademliaDHT extends I2PAppThread implements DHT, PacketListener {
     /**
      * Returns <code>true</code> if <code>dest1</code> is closer to <code>key</code> than <code>dest2</code>.
      * @param key
-     * @param destination
-     * @param peers
+     * @param dest1
+     * @param dest2
      */
     private boolean isCloser(Destination dest1, Destination dest2, Hash key) {
         return new PeerDistanceComparator(key).compare(dest1, dest2) < 0;
@@ -573,7 +573,7 @@ public class KademliaDHT extends I2PAppThread implements DHT, PacketListener {
                     return n2 - n1;
                 }
                 else
-                    return Long.valueOf(peer2.getFirstSeen()).compareTo(peer1.getFirstSeen());
+                    return Long.compare(peer2.getFirstSeen(), peer1.getFirstSeen());
             }
         });
     }
@@ -652,7 +652,7 @@ public class KademliaDHT extends I2PAppThread implements DHT, PacketListener {
                 }
                 else
                     storageHandler.store(packetToStore);
-                replicateThread.packetStored(storageHandler, packetToStore);
+                replicateThread.packetStored(packetToStore);
             }
             else
                 log.warn("No storage handler found for type " + packetToStore.getClass().getSimpleName() + ".");

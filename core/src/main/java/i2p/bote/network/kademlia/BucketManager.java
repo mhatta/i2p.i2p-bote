@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -68,7 +68,7 @@ class BucketManager implements PacketListener, Iterable<KBucket> {
     /**
      * Adds a <code>{@link KademliaPeer}</code> to the s-bucket or a k-bucket,
      * depending on its distance to the local node and how full the buckets are.
-     * @param destination
+     * @param peer
      */
     public void addOrUpdate(KademliaPeer peer) {
         Hash destHash = peer.getDestinationHash();
@@ -305,7 +305,7 @@ class BucketManager implements PacketListener, Iterable<KBucket> {
     }
 
     /**
-     * @see KademliaDHT.getPeerStats()
+     * @see "KademliaDHT.getPeerStats()"
      */
     DhtPeerStats getPeerStats(DhtPeerStatsRenderer renderer) {
         return new KademliaPeerStats(renderer, sBucket, kBuckets, localDestinationHash);

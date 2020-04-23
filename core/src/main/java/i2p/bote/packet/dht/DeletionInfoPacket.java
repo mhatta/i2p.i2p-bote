@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -52,12 +52,12 @@ public class DeletionInfoPacket extends DataPacket implements Iterable<DeletionR
     private Log log = new Log(DeletionInfoPacket.class);
 
     public DeletionInfoPacket() {
-        entries = new ArrayList<DeletionRecord>();
+        entries = new ArrayList<>();
     }
     
     public DeletionInfoPacket(byte[] data) {
         super(data);
-        entries = new ArrayList<DeletionRecord>();
+        entries = new ArrayList<>();
         ByteBuffer buffer = ByteBuffer.wrap(data, HEADER_LENGTH, data.length-HEADER_LENGTH);
         
         try {

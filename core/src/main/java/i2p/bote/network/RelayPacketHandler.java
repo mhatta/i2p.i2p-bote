@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -69,11 +69,7 @@ public class RelayPacketHandler implements PacketListener {
             try {
                 payload = relayRequest.getStoredPacket(i2pSession);
             }
-            catch (DataFormatException e) {
-                log.error("Invalid RelayRequest received from peer " + Util.toBase32(sender), e);
-                return;
-            }
-            catch (MalformedPacketException e) {
+            catch (DataFormatException | MalformedPacketException e) {
                 log.error("Invalid RelayRequest received from peer " + Util.toBase32(sender), e);
                 return;
             }

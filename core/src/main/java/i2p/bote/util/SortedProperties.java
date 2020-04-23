@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -53,7 +53,6 @@ public class SortedProperties extends Properties {
                     return o1.toString().compareTo(o2.toString());
             }
         });
-        Enumeration<Object> sorted = Collections.enumeration(list);
-        return sorted;
+        return Collections.enumeration(list);
     }
 }

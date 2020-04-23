@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -57,7 +57,7 @@ public class Fingerprint {
     private byte[] salt;
     private byte[] rawFingerprint;
 
-    public Fingerprint(Hash nameHash, EmailDestination destination, byte[] salt) throws GeneralSecurityException {
+    public Fingerprint(Hash nameHash, EmailDestination destination, byte[] salt) {
         this.nameHash = nameHash;
         this.destination = destination;
         this.salt = salt;
@@ -122,8 +122,7 @@ public class Fingerprint {
      */
     private byte[] getRawFingerprint() throws GeneralSecurityException {
         byte[] input = Util.concat(nameHash.toByteArray(), destination.toByteArray());
-        byte[] fingerprint = SCrypt.scrypt(input, salt, SCRYPT_PARAMETERS.N, SCRYPT_PARAMETERS.r, SCRYPT_PARAMETERS.p, NUM_FINGERPRINT_BYTES);
-        return fingerprint;
+        return SCrypt.scrypt(input, salt, SCRYPT_PARAMETERS.N, SCRYPT_PARAMETERS.r, SCRYPT_PARAMETERS.p, NUM_FINGERPRINT_BYTES);
     }
     
     /** Checks that the 31th byte of the fingerprint is zero. */

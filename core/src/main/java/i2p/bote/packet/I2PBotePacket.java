@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -87,8 +87,7 @@ public abstract class I2PBotePacket {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
-            I2PBotePacket packet = createPacket(Util.readBytes(inputStream));
-            return packet;
+            return createPacket(Util.readBytes(inputStream));
         }
         catch (IOException e) {
             throw new MalformedPacketException("Can't read packet file: " + file.getAbsolutePath(), e);
