@@ -35,15 +35,22 @@
         </ib:message>
     </h2>
 
-    <p><ib:message key="To submit bug reports or feature requests:"/> <a href="https://github.com/i2p/i2p.i2p-bote/issues"><ib:message key="click here"/></a>.</p>
+    <p><ib:message key="To submit bug reports or feature requests:"/> <a href="https://github.com/mhatta/i2p.i2p-bote/issues"><ib:message key="click here"/></a>.</p>
     
     <div class="contributor-category"><ib:message key="Developers:"/></div>
     <div>
         <div class="contributor-name">
-            <ib:message key="Click to send an email" var="linkTitle"/>
-            <a href="newEmail.jsp?nofilter_recipient0=TzKO~FlShiQEOPkPn7eIOkxqBy6pGxk1NDkVLLwzGk~kNPwo8qvHoyk4vKOZVZNGklsU7iOndYeQofMZtADm5yqbUxhogTmxyu7VcNsw6mXBub26FAUEQADf4Uj4Ph0dGAMyPbWzDEFUibdJyjpLYS9AaHgf~EU8B49DP8rpkh8d0T&amp;recipientType0=to&amp;subject=${subject}" title="${linkTitle}">str4d</a>
-        </div>
-        <div class="contributor-role"><ib:message key="Maintenance, user experience, extended features, Android app"/></div>
+             <ib:message key="Click to send an email" var="linkTitle"/>
+             <a href="newEmail.jsp?nofilter_recipient0=AgnJ8P7EqIDESspPtlYvTkfzaqMuIstArF9m-HZ2AufYdVl3I9E8nUzrktYEdy0UxcAmXG57tguYq5T~Qn4-KvdJbllZrABZqXLwClx~SbxBpogHEf4D83Sh-OAt1mTUVRlIrXzjsadiKsucUoGx4c5iwX3OL5c91oJziBVEpX7ztE&amp;recipientType0=to&amp;subject=${subject}" title="${linkTitle}">mhatta</a>
+         </div>
+         <div class="contributor-role"><ib:message key="Maintenance, user experience, extended features, Android app"/></div>
+    </div>
+    <div>
+         <div class="contributor-name">
+             <ib:message key="Click to send an email" var="linkTitle"/>
+             <a href="newEmail.jsp?nofilter_recipient0=TzKO~FlShiQEOPkPn7eIOkxqBy6pGxk1NDkVLLwzGk~kNPwo8qvHoyk4vKOZVZNGklsU7iOndYeQofMZtADm5yqbUxhogTmxyu7VcNsw6mXBub26FAUEQADf4Uj4Ph0dGAMyPbWzDEFUibdJyjpLYS9AaHgf~EU8B49DP8rpkh8d0T&amp;recipientType0=to&amp;subject=${subject}" title="${linkTitle}">str4d</a>
+         </div>
+         <div class="contributor-role"><ib:message key="Maintenance, user experience, extended features, Android app"/></div>
     </div>
     <br/>
 
