@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -47,7 +47,7 @@ public class WordListAnchor {
     private Map<String, String[]> lists;
     
     public WordListAnchor() {
-        lists = new ConcurrentHashMap<String, String[]>();
+        lists = new ConcurrentHashMap<>();
     }
     
     public String[] getWordList(String localeCode) {
@@ -73,7 +73,8 @@ public class WordListAnchor {
         String protocol = dirUrl.getProtocol();
         if ("file".equalsIgnoreCase(protocol)) {
             String[] files = new File(dirUrl.toURI()).list();
-            List<String> locales = new ArrayList<String>();
+            List<String> locales = new ArrayList<>();
+            assert files != null;
             for (String filename: files)
                 if (filename.matches("words_.*\\.txt"))
                     locales.add(filename.substring(6, 8));
@@ -81,10 +82,8 @@ public class WordListAnchor {
         }
         else if ("jar".equalsIgnoreCase(protocol)) {
             String jarPath = dirUrl.getPath().substring(5, dirUrl.getPath().indexOf("!"));   // strip out only the JAR file
-            JarFile jarFile = null;
-            List<String> locales = new ArrayList<String>();
-            try {
-                jarFile = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+            List<String> locales = new ArrayList<>();
+            try (JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, "UTF-8"))) {
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
@@ -98,8 +97,6 @@ public class WordListAnchor {
                     }
                 }
                 return locales;
-            } finally {
-                jarFile.close();
             }
         }
         else {
@@ -122,7 +119,6 @@ public class WordListAnchor {
     }
     
     private URL getWordListUrl(String localeCode) {
-        URL wordListUrl = WordListAnchor.class.getResource("words_" + localeCode + ".txt");
-        return wordListUrl;
+        return WordListAnchor.class.getResource("words_" + localeCode + ".txt");
     }
 }

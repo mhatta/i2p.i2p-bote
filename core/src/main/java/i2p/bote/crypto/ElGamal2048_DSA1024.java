@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -84,22 +84,22 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
     }
     
     @Override
-    public PrivateKeyPair createPrivateKeyPair(byte[] bytes) throws GeneralSecurityException {
+    public PrivateKeyPair createPrivateKeyPair(byte[] bytes) {
         return createPrivateKeyPair(Base64.encode(bytes));
     }
     
     @Override
-    public String toBase64(PublicKeyPair keyPair) throws GeneralSecurityException {
+    public String toBase64(PublicKeyPair keyPair) {
         return Base64.encode(toByteArray(keyPair));
     }
     
     @Override
-    public String encryptionKeyToBase64(PublicKey key) throws GeneralSecurityException {
+    public String encryptionKeyToBase64(PublicKey key) {
         return Base64.encode(key.getEncoded());
     }
 
     @Override
-    public String toBase64(PrivateKeyPair keyPair) throws GeneralSecurityException {
+    public String toBase64(PrivateKeyPair keyPair) {
         return Base64.encode(toByteArray(keyPair));
     }
 
@@ -119,7 +119,7 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
     }
 
     @Override
-    public PrivateKeyPair createPrivateKeyPair(String base64) throws GeneralSecurityException {
+    public PrivateKeyPair createPrivateKeyPair(String base64) {
         // convert to byte[] first because the two keys end at byte boundaries, but not at base64 char boundaries
         byte[] bytes = Base64.decode(base64);
         
@@ -167,8 +167,7 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
             ByteArrayOutputStream arrayStream = new ByteArrayOutputStream();
             i2pClient.createDestination(arrayStream);
             byte[] destinationArray = arrayStream.toByteArray();
-            I2PSession i2pSession = i2pClient.createSession(new ByteArrayInputStream(destinationArray), null);
-            return i2pSession;
+            return i2pClient.createSession(new ByteArrayInputStream(destinationArray), null);
         }
         catch (Exception e) {
             throw new KeyException("Can't generate I2P destination.", e);
@@ -177,7 +176,7 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
     
     /** Only accepts <code>ElGamalPublicKey</code>s. */
     @Override
-    public byte[] encrypt(byte[] data, PublicKey key) throws GeneralSecurityException {
+    public byte[] encrypt(byte[] data, PublicKey key) {
         ElGamalPublicKey elGamalKey = castToElGamal(key);
         net.i2p.data.PublicKey i2pPublicKey = elGamalKey.getI2PKey();
         return Util.encrypt(data, i2pPublicKey);
@@ -215,7 +214,7 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
 
     /** Only accepts <code>DSAPrivateKey</code>s. */
     @Override
-    public byte[] sign(byte[] data, PrivateKey privateKey, KeyUpdateHandler keyupdateHandler) throws GeneralSecurityException {
+    public byte[] sign(byte[] data, PrivateKey privateKey, KeyUpdateHandler keyupdateHandler) {
         DSAPrivateKey dsaKey = castToDSA(privateKey);
         Signature signature = DSAEngine.getInstance().sign(data, dsaKey.getI2PKey());
         return signature.toByteArray();
@@ -230,11 +229,10 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
 
     /** Only accepts <code>DSAPublicKey</code>s. */
     @Override
-    public boolean verify(byte[] data, byte[] signature, PublicKey key) throws GeneralSecurityException {
+    public boolean verify(byte[] data, byte[] signature, PublicKey key) {
         DSAPublicKey dsaKey = castToDSA(key);
         Signature signatureObj = new Signature(signature);
-        boolean valid = DSAEngine.getInstance().verifySignature(signatureObj, data, dsaKey.getI2PKey());
-        return valid;
+        return DSAEngine.getInstance().verifySignature(signatureObj, data, dsaKey.getI2PKey());
     }
     
     private DSAPublicKey castToDSA(PublicKey key) {
@@ -248,7 +246,7 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
      * This class and its subclasses wrap I2P key objects in JCE interfaces.
      * @param <T>
      */
-    private abstract class KeyImpl<T extends DataStructure> implements Key {
+    private abstract static class KeyImpl<T extends DataStructure> implements Key {
         private static final long serialVersionUID = -8188867382999056897L;
         
         private T i2pKey;
@@ -258,12 +256,12 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
          * @param i2pKey One of the four I2P asymmetric key classes
          * @param algorithm Can be anything
          */
-        public KeyImpl(T i2pKey, String algorithm) {
+        KeyImpl(T i2pKey, String algorithm) {
             this.i2pKey = i2pKey;
             this.algorithm = algorithm;
         }
 
-        public T getI2PKey() {
+        T getI2PKey() {
             return i2pKey;
         }
         
@@ -283,34 +281,34 @@ public class ElGamal2048_DSA1024 extends AbstractCryptoImplementation {
         }
     }
     
-    private class ElGamalPublicKey extends KeyImpl<net.i2p.data.PublicKey> implements PublicKey {
+    private static class ElGamalPublicKey extends KeyImpl<net.i2p.data.PublicKey> implements PublicKey {
         private static final long serialVersionUID = -4454000993523471441L;
 
-        public ElGamalPublicKey(net.i2p.data.PublicKey i2pPublicKey) {
+        ElGamalPublicKey(net.i2p.data.PublicKey i2pPublicKey) {
             super(i2pPublicKey, "ElGamal-2048");
         }
     }
     
-    private class ElGamalPrivateKey extends KeyImpl<net.i2p.data.PrivateKey> implements PrivateKey {
+    private static class ElGamalPrivateKey extends KeyImpl<net.i2p.data.PrivateKey> implements PrivateKey {
         private static final long serialVersionUID = -9067327625123945685L;
 
-        public ElGamalPrivateKey(net.i2p.data.PrivateKey i2pPrivateKey) {
+        ElGamalPrivateKey(net.i2p.data.PrivateKey i2pPrivateKey) {
             super(i2pPrivateKey, "ElGamal-2048");
         }
     }
     
-    private class DSAPublicKey extends KeyImpl<net.i2p.data.SigningPublicKey> implements PublicKey {
+    private static class DSAPublicKey extends KeyImpl<net.i2p.data.SigningPublicKey> implements PublicKey {
         private static final long serialVersionUID = -6326463273460925920L;
 
-        public DSAPublicKey(net.i2p.data.SigningPublicKey i2pPublicKey) {
+        DSAPublicKey(net.i2p.data.SigningPublicKey i2pPublicKey) {
             super(i2pPublicKey, "DSA-1024");
         }
     }
     
-    private class DSAPrivateKey extends KeyImpl<net.i2p.data.SigningPrivateKey> implements PrivateKey {
+    private static class DSAPrivateKey extends KeyImpl<net.i2p.data.SigningPrivateKey> implements PrivateKey {
         private static final long serialVersionUID = 9200457056905555105L;
 
-        public DSAPrivateKey(net.i2p.data.SigningPrivateKey i2pPrivateKey) {
+        DSAPrivateKey(net.i2p.data.SigningPrivateKey i2pPrivateKey) {
             super(i2pPrivateKey, "DSA-1024");
         }
     }

@@ -50,7 +50,7 @@ public class FileInfo {
         Arrays.sort(files, new Comparator<File>() {
             @Override
             public int compare(File file1, File file2) {
-                return Boolean.valueOf(file1.isDirectory()).compareTo(file2.isDirectory());
+                return Boolean.compare(file1.isDirectory(), file2.isDirectory());
             }
         });
         if (files.length > 0) {
@@ -63,7 +63,7 @@ public class FileInfo {
     }
     
     /** Prints information for a file */
-    private void printFileInfo(File file) throws IOException {
+    private void printFileInfo(File file) {
         String filename = file.getName();
         System.out.print("  ");
         System.out.print(filename.length()>50 ? filename.substring(0, 50) : filename);
@@ -71,21 +71,18 @@ public class FileInfo {
             System.out.print(" "); 
         System.out.print("  ");
 
-        DataInputStream inputStream = null;
-        try {
-            inputStream = new DataInputStream(new FileInputStream(file));
+        try (DataInputStream inputStream = new DataInputStream(new FileInputStream(file))) {
             if (!"derivparams".equals(file.getName())) {
                 byte[] sofBuffer = new byte[4];
                 int bytesRead = inputStream.read(sofBuffer);
-                if (bytesRead<4 || !Arrays.equals(sofBuffer, FileEncryptionConstants.START_OF_FILE)) {
+                if (bytesRead < 4 || !Arrays.equals(sofBuffer, FileEncryptionConstants.START_OF_FILE)) {
                     System.out.println("not encrypted");
                     return;
                 }
-                System.out.print((inputStream.read()&0xFF) + "  ");
-            }
-            else
+                System.out.print((inputStream.read() & 0xFF) + "  ");
+            } else
                 System.out.print("   ");
-            
+
             System.out.print(inputStream.readInt() + "  ");
             System.out.print(inputStream.readInt() + "  ");
             System.out.print(inputStream.readInt() + "  ");
@@ -93,13 +90,8 @@ public class FileInfo {
             inputStream.read(saltBuffer);
             System.out.print(Base64.encode(saltBuffer));
             System.out.println();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println();
-        }
-        finally {
-            if (inputStream != null)
-                inputStream.close();
         }
     }
     

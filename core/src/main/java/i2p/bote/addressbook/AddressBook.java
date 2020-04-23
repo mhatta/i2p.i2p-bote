@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,6 +21,24 @@
 
 package i2p.bote.addressbook;
 
+import net.i2p.util.Log;
+import net.i2p.util.SecureFileOutputStream;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.util.Comparator;
+import java.util.Properties;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import i2p.bote.email.EmailDestination;
 import i2p.bote.fileencryption.DerivedKey;
 import i2p.bote.fileencryption.EncryptedInputStream;
@@ -31,24 +49,6 @@ import i2p.bote.fileencryption.PasswordHolder;
 import i2p.bote.packet.dht.Contact;
 import i2p.bote.util.ExportableData;
 import i2p.bote.util.SortedProperties;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.security.GeneralSecurityException;
-import java.util.Comparator;
-import java.util.Properties;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import net.i2p.util.Log;
-import net.i2p.util.SecureFileOutputStream;
 
 /**
  * Implements the private address book. Holds a set of {@link Contact}s
@@ -85,7 +85,7 @@ public class AddressBook extends ExportableData {
     private void readContacts() throws PasswordException {
         if (!addressFile.exists()) {
             log.debug("Address file does not exist: <" + addressFile.getAbsolutePath() + ">");
-            contacts = new TreeSet<Contact>(new ContactComparator());
+            contacts = new TreeSet<>(new ContactComparator());
             return;
         }
         
@@ -118,7 +118,7 @@ public class AddressBook extends ExportableData {
 
     protected boolean loadFromProperties(Properties properties, boolean append, boolean replace) {
         if (contacts == null || !append) {
-            contacts = new TreeSet<Contact>(new ContactComparator());
+            contacts = new TreeSet<>(new ContactComparator());
         }
         int index = 0;
         while (true) {
@@ -136,7 +136,7 @@ public class AddressBook extends ExportableData {
                 String text = properties.getProperty(prefix + "text");
                 Contact contact = new Contact(name, destination, pictureBase64, text);
 
-                if (append && replace && contacts.contains(contact)) {
+                if (append && replace) {
                     contacts.remove(contact);
                 }
                 contacts.add(contact);
@@ -152,16 +152,13 @@ public class AddressBook extends ExportableData {
     
     public void save() throws IOException, PasswordException, GeneralSecurityException {
         initializeIfNeeded();
-        
-        OutputStream encryptedStream = new EncryptedOutputStream(new SecureFileOutputStream(addressFile), passwordHolder);
-        try {
+
+        try (OutputStream encryptedStream = new EncryptedOutputStream(new SecureFileOutputStream(addressFile), passwordHolder)) {
             Properties properties = saveToProperties();
-            properties.store(new OutputStreamWriter(encryptedStream, "UTF-8"), null);
+            properties.store(new OutputStreamWriter(encryptedStream, StandardCharsets.UTF_8), null);
         } catch (IOException e) {
             log.error("Can't save email identities to file <" + addressFile.getAbsolutePath() + ">.", e);
             throw e;
-        } finally {
-            encryptedStream.close();
         }
     }
 
@@ -194,7 +191,7 @@ public class AddressBook extends ExportableData {
             contacts.remove(contact);
     }
     
-    public void changePassword(byte[] oldPassword, DerivedKey newKey) throws FileNotFoundException, IOException, GeneralSecurityException, PasswordException {
+    public void changePassword(byte[] oldPassword, DerivedKey newKey) throws IOException, GeneralSecurityException, PasswordException {
         if (addressFile.exists())
             FileEncryptionUtil.changePassword(addressFile, oldPassword, newKey);
     }
@@ -250,7 +247,7 @@ public class AddressBook extends ExportableData {
     /**
      * Compares two contacts by name and email destination.
      */
-    private class ContactComparator implements Comparator<Contact> {
+    private static class ContactComparator implements Comparator<Contact> {
         @Override
         public int compare(Contact contact1, Contact contact2) {
             int nameComparison = String.CASE_INSENSITIVE_ORDER.compare(contact1.getName(), contact2.getName());

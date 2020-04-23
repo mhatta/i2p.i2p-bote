@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -45,7 +45,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.Thread.State;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -213,13 +212,9 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
                                              MailSender.class,
                                              PasswordVerifier.class);
             apiService = (ApiService) ctor.newInstance(configuration, this, this, this);
-        } catch (ClassNotFoundException e) {
-        } catch (NoSuchMethodException e) {
-        } catch (InstantiationException e) {
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ignored) {
         }
-        
+
         debugSupport = new DebugSupport(configuration, passwordCache);
         
         wordLists = new WordListAnchor();
@@ -345,11 +340,7 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
                 clazz.getDeclaredConstructor(I2PSocketManager.class);
             seedless = ctor.newInstance(socketManager);
             backgroundThreads.add(seedless);
-        } catch (ClassNotFoundException e) {
-        } catch (NoSuchMethodException e) {
-        } catch (InstantiationException e) {
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ignored) {
         }
 
         dht = new KademliaDHT(sendQueue, dispatcher, configuration.getDhtPeerFile(), (DhtPeerSource) seedless);
@@ -415,13 +406,9 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
         else
             if (!keyFile.createNewFile())
                 log.error("Cannot create destination key file: <" + keyFile.getAbsolutePath() + ">");
-        
-        BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new SecureFileOutputStream(keyFile)));
-        try {
+
+        try (BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new SecureFileOutputStream(keyFile)))) {
             fileWriter.write(Base64.encode(localDestinationArray));
-        }
-        finally {
-            fileWriter.close();
         }
     }
     
@@ -431,7 +418,7 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
      * by this method.
      */
     public void startUp() {
-        backgroundThreads = new ArrayList<I2PAppThread>();
+        backgroundThreads = new ArrayList<>();
         connectTask = new ConnectTask();
         backgroundThreads.add(connectTask);
         connectTask.start();
@@ -533,7 +520,7 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
     }
     
     /** Returns all locale codes for which a word list exists. */
-    public List<String> getWordListLocales() throws UnsupportedEncodingException, IOException, URISyntaxException {
+    public List<String> getWordListLocales() throws IOException, URISyntaxException {
         return wordLists.getLocaleCodes();
     }
     
@@ -809,7 +796,7 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
     }
     
     public List<EmailFolder> getEmailFolders() {
-        ArrayList<EmailFolder> folders = new ArrayList<EmailFolder>();
+        ArrayList<EmailFolder> folders = new ArrayList<>();
         folders.add(inbox);
         folders.add(outbox);
         folders.add(sentFolder);
@@ -826,10 +813,10 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
     
     public Set<RelayPeer> getRelayPeers() {
         if (peerManager == null)
-            return new HashSet<RelayPeer>();
+            return new HashSet<>();
         return peerManager.getAllPeers();
     }
-    
+
     public Collection<BannedPeer> getBannedPeers() {
         return BanList.getInstance().getAll();
     }
@@ -850,13 +837,13 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
         if (apiService != null)
             apiService.stopAll();
         if (backgroundThreads != null) {
-            awaitShutdown(5 * 1000);
+            awaitShutdown();
             printRunningThreads();
         }
     }
 
     private void printRunningThreads() {
-        List<Thread> runningThreads = new ArrayList<Thread>();
+        List<Thread> runningThreads = new ArrayList<>();
         for (Thread thread: backgroundThreads)
             if (thread.isAlive())
                 runningThreads.add(thread);
@@ -869,10 +856,9 @@ public class I2PBote implements NetworkStatusSource, EmailFolderManager, MailSen
     
     /**
      * Waits up to <code>timeout</code> milliseconds for the background threads to end.
-     * @param timeout In milliseconds
      */
-    private void awaitShutdown(long timeout) {
-        long deadline = System.currentTimeMillis() + timeout;   // the time at which any background threads that are still running are interrupted
+    private void awaitShutdown() {
+        long deadline = System.currentTimeMillis() + (long) 5000;   // the time at which any background threads that are still running are interrupted
 
         for (I2PAppThread thread: backgroundThreads)
             if (thread != null)

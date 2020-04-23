@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -68,8 +68,8 @@ import net.i2p.util.Log;
 public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
     private static final int IV_SIZE = 16;   // length of the AES initialization vector
 
-    protected int keyLengthBytes;
-    protected ECParameterSpec ecParameterSpec;
+    int keyLengthBytes;
+    ECParameterSpec ecParameterSpec;
     private KeyPairGenerator encryptionKeyPairGenerator;
     private KeyPairGenerator signingKeyPairGenerator;
     private KeyFactory ecdhKeyFactory;
@@ -81,7 +81,6 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
     /**
      * 
      * @param curveName
-     * @param bcCurveName
      * @param sigName
      * @param keyLengthBytes Length of a byte array encoding of one (public or private) key
      * @throws GeneralSecurityException
@@ -144,7 +143,7 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
      */
     protected abstract byte[] toByteArray(PublicKey key);
     
-    protected ECPublicKey castToEcKey(PublicKey key) {
+    ECPublicKey castToEcKey(PublicKey key) {
         if (key instanceof ECPublicKey)
             return (ECPublicKey)key;
         else
@@ -218,12 +217,12 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
     }
     
     @Override
-    public String toBase64(PublicKeyPair keyPair) throws GeneralSecurityException {
+    public String toBase64(PublicKeyPair keyPair) {
         return toBase64(keyPair.encryptionKey) + toBase64(keyPair.signingKey);
     }
 
     @Override
-    public String encryptionKeyToBase64(PublicKey key) throws GeneralSecurityException {
+    public String encryptionKeyToBase64(PublicKey key) {
         return toBase64(key);
     }
 
@@ -231,9 +230,8 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
      * This method assumes a base64 encoding of a byte array encoded key always starts
      * with an 'A', which is currently the case for all subclasses.
      * @param publicKey
-     * @throws GeneralSecurityException
      */
-    protected String toBase64(PublicKey publicKey) throws GeneralSecurityException {
+    protected String toBase64(PublicKey publicKey) {
         String base64 = Base64.encode(toByteArray(publicKey));
         if (!base64.startsWith("A"))
             log.error("Error: key does not start with 6 zero bits. Key = " + publicKey);
@@ -244,9 +242,8 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
      * This method assumes a base64 encoding of a byte array encoded key always starts
      * with an 'A', which is currently the case for all subclasses.
      * @param privateKey
-     * @throws GeneralSecurityException
      */
-    protected String toBase64(PrivateKey privateKey) throws GeneralSecurityException {
+    protected String toBase64(PrivateKey privateKey) {
         String base64 = Base64.encode(toByteArray(privateKey));
         if (!base64.startsWith("A"))
             log.error("Error: key does not start with 6 zero bits. Key = " + privateKey);
@@ -254,7 +251,7 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
     }
 
     @Override
-    public String toBase64(PrivateKeyPair keyPair) throws GeneralSecurityException {
+    public String toBase64(PrivateKeyPair keyPair) {
         return toBase64(keyPair.encryptionKey) + toBase64(keyPair.signingKey);
     }
 
@@ -268,11 +265,11 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
 
     public abstract PrivateKeyPair createPrivateKeyPair(String base64) throws GeneralSecurityException;
     
-    protected int getBase64PrivateKeyPairLength() {
+    int getBase64PrivateKeyPairLength() {
         return getBase64PublicKeyPairLength();
     }
     
-    protected ECPrivateKeySpec createPrivateKeySpec(byte[] encodedKey) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    private ECPrivateKeySpec createPrivateKeySpec(byte[] encodedKey) {
         // make a private key from the private point s
         BigInteger s = new BigInteger(encodedKey);
         return new ECPrivateKeySpec(s, ecParameterSpec);
@@ -303,7 +300,7 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
             log.warn("Not enough data in shared secret!");
         
         // encrypt the data using the hash of the shared secret as an AES key
-        byte iv[] = new byte[IV_SIZE];
+        byte[] iv = new byte[IV_SIZE];
         appContext.random().nextBytes(iv);
         byte[] encryptedData = encryptAes(data, secretHash, iv);
         
@@ -350,9 +347,8 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
             byte[] iv = new byte[IV_SIZE];
             byteStream.read(iv);
             byte[] encryptedData = Util.readBytes(byteStream);
-            byte[] decryptedData = decryptAes(encryptedData, secretHash, iv);
-            
-            return decryptedData;
+
+            return decryptAes(encryptedData, secretHash, iv);
         }
         catch (IOException e) {
             log.debug("Can't read from ByteArrayInputStream.", e);
@@ -366,9 +362,8 @@ public abstract class ECDH_ECDSA extends AbstractCryptoImplementation {
     public byte[] sign(byte[] data, PrivateKey privateKey, KeyUpdateHandler keyupdateHandler) throws GeneralSecurityException {
         signatureAlg.initSign(privateKey);
         signatureAlg.update(data);
-        byte[] signature = signatureAlg.sign();
 
-        return signature;
+        return signatureAlg.sign();
     }
 
     /**

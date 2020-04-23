@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -35,10 +35,10 @@ import net.i2p.I2PAppContext;
  * and provides methods for AES encryption and decryption.
  */
 public abstract class AbstractCryptoImplementation implements CryptoImplementation {
-    protected I2PAppContext appContext;
+    I2PAppContext appContext;
     private Cipher aesCipher;
 
-    protected AbstractCryptoImplementation() throws GeneralSecurityException {
+    AbstractCryptoImplementation() throws GeneralSecurityException {
         appContext = I2PAppContext.getGlobalContext();
         try {
             aesCipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
@@ -76,7 +76,7 @@ public abstract class AbstractCryptoImplementation implements CryptoImplementati
         return encodedKeys;
     }
 
-    protected byte[] encryptAes(byte[] data, byte[] key, byte[] iv) throws GeneralSecurityException {
+    byte[] encryptAes(byte[] data, byte[] key, byte[] iv) throws GeneralSecurityException {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
         IvParameterSpec ivps = new IvParameterSpec(iv, 0, 16);
         aesCipher.init(Cipher.ENCRYPT_MODE, keySpec, ivps, appContext.random());
@@ -88,7 +88,7 @@ public abstract class AbstractCryptoImplementation implements CryptoImplementati
         return ret;
     }
     
-    protected byte[] decryptAes(byte[] data, byte[] key, byte[] iv) throws GeneralSecurityException {
+    byte[] decryptAes(byte[] data, byte[] key, byte[] iv) throws GeneralSecurityException {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
         IvParameterSpec ivps = new IvParameterSpec(iv, 0, 16);
         aesCipher.init(Cipher.DECRYPT_MODE, keySpec, ivps, appContext.random());

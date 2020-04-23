@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import net.i2p.util.Log;
 
@@ -68,26 +69,22 @@ public class DebugSupport {
             throw new PasswordException();
         
         // make a list of all encrypted files
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         files.add(configuration.getIdentitiesFile());
         files.add(configuration.getAddressBookFile());
-        File[] emailFolders = new File[] {configuration.getInboxDir(), configuration.getOutboxDir(), configuration.getSentFolderDir(), configuration.getTrashFolderDir()};;
+        File[] emailFolders = new File[] {configuration.getInboxDir(), configuration.getOutboxDir(), configuration.getSentFolderDir(), configuration.getTrashFolderDir()};
         for (File dir: emailFolders)
-            files.addAll(Arrays.asList(dir.listFiles()));
+            files.addAll(Arrays.asList(Objects.requireNonNull(dir.listFiles())));
         
         for (Iterator<File> iter=files.iterator(); iter.hasNext(); ) {
             File file = iter.next();
-            FileInputStream stream = new FileInputStream(file);
-            try {
+            try (FileInputStream stream = new FileInputStream(file)) {
                 Util.readBytes(new EncryptedInputStream(stream, password));
                 // no PasswordException or other exception occurred, so the file is good
                 iter.remove();
             } catch (Exception e) {
                 // leave the file in the list and log
                 log.debug("Can't decrypt file <" + file.getAbsolutePath() + ">", e);
-            } finally {
-                if (stream != null)
-                    stream.close();
             }
         }
         

@@ -36,7 +36,7 @@ public class StrongTls {
     /**
      * Protocols from the "Modern" category.
      */
-    public static final String[] MODERN_PROTOCOLS = new String[] {
+    private static final String[] MODERN_PROTOCOLS = new String[] {
         "TLSv1.2",
         "TLSv1.1",
     };
@@ -44,7 +44,7 @@ public class StrongTls {
     /**
      * Protocols from the "Intermediate" category.
      */
-    public static final String[] INTERMEDIATE_PROTOCOLS = new String[] {
+    private static final String[] INTERMEDIATE_PROTOCOLS = new String[] {
         "TLSv1.2",
         "TLSv1.1",
         "TLSv1",
@@ -53,7 +53,7 @@ public class StrongTls {
     /**
      * Protocols from the "Old" category.
      */
-    public static final String[] OLD_PROTOCOLS = new String[] {
+    private static final String[] OLD_PROTOCOLS = new String[] {
         "TLSv1.2",
         "TLSv1.1",
         "TLSv1",
@@ -71,7 +71,7 @@ public class StrongTls {
     /**
      * Cipher suites from the "Modern" category.
      */
-    public static final String[] MODERN_CIPHER_SUITES = new String[] {
+    private static final String[] MODERN_CIPHER_SUITES = new String[] {
 
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
@@ -101,7 +101,7 @@ public class StrongTls {
     /**
      * Cipher suites from the "Intermediate" category.
      */
-    public static final String[] INTERMEDIATE_CIPHER_SUITES = new String[] {
+    private static final String[] INTERMEDIATE_CIPHER_SUITES = new String[] {
 
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
@@ -161,7 +161,7 @@ public class StrongTls {
     /**
      * Cipher suites from the "Old" category.
      */
-    public static final String[] OLD_CIPHER_SUITES = new String[] {
+    private static final String[] OLD_CIPHER_SUITES = new String[] {
 
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
@@ -229,7 +229,7 @@ public class StrongTls {
      *
      * @return the recommended protocols.
      */
-    public static String[] getBestProtocolsForJVM() {
+    private static String[] getBestProtocolsForJVM() {
         if (javaVersion >= 1.8)
             return MODERN_PROTOCOLS;
         else if (javaVersion == 1.7)
@@ -246,7 +246,7 @@ public class StrongTls {
      *
      * @return the recommended cipher suites.
      */
-    public static String[] getBestCipherSuitesForJVM() {
+    private static String[] getBestCipherSuitesForJVM() {
         if (javaVersion >= 1.8)
             return MODERN_CIPHER_SUITES;
         else if (javaVersion == 1.7)
@@ -268,12 +268,12 @@ public class StrongTls {
      */
     public static String[] filter(String[] sourceArray, String[] testArray) {
         List<String> test = Arrays.asList(testArray);
-        List<String> ret = new ArrayList<String>();
+        List<String> ret = new ArrayList<>();
         for (String s : sourceArray) {
             if (test.contains(s))
                 ret.add(s);
         }
-        return ret.toArray(new String[ret.size()]);
+        return ret.toArray(new String[0]);
     }
 
     /**

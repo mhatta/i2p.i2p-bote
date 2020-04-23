@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -134,14 +134,8 @@ public class Migrator {
      */
     private void setLastSuccessfulMigration(String version) throws IOException {
         File versionFile = configuration.getMigrationVersionFile();
-        DataOutputStream outputStream = null;
-        try {
-            outputStream = new DataOutputStream(new FileOutputStream(versionFile));
+        try (DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(versionFile))) {
             outputStream.writeBytes(version);
-        }
-        finally {
-            if (outputStream != null)
-                outputStream.close();
         }
     }
 }

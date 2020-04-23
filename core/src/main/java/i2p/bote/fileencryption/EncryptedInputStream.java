@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -102,7 +102,7 @@ public class EncryptedInputStream extends FilterInputStream {
         else
             keyBytes = FileEncryptionUtil.getEncryptionKey(password, salt, scryptParams);
         
-        byte iv[] = new byte[BLOCK_SIZE];
+        byte[] iv = new byte[BLOCK_SIZE];
         inputStream.read(iv);
         byte[] encryptedData = Util.readBytes(inputStream);
         

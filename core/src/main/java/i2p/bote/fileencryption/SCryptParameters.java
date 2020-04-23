@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  *
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -47,11 +47,11 @@ public class SCryptParameters {
         this.p = p;
     }
 
-    public SCryptParameters(InputStream input) throws IOException {
+    SCryptParameters(InputStream input) throws IOException {
         this(new DataInputStream(input));
     }
     
-    public SCryptParameters(DataInputStream input) throws IOException {
+    SCryptParameters(DataInputStream input) throws IOException {
         N = input.readInt();
         r = input.readInt();
         p = input.readInt();

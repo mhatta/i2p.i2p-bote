@@ -50,8 +50,8 @@ public class CSRFCheckTag extends BodyTagSupport {
         return SKIP_BODY;
     }
 
-    private class POSTWrapper extends HttpServletRequestWrapper {
-        public POSTWrapper(HttpServletRequest request) {
+    private static class POSTWrapper extends HttpServletRequestWrapper {
+        POSTWrapper(HttpServletRequest request) {
             super(request);
         }
 

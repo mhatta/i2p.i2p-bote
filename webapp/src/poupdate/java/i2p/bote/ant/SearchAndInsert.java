@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -32,8 +32,8 @@ import java.io.IOException;
  * or after the first occurrence of the search string.
  */
 public class SearchAndInsert {
-    enum Position {BEFORE, AFTER};
-    
+    enum Position {BEFORE, AFTER}
+
     public static void main(String[] args) throws IOException {
         if (args.length < 4) {
             System.out.println("Syntax: SearchAndInsert [-after|-before] <inputFile> <outputFile> <key> <newTextFile>");
@@ -52,45 +52,33 @@ public class SearchAndInsert {
             if ("-before".equals(args[0]))
                 position = Position.BEFORE;
         }
-        
-        BufferedReader reader = null;
-        BufferedWriter writer = null;
-        try {
-            reader = new BufferedReader(new FileReader(args[argIndex++]));
-            writer = new BufferedWriter(new FileWriter(args[argIndex++]));
-            
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(args[argIndex++])); BufferedWriter writer = new BufferedWriter(new FileWriter(args[argIndex++]))) {
+
             String searchString = args[argIndex++];
             String newTextFile = args[argIndex];
-            
+
             while (true) {
                 String line = reader.readLine();
                 if (line == null)
                     break;
                 boolean match = line.contains(searchString);
-                if (match && position==Position.BEFORE) {
+                if (match && position == Position.BEFORE) {
                     write(writer, newTextFile);
                     writer.newLine();
                 }
                 writer.write(line);
                 writer.newLine();
-                if (match && position==Position.AFTER) {
+                if (match && position == Position.AFTER) {
                     write(writer, newTextFile);
                     writer.newLine();
                 }
             }
         }
-        finally {
-            if (reader != null)
-                reader.close();
-            if (writer != null)
-                writer.close();
-        }
     }
     
     private static void write(BufferedWriter writer, String filename) throws IOException {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(filename));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             while (true) {
                 String line = reader.readLine();
                 if (line == null)
@@ -98,10 +86,6 @@ public class SearchAndInsert {
                 writer.write(line);
                 writer.newLine();
             }
-        }
-        finally {
-            if (reader != null)
-                reader.close();
         }
     }
 }

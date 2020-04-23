@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -64,11 +64,10 @@ public class Configuration implements IdentityConfig {
     private static final String SENT_FOLDER_DIR = "sent";           // relative to I2P_BOTE_SUBDIR
     private static final String TRASH_FOLDER_DIR = "trash";         // relative to I2P_BOTE_SUBDIR
     private static final String MIGRATION_VERSION_FILE = "migratedVersion";   // relative to I2P_BOTE_SUBDIR
-    private static final List<Theme> BUILT_IN_THEMES = Arrays.asList(new Theme[] {   // theme IDs correspond to a theme directory in the .war
+    private static final List<Theme> BUILT_IN_THEMES = Arrays.asList(// theme IDs correspond to a theme directory in the .war
             new Theme("material", "Material"),
             new Theme("lblue", "Light Blue"),
-            new Theme("vanilla", "Vanilla")
-    });
+            new Theme("vanilla", "Vanilla"));
     private static final String THEME_SUBDIR = "themes";   // relative to I2P_BOTE_SUBDIR
 
     // Parameter names in the config file
@@ -143,8 +142,7 @@ public class Configuration implements IdentityConfig {
     // I2CP parameters allowed in the config file
     // Undefined parameters use the I2CP defaults
     private static final String PARAMETER_I2CP_DOMAIN_SOCKET = "i2cp.domainSocket";
-    private static final List<String> I2CP_PARAMETERS = Arrays.asList(new String[] {
-            PARAMETER_I2CP_DOMAIN_SOCKET,
+    private static final List<String> I2CP_PARAMETERS = Arrays.asList(PARAMETER_I2CP_DOMAIN_SOCKET,
             "inbound.length",
             "inbound.lengthVariance",
             "inbound.quantity",
@@ -152,8 +150,7 @@ public class Configuration implements IdentityConfig {
             "outbound.length",
             "outbound.lengthVariance",
             "outbound.quantity",
-            "outbound.backupQuantity",
-    });
+            "outbound.backupQuantity");
 
     private Log log = new Log(Configuration.class);
     private Properties properties;
@@ -232,7 +229,7 @@ public class Configuration implements IdentityConfig {
     }
 
     /**
-     * @param enabled ignored if not on Android.
+     * @param name ignored if not on Android.
      * @since 0.2.10
      */
     public void setI2CPDomainSocket(String name) {
@@ -644,7 +641,7 @@ public class Configuration implements IdentityConfig {
      * Returns a list of all available UI themes.
      */
     public List<Theme> getThemes() {
-        List<Theme> themes = new ArrayList<Theme>();
+        List<Theme> themes = new ArrayList<>();
         themes.addAll(getBuiltInThemes());
         themes.addAll(getExternalThemes());
         return themes;
@@ -672,7 +669,7 @@ public class Configuration implements IdentityConfig {
             }
         });
 
-        List<Theme> themes = new ArrayList<Theme>();
+        List<Theme> themes = new ArrayList<>();
         if (dirs != null)
             for (File dir: dirs) {
                 String themeId = dir.getName();
@@ -744,11 +741,8 @@ public class Configuration implements IdentityConfig {
                 return false;
             Theme other = (Theme) obj;
             if (id == null) {
-                if (other.id != null)
-                    return false;
-            } else if (!id.equals(other.id))
-                return false;
-            return true;
+                return other.id == null;
+            } else return id.equals(other.id);
         }
     }
 }

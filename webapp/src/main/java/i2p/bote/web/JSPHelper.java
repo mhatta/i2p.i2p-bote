@@ -96,6 +96,7 @@ public class JSPHelper extends GeneralHelper {
      * @param parameters
      * @return A map whose keys start with "nofilter_recipient", sorted by key
      */
+    @SuppressWarnings("WeakerAccess")
     public static SortedMap<String, String> getSortedRecipientParams(Map<String, String> parameters) {
         SortedMap<String, String> newMap = new TreeMap<>();
         for (String key: parameters.keySet()) {
@@ -192,7 +193,7 @@ public class JSPHelper extends GeneralHelper {
         private String addressType;
         private String address;
 
-        public RecipientAddress(String addressType, String address) {
+        RecipientAddress(String addressType, String address) {
             this.addressType = addressType;
             this.address = address;
         }
@@ -232,7 +233,7 @@ public class JSPHelper extends GeneralHelper {
         return _t(messageKey, formatter.format(value));
     }
 
-    public static String getHumanReadableSize(File file) {
+    private static String getHumanReadableSize(File file) {
         long size = file.length();
         return getHumanReadableSize(size);
     }
@@ -240,7 +241,7 @@ public class JSPHelper extends GeneralHelper {
     /** Returns the size of an email attachment in a user-friendly format
      * @throws MessagingException
      * @throws IOException */
-    public static String getHumanReadableSize(Part part) throws IOException, MessagingException {
+    static String getHumanReadableSize(Part part) throws IOException, MessagingException {
         return getHumanReadableSize(Util.getPartSize(part));
     }
 

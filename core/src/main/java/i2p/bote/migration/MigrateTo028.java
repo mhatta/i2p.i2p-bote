@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,6 +21,21 @@
 
 package i2p.bote.migration;
 
+import net.i2p.util.Log;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
+import java.util.Collection;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.regex.PatternSyntaxException;
+
 import i2p.bote.Configuration;
 import i2p.bote.Util;
 import i2p.bote.addressbook.AddressBook;
@@ -33,22 +48,6 @@ import i2p.bote.fileencryption.PasswordException;
 import i2p.bote.fileencryption.PasswordHolder;
 import i2p.bote.packet.dht.Contact;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.GeneralSecurityException;
-import java.util.Collection;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.regex.PatternSyntaxException;
-
-import net.i2p.util.Log;
-
 /**
  * Migrates the identities file and the address book to the 0.2.8 format.<br/>
  * It cannot be called at startup like {@link MigrateTo026} and
@@ -57,12 +56,12 @@ import net.i2p.util.Log;
 class MigrateTo028 {
     private Log log = new Log(MigrateTo028.class);
     
-    public void migrateIfNeeded(Configuration configuration, PasswordHolder passwordHolder) throws FileNotFoundException, IOException, GeneralSecurityException, PasswordException {
+    void migrateIfNeeded(Configuration configuration, PasswordHolder passwordHolder) throws IOException, GeneralSecurityException, PasswordException {
         migrateIdentitiesIfNeeded(configuration, passwordHolder);
         migrateAddressBookIfNeeded(configuration, passwordHolder);
     }
     
-    private void migrateIdentitiesIfNeeded(Configuration configuration, PasswordHolder passwordHolder) throws FileNotFoundException, IOException, GeneralSecurityException, PasswordException {
+    private void migrateIdentitiesIfNeeded(Configuration configuration, PasswordHolder passwordHolder) throws IOException, GeneralSecurityException, PasswordException {
         File identitiesFile = configuration.getIdentitiesFile();
         if (!identitiesFile.exists())
             return;
@@ -109,7 +108,7 @@ class MigrateTo028 {
      * @throws Exception
      */
     private void migrateIdentities(List<String> lines, Configuration configuration, PasswordHolder passwordHolder) throws IOException, GeneralSecurityException, PasswordException {
-        SortedSet<EmailIdentity> identitiesSet = new TreeSet<EmailIdentity>(new IdentityComparator());
+        SortedSet<EmailIdentity> identitiesSet = new TreeSet<>(new IdentityComparator());
         String defaultIdentityString = null;
         for (String line: lines) {
             if (line.toLowerCase().startsWith("default"))
@@ -149,8 +148,7 @@ class MigrateTo028 {
         }
         try {
             EmailIdentity identity = new EmailIdentity(fields[0]);
-            if (fields.length > 1)
-                identity.setPublicName(fields[1]);
+            identity.setPublicName(fields[1]);
             if (fields.length > 2)
                 identity.setDescription(fields[2]);
             if (fields.length > 3)
@@ -179,7 +177,7 @@ class MigrateTo028 {
         return firstLine.startsWith("contact0.");
     }
     
-    private void migrateAddressBookIfNeeded(Configuration configuration, PasswordHolder passwordHolder) throws FileNotFoundException, IOException, GeneralSecurityException, PasswordException {
+    private void migrateAddressBookIfNeeded(Configuration configuration, PasswordHolder passwordHolder) throws IOException, GeneralSecurityException, PasswordException {
         File addressBookFile = configuration.getAddressBookFile();
         if (!addressBookFile.exists())
             return;

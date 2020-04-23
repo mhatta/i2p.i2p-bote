@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -36,10 +36,10 @@ public class CryptoFactory {
         if (Security.getProvider("BC") == null) {
             try {
                 Class<?> cls = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-                Constructor<?> con = cls.getConstructor(new Class[0]);
+                Constructor<?> con = cls.getConstructor();
                 Provider bc = (Provider)con.newInstance(new Object[0]);
                 Security.addProvider(bc);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

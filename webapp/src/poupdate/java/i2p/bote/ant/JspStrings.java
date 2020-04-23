@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -55,7 +55,7 @@ public class JspStrings {
             print(poEntry);
     }
     
-    static void removeDuplicates(List<PoEntry> poEntries) {
+    private static void removeDuplicates(List<PoEntry> poEntries) {
         for (int i=poEntries.size()-1; i>=0; i--)
             for (int j=poEntries.size()-1; j>i; j--) {
                 PoEntry entry1 = poEntries.get(i);
@@ -65,15 +65,15 @@ public class JspStrings {
             }
     }
     
-    static void print(PoEntry poEntry) {
+    private static void print(PoEntry poEntry) {
         System.out.println("#: " + poEntry.comment);
         System.out.println("msgid \"" + poEntry.msgKey + "\"");
         System.out.println("msgstr \"\"");
         System.out.println();
     }
     
-    static List<PoEntry> processDirectory(File dir) throws IOException {
-        List<PoEntry> results = new ArrayList<PoEntry>();
+    private static List<PoEntry> processDirectory(File dir) throws IOException {
+        List<PoEntry> results = new ArrayList<>();
         
         // extract strings from all files in the directory
         File[] files = dir.listFiles(new FilenameFilter() {
@@ -82,6 +82,7 @@ public class JspStrings {
                 return name.toLowerCase().endsWith(".jsp") || name.toLowerCase().endsWith(".tag");
             }
         });
+        assert files != null;
         for (File file: files)
             results.addAll(processFile(file));
         
@@ -92,12 +93,13 @@ public class JspStrings {
                 return pathname.isDirectory();
             }
         });
+        assert subdirs != null;
         for (File subdir: subdirs)
             results.addAll(processDirectory(subdir));
         return results;
     }
     
-    static List<PoEntry> processFile(File file) throws IOException {
+    private static List<PoEntry> processFile(File file) throws IOException {
         FileInputStream inputStream = new FileInputStream(file);
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(inputStream));
         
@@ -107,16 +109,17 @@ public class JspStrings {
             String line = inputReader.readLine();
             if (line == null)
                 break;
-            if (strBuilder.length() > 0)
-                strBuilder = strBuilder.append(System.getProperty("line.separator"));
-            strBuilder = strBuilder.append(line);
+            if (strBuilder.length() > 0) {
+                strBuilder.append(System.getProperty("line.separator"));
+            }
+            strBuilder.append(line);
         }
         inputStream.close();
         String fileContents = strBuilder.toString();
 
         String[] tags = fileContents.split("<ib:message");
         
-        List<String> msgKeys = new ArrayList<String>();
+        List<String> msgKeys = new ArrayList<>();
         for (int i=1; i<tags.length; i++) {
             String tag = tags[i];
             if (!shouldSkip(tag)) {
@@ -125,11 +128,8 @@ public class JspStrings {
                     msgKeys.add(key);
             }
         }
-        
-        List<PoEntry> entries = new ArrayList<PoEntry>();
-        entries.addAll(PoEntry.create(msgKeys, file));
-        
-        return entries;
+
+        return new ArrayList<>(PoEntry.create(msgKeys, file));
     }
     
     /**
@@ -137,7 +137,7 @@ public class JspStrings {
      * @param tag a ib:message tag minus the &lt;ib:message part at the beginning
      * @return
      */
-    static String extract(String tag) {
+    private static String extract(String tag) {
         if (tag.contains(" key="))   // format is <ib:message key="foobar" .../> ...
             return extractFromKeyAttribute(tag);
         else   // format is <ib:message ...>foobar</ib:message> ...
@@ -148,7 +148,7 @@ public class JspStrings {
      * Extracts the text between <ib:message> and </ib:message>
      * @param tag a ib:message tag minus the &lt;ib:message part at the beginning
      */
-    static String extractFromTagBody(String tag) {
+    private static String extractFromTagBody(String tag) {
         int gtIndex = tag.indexOf(">");
         tag = tag.substring(gtIndex + 1);
         int endIdx = tag.indexOf("</ib:message");
@@ -163,7 +163,7 @@ public class JspStrings {
     }
     
     /** Extracts the values of the "key" attribute */
-    static String extractFromKeyAttribute(String string) {
+    private static String extractFromKeyAttribute(String string) {
         String keyAttrSQ = "key='";
         String keyAttrDQ = "key=\"";
         int keyAttrLen = keyAttrDQ.length();
@@ -184,7 +184,7 @@ public class JspStrings {
     }
     
     /** Returns <code>true</code> if a ib:message tag has the noextract attribute set to <code>true</code>. */
-    static boolean shouldSkip(String tag) {
+    private static boolean shouldSkip(String tag) {
         tag = tag.replaceAll("\\s+", "");
         return tag.contains("noextract=\"true\"") || tag.contains("noextract='true'");
     }
@@ -194,7 +194,7 @@ public class JspStrings {
         String comment;
         
         static List<PoEntry> create(List<String> msgKeys, File file) {
-            List<PoEntry> poEntries = new ArrayList<PoEntry>();
+            List<PoEntry> poEntries = new ArrayList<>();
             for (String msgKey: msgKeys) {
                 PoEntry entry = new PoEntry();
                 entry.msgKey = msgKey;

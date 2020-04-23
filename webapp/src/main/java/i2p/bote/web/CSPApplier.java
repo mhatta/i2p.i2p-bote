@@ -20,18 +20,17 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CSPApplier implements Filter {
     /** Configuration member to specify if web app use web fonts */
-    public static final boolean APP_USE_WEBFONTS = false;
+    private static final boolean APP_USE_WEBFONTS = false;
 
     /** Configuration member to specify if web app use videos or audios */
-    public static final boolean APP_USE_AUDIOS_OR_VIDEOS = false;
+    private static final boolean APP_USE_AUDIOS_OR_VIDEOS = false;
 
     /** Configuration member to specify if filter must add CSP directive used by Mozilla (Firefox) */
-    public static final boolean INCLUDE_MOZILLA_CSP_DIRECTIVES = true;
+    private static final boolean INCLUDE_MOZILLA_CSP_DIRECTIVES = true;
 
     /** Collection of CSP policies that will be applied **/
     private String policies = null;
@@ -90,7 +89,6 @@ public class CSPApplier implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain next)
             throws IOException, ServletException {
-        HttpServletRequest httpRequest = ((HttpServletRequest) request);
         HttpServletResponse httpResponse = ((HttpServletResponse) response);
 
         httpResponse.setHeader("Content-Security-Policy", this.policies);

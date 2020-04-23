@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.Objects;
 
 import net.i2p.util.Log;
 
@@ -78,7 +79,7 @@ class MigrateTo027 {
             }
         };
         
-        for (File file: directory.listFiles(filter))
+        for (File file: Objects.requireNonNull(directory.listFiles(filter)))
             if (!isEncrypted(file)) {
                 log.debug("Migrating metadata file: <" + file + ">");
                 encrypt(file, file);
@@ -86,22 +87,16 @@ class MigrateTo027 {
     }
     
     private boolean isEncrypted(File file) throws IOException {
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
+        try (FileInputStream inputStream = new FileInputStream(file)) {
             byte[] firstFour = new byte[4];
             inputStream.read(firstFour);
             return Arrays.equals(firstFour, FileEncryptionConstants.START_OF_FILE);
-        }
-        finally {
-            if (inputStream != null)
-                inputStream.close();
         }
     }
     
     private void encrypt(File oldFile, File newFile) throws IOException, PasswordException, GeneralSecurityException {
         InputStream inputStream = null;
-        byte[] contents = null;
+        byte[] contents;
         try {
             inputStream = new FileInputStream(oldFile);
             contents = Util.readBytes(inputStream);

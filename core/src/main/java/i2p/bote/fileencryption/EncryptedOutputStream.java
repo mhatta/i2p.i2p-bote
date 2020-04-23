@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -67,9 +67,7 @@ public class EncryptedOutputStream extends FilterOutputStream {
         try {
             // make a copy in case PasswordCache zeros out the password before close() is called
             derivedKey = passwordHolder.getKey().clone();
-        } catch (NoSuchAlgorithmException e) {
-            throw new IOException(e);
-        } catch (InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new IOException(e);
         }
         outputBuffer = new ByteArrayOutputStream();
@@ -83,7 +81,7 @@ public class EncryptedOutputStream extends FilterOutputStream {
     }
     
     @Override
-    public void write(int b) throws IOException {
+    public void write(int b) {
         outputBuffer.write(b);
     }
     
@@ -119,7 +117,7 @@ public class EncryptedOutputStream extends FilterOutputStream {
         
         downstream.write(derivedKey.salt);
         
-        byte iv[] = new byte[BLOCK_SIZE];
+        byte[] iv = new byte[BLOCK_SIZE];
         I2PAppContext appContext = I2PAppContext.getGlobalContext();
         appContext.random().nextBytes(iv);
         downstream.write(iv);

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -59,7 +59,7 @@ public class PasswordCache extends I2PAppThread implements PasswordHolder {
     public PasswordCache(Configuration configuration) {
         super("PasswordCache");
         this.configuration = configuration;
-        cacheListeners = new ArrayList<PasswordCacheListener>();
+        cacheListeners = new ArrayList<>();
     }
     
     /**
@@ -90,7 +90,7 @@ public class PasswordCache extends I2PAppThread implements PasswordHolder {
      * @throws GeneralSecurityException 
      */
     private void createDerivedKey() throws IOException, GeneralSecurityException {
-        byte[] salt = null;
+        byte[] salt;
         derivedKey = null;
         
         // read salt + scrypt parameters from file if available

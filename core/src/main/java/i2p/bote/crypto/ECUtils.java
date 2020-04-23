@@ -23,7 +23,7 @@ public class ECUtils {
         }
     }
 
-    public static ECParameterSpec getParameters(String curveName) {
+    static ECParameterSpec getParameters(String curveName) {
         String pkg = getPackage();
         try {
             Class<?> ncClazz = Class.forName(pkg + ".asn1.nist.NISTNamedCurves");
@@ -50,23 +50,14 @@ public class ECUtils {
                     getN.invoke(params),
                     getH.invoke(params),
                     null);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("getParameters() failed", e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("getParameters() failed", e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException("getParameters() failed", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("getParameters() failed", e);
-        } catch (InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             throw new RuntimeException("getParameters() failed", e);
         }
     }
 
-    public static byte[] encodePoint(
+    static byte[] encodePoint(
             ECParameterSpec ecSpec,
-            ECPoint point,
-            boolean withCompression) {
+            ECPoint point) {
         String pkg = getPackage();
         try {
             Class<?> utilClazz = Class.forName(pkg + ".jcajce.provider.asymmetric.util.EC5Util");
@@ -82,20 +73,14 @@ public class ECUtils {
             Method getEncoded = ptClazz.getDeclaredMethod("getEncoded");
 
             Object bcCurve = convertCurve.invoke(null, ecSpec.getCurve());
-            Object bcPoint = createPoint.invoke(bcCurve, point.getAffineX(), point.getAffineY(), withCompression);
+            Object bcPoint = createPoint.invoke(bcCurve, point.getAffineX(), point.getAffineY(), true);
             return (byte[]) getEncoded.invoke(bcPoint);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("encodePoint() failed", e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("encodePoint() failed", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("encodePoint() failed", e);
-        } catch (InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException("encodePoint() failed", e);
         }
     }
 
-    public static ECPoint decodePoint(
+    static ECPoint decodePoint(
             EllipticCurve curve,
             byte[] encoded) {
         String pkg = getPackage();
@@ -104,13 +89,7 @@ public class ECUtils {
             Method decodePoint = utilClazz.getDeclaredMethod(
                     "decodePoint", EllipticCurve.class, byte[].class);
             return (ECPoint) decodePoint.invoke(null, curve, encoded);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("decodePoint() failed", e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("decodePoint() failed", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("decodePoint() failed", e);
-        } catch (InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException("decodePoint() failed", e);
         }
     }

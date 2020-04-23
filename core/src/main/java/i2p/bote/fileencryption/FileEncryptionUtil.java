@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  *
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -53,25 +53,17 @@ public class FileEncryptionUtil {
     static byte[] getEncryptionKey(byte[] password, byte[] salt, SCryptParameters sCryptParams) throws GeneralSecurityException {
         if (password==null || password.length<=0)
             password = DEFAULT_PASSWORD;
-       
-        byte[] key = SCrypt.scrypt(password, salt, sCryptParams.N, sCryptParams.r, sCryptParams.p, KEY_LENGTH);
-        return key;
+
+        return SCrypt.scrypt(password, salt, sCryptParams.N, sCryptParams.r, sCryptParams.p, KEY_LENGTH);
     }
     
     static DerivedKey getEncryptionKey(byte[] password, File derivParamFile) throws GeneralSecurityException, IOException {
-        DataInputStream inputStream = null;
-        try {
-            inputStream = new DataInputStream(new FileInputStream(derivParamFile));
+        try (DataInputStream inputStream = new DataInputStream(new FileInputStream(derivParamFile))) {
             SCryptParameters scryptParams = new SCryptParameters(inputStream);
             byte[] salt = new byte[FileEncryptionConstants.SALT_LENGTH];
             inputStream.read(salt);
             byte[] key = FileEncryptionUtil.getEncryptionKey(password, salt, scryptParams);
-            DerivedKey derivedKey = new DerivedKey(salt, scryptParams, key);
-            return derivedKey;
-        }
-        finally {
-            if (inputStream != null)
-                inputStream.close();
+            return new DerivedKey(salt, scryptParams, key);
         }
     }
     
@@ -87,19 +79,12 @@ public class FileEncryptionUtil {
     public static boolean isPasswordCorrect(byte[] password, File passwordFile) throws IOException, GeneralSecurityException {
         if (!passwordFile.exists())
             return true;
-        
-        EncryptedInputStream inputStream = null;
-        try {
-            inputStream = new EncryptedInputStream(new FileInputStream(passwordFile), password);
+
+        try (EncryptedInputStream inputStream = new EncryptedInputStream(new FileInputStream(passwordFile), password)) {
             byte[] decryptedText = Util.readBytes(inputStream);
             return Arrays.equals(PASSWORD_FILE_PLAIN_TEXT, decryptedText);
-        }
-        catch (PasswordException e) {
+        } catch (PasswordException e) {
             return false;
-        }
-        finally {
-            if (inputStream != null)
-                inputStream.close();
         }
     }
     
@@ -117,18 +102,12 @@ public class FileEncryptionUtil {
                 new Log(FileEncryptionUtil.class).error("Can't delete file: " + passwordFile.getAbsolutePath());
             return;
         }
-        
-        EncryptedOutputStream outputStream = null;
-        try {
-            outputStream = new EncryptedOutputStream(new FileOutputStream(passwordFile), newKey);
+
+        try (EncryptedOutputStream outputStream = new EncryptedOutputStream(new FileOutputStream(passwordFile), newKey)) {
             outputStream.write(PASSWORD_FILE_PLAIN_TEXT);
         } catch (IOException e) {
             new Log(FileEncryptionUtil.class).error("Can't write password file <" + passwordFile.getAbsolutePath() + ">", e);
             throw e;
-        }
-        finally {
-            if (outputStream != null)
-                outputStream.close();
         }
     }
     
@@ -146,7 +125,7 @@ public class FileEncryptionUtil {
      */
     public static void changePassword(File file, byte[] oldPassword, DerivedKey newKey) throws IOException, GeneralSecurityException, PasswordException {
         InputStream inputStream = null;
-        byte[] decryptedData = null;
+        byte[] decryptedData;
         try {
             inputStream = new EncryptedInputStream(new FileInputStream(file), oldPassword);
             decryptedData = Util.readBytes(inputStream);
@@ -155,14 +134,8 @@ public class FileEncryptionUtil {
             if (inputStream != null)
                 inputStream.close();
         }
-        OutputStream outputStream = null;
-        try {
-            outputStream = new EncryptedOutputStream(new FileOutputStream(file), newKey);
+        try (OutputStream outputStream = new EncryptedOutputStream(new FileOutputStream(file), newKey)) {
             outputStream.write(decryptedData);
-        }
-        finally {
-            if (outputStream != null)
-                outputStream.close();
         }
     }
 }

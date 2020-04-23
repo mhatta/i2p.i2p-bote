@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -24,12 +24,10 @@ package i2p.bote.crypto;
 import net.i2p.data.Base64;
 
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 
 public class ECDH256_ECDSA256 extends ECDH_ECDSA {
@@ -66,18 +64,17 @@ public class ECDH256_ECDSA256 extends ECDH_ECDSA {
     @Override
     protected byte[] toByteArray(PublicKey key) {
         ECPublicKey ecKey = castToEcKey(key);
-        return ECUtils.encodePoint(ecKey.getParams(), ecKey.getW(), true);
+        return ECUtils.encodePoint(ecKey.getParams(), ecKey.getW());
     }
     
     @Override
-    protected ECPublicKeySpec createPublicKeySpec(byte[] encodedKey) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    protected ECPublicKeySpec createPublicKeySpec(byte[] encodedKey) {
         // decompress into an EC point
         ECPoint w = ECUtils.decodePoint(ecParameterSpec.getCurve(), encodedKey);
         
         // make a public key from the public point w
-        ECPublicKeySpec publicKeySpec = new ECPublicKeySpec(w, ecParameterSpec);
-        
-        return publicKeySpec;
+
+        return new ECPublicKeySpec(w, ecParameterSpec);
     }
     
     @Override

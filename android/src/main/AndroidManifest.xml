@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     package="i2p.bote.android"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:sharedUserId="net.i2p">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    android:sharedUserId="net.i2p"> -->
 
     <uses-sdk xmlns:tools="http://schemas.android.com/tools"
         tools:overrideLibrary="android.support.v14.preference" />

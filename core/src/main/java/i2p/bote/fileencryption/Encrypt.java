@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -21,9 +21,8 @@
 
 package i2p.bote.fileencryption;
 
-import static i2p.bote.fileencryption.FileEncryptionConstants.SALT_LENGTH;
-import i2p.bote.Configuration;
-import i2p.bote.Util;
+import net.i2p.I2PAppContext;
+import net.i2p.data.Base64;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,9 +33,10 @@ import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
-import net.i2p.I2PAppContext;
-import net.i2p.data.Base64;
-import net.i2p.util.SecureFile;
+import i2p.bote.Configuration;
+import i2p.bote.Util;
+
+import static i2p.bote.fileencryption.FileEncryptionConstants.SALT_LENGTH;
 
 /**
  * A command line program for encrypting files in the I2P-Bote format.

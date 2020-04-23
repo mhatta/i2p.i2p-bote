@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -25,12 +25,10 @@ import net.i2p.data.Base64;
 import net.i2p.util.Log;
 
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 
 /**
@@ -66,7 +64,7 @@ public class ECDH521_ECDSA521 extends ECDH_ECDSA {
     @Override
     protected byte[] toByteArray(PublicKey key) {
         ECPublicKey ecKey = castToEcKey(key);
-        byte[] bouncyCompressedKey = ECUtils.encodePoint(ecKey.getParams(), ecKey.getW(), true);
+        byte[] bouncyCompressedKey = ECUtils.encodePoint(ecKey.getParams(), ecKey.getW());
         
         // shorten by one byte (bouncyCompressedKey[0] is either 2 or 3, bouncyCompressedKey[1] is either 0 or 1, so they can fit in two bits)
         if (bouncyCompressedKey[0]!=2 && bouncyCompressedKey[0]!=3)
@@ -80,7 +78,7 @@ public class ECDH521_ECDSA521 extends ECDH_ECDSA {
     }
     
     @Override
-    protected ECPublicKeySpec createPublicKeySpec(byte[] encodedKey) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    protected ECPublicKeySpec createPublicKeySpec(byte[] encodedKey) {
         // convert the key to the format used by BouncyCastle, which adds one byte
         byte[] bouncyCompressedKey = new byte[keyLengthBytes+1];
         System.arraycopy(encodedKey, 0, bouncyCompressedKey, 1, keyLengthBytes);
@@ -90,9 +88,8 @@ public class ECDH521_ECDSA521 extends ECDH_ECDSA {
         ECPoint w = ECUtils.decodePoint(ecParameterSpec.getCurve(), bouncyCompressedKey);
         
         // make a public key from the public point w
-        ECPublicKeySpec publicKeySpec = new ECPublicKeySpec(w, ecParameterSpec);
-        
-        return publicKeySpec;
+
+        return new ECPublicKeySpec(w, ecParameterSpec);
     }
 
     @Override

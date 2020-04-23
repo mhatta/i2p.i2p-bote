@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2009  HungryHobo@mail.i2p
  * 
  * The GPG fingerprint for HungryHobo@mail.i2p is:
@@ -32,7 +32,6 @@ import net.i2p.data.PrivateKey;
 import net.i2p.data.PublicKey;
 import net.i2p.data.SessionKey;
 import net.i2p.util.Log;
-import net.i2p.util.Translate;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -79,9 +78,7 @@ public class Util {
     public static long getPartSize(Part part) throws IOException, MessagingException {
         // find size in bytes
         long totalBytes = 0;
-        InputStream inputStream = null;
-        try {
-            inputStream = part.getInputStream();
+        try (InputStream inputStream = part.getInputStream()) {
             byte[] buffer = new byte[32 * 1024];
             int bytesRead;
             do {
@@ -89,13 +86,6 @@ public class Util {
                 if (bytesRead > 0)
                     totalBytes += bytesRead;
             } while (bytesRead > 0);
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                }
-            }
         }
 
         return totalBytes;
@@ -169,10 +159,10 @@ public class Util {
         Log log = new Log(Util.class);
         
         BufferedReader inputBuffer = new BufferedReader(new InputStreamReader(inputStream));
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         
         while (true) {
-            String line = null;
+            String line;
             line = inputBuffer.readLine();
             if (line == null)
                 break;
@@ -199,20 +189,11 @@ public class Util {
     public static void copy(File from, File to) throws IOException {
         if (!to.exists())
             to.createNewFile();
-    
-        FileChannel fromChan = null;
-        FileChannel toChan = null;
-        try {
-            fromChan = new FileInputStream(from).getChannel();
-            toChan = new FileOutputStream(to).getChannel();
+
+        try (FileChannel fromChan = new FileInputStream(from).getChannel(); FileChannel toChan = new FileOutputStream(to).getChannel()) {
             toChan.transferFrom(fromChan, 0, fromChan.size());
-        }
-        finally {
-            if (fromChan != null)
-                fromChan.close();
-            if (toChan != null)
-                toChan.close();
-            
+        } finally {
+
             // This is needed on Windows so a file can be deleted after copying it.
             System.gc();
         }
@@ -275,7 +256,7 @@ public class Util {
      */
     public static <E> Iterable<E> synchronizedCopy(Iterable<E> iterable) {
         synchronized(iterable) {
-            Collection<E> collection = new ArrayList<E>();
+            Collection<E> collection = new ArrayList<>();
             for (E element: iterable)
                 collection.add(element);
             return collection;
@@ -331,12 +312,11 @@ public class Util {
 
     public static boolean isDeleteAuthorizationValid(Hash verificationHash, UniqueId delAuthorization) {
         Hash expectedVerificationHash = SHA256Generator.getInstance().calculateHash(delAuthorization.toByteArray());
-        boolean valid = expectedVerificationHash.equals(verificationHash);
-        return valid;
+        return expectedVerificationHash.equals(verificationHash);
     }
     
     /** Encrypts data with an I2P public key */
-    public static byte[] encrypt(byte data[], PublicKey key) {
+    public static byte[] encrypt(byte[] data, PublicKey key) {
         I2PAppContext appContext = I2PAppContext.getGlobalContext();
         SessionKeyManager sessionKeyMgr = new net.i2p.crypto.SessionKeyManager(appContext) { };
         SessionKey sessionKey = sessionKeyMgr.createSession(key);
@@ -348,7 +328,7 @@ public class Util {
      * Decrypts data with an I2P private key 
      * @throws DataFormatException
      */
-    public static byte[] decrypt(byte data[], PrivateKey key) throws DataFormatException {
+    public static byte[] decrypt(byte[] data, PrivateKey key) throws DataFormatException {
         I2PAppContext appContext = I2PAppContext.getGlobalContext();
         SessionKeyManager sessionKeyMgr = new net.i2p.crypto.SessionKeyManager(appContext) {
         };
@@ -358,14 +338,12 @@ public class Util {
     
     /** Overwrites a <code>byte</code> array with zeros */
     public static void zeroOut(byte[] array) {
-        for (int i=0; i<array.length; i++)
-            array[i] = 0;
+        Arrays.fill(array, (byte) 0);
     }
     
     /** Overwrites a <code>char</code> array with zeros */
     public static void zeroOut(char[] array) {
-        for (int i=0; i<array.length; i++)
-            array[i] = 0;
+        Arrays.fill(array, (char) 0);
     }
     
     public static byte[] concat(byte[] arr1, byte[]arr2) {
@@ -403,7 +381,7 @@ public class Util {
             return defaultValue;
         else
             try {
-                return new Integer(stringValue);
+                return Integer.parseInt(stringValue);
             } catch (NumberFormatException e) {
                 throw new NumberFormatException("Can't convert value <" + stringValue + "> for parameter <" + parameterName + "> to int.");
             }
