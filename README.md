@@ -27,8 +27,7 @@ I2P-Bote is a plugin for I2P that allows users to send and receive emails while 
 ### Dependencies:
 
 - Java SDK (preferably Oracle/Sun or OpenJDK) 1.7.0 or higher
-- Apache Ant 1.8.0 or higher
-- Gradle 2.14.1
+- Gradle 5.6.4 or higher1
 
 ### Gradle
 
@@ -80,8 +79,8 @@ The data directory will be placed in `i2p.i2p-bote/webapp/i2pbote`; logs will be
 ### Additional dependencies:
 
 - [I2P source](https://github.com/i2p/i2p.i2p)
-- Android SDK 25
-- Android Build Tools 25.0.2
+- Android SDK 29 or higher
+- Android Build Tools 30.0.0 or higher
 - Android Support Repository
 
 ### Preparation
