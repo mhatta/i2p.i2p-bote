@@ -5,10 +5,11 @@ archivesBaseName = 'i2pbote'
 dependencies {
     implementation project(':crypto')
 
-    api "net.i2p:i2p:0.9.45"
-    implementation "net.i2p.client:streaming:0.9.45"
+    api "net.i2p:i2p:$rootProject.i2pVersion"
+    implementation "net.i2p.client:streaming:$rootProject.i2pVersion"
 
-    api 'com.sun.mail:mailapi:1.6.5'
+    // Apache James 3.0.1 needs 1.6.3
+    api 'com.sun.mail:mailapi:1.6.3'
     implementation 'com.sun.activation:jakarta.activation:1.2.2'
     implementation 'com.lambdaworks:scrypt:1.4.0'
     implementation 'org.apache.james:apache-mime4j-core:0.8.3'
