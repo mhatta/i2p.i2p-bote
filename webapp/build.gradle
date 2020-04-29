@@ -75,7 +75,7 @@ dependencies {
     // Apache James 3.0.1 needs 1.5.6
     compile 'com.sun.mail:smtp:1.5.6'
 
-    compile 'ch.qos.logback:logback-classic:1.2.3'
+    //compile 'ch.qos.logback:logback-classic:1.2.3'
 
     compile 'javax.servlet:jstl:1.2'
 
