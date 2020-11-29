@@ -1,6 +1,10 @@
 I2P-Bote Version History
 ------------------------
 
+0.4.8.5 (Released on November 29, 2020)
+  * Enable NTCP2
+  * Various housekeeping, updating, etc.
+
 0.4.8.4 (Released on November 29, 2020)
   * Built with I2P 0.9.47
   * Various housekeeping, updating, etc.
