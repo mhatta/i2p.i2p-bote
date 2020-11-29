@@ -1,21 +1,23 @@
 buildscript {
     repositories {
+    	mavenLocal()
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.1.1'
     }
 }
 
 allprojects {
     repositories {
+        mavenLocal()
         jcenter()
         google()
     }
 }
 
-project.ext.i2pVersion = '0.9.45'
+project.ext.i2pVersion = '0.9.47'
 
 static String compat(String src) {
     if (src.contains('.')) {
@@ -35,7 +37,7 @@ static String javaExecutable(String targetJavaHome, String execName) {
 }
 
 configure([project(':core'), project(':webapp')]) {
-    project.version = '0.4.8.3'
+    project.version = '0.4.8.4'
 
     project.afterEvaluate {
         jar {
