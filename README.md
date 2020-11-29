@@ -139,3 +139,4 @@ The links below only work within I2P, i.e., make sure you are running I2P and yo
 
 - http://i2pbote.i2p I2P-Bote homepage
 - http://forum.i2p/viewforum.php?f=35 I2P-Bote forum
+- http://mhatta.i2p The current maintainer's blog in I2P
