@@ -83,6 +83,8 @@ The data directory will be placed in `i2p.i2p-bote/webapp/i2pbote`; logs will be
 - Android Build Tools 30.0.0 or higher
 - Android Support Repository
 
+Currently, the I2P upstream does not provide the latest [I2P Android Client Library](https://mvnrepository.com/artifact/net.i2p.android/client) for some unknown reason.  You have to build it by yourself.  See [the i2p.android.base repo](https://github.com/i2p/i2p.android.base) for detail.
+
 ### Preparation
 
 1. Download the Android SDK. The simplest method is to download Android Studio.
