@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        versionCode 26
-        versionName '0.6.1.5'
+        versionCode 27
+        versionName '0.6.1.6'
         minSdkVersion 21
         targetSdkVersion 26
         multiDexEnabled true
@@ -72,7 +72,7 @@ dependencies {
     // Remote dependencies
     implementation 'com.sun.mail:android-mail:1.6.5'
     implementation 'com.sun.mail:android-activation:1.6.5'
-    implementation "net.i2p:router:0.9.47"
+    implementation "net.i2p:router:0.9.48"
     implementation "net.i2p.android:client:$rootProject.i2pVersion@aar"
     implementation 'net.i2p.android:helper:0.9.5@aar'
     implementation 'net.i2p.android.ext:floatingactionbutton:1.10.1'
