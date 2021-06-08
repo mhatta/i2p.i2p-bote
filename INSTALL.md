@@ -84,6 +84,6 @@ This is the current URL.
 
 By default, I2P will try to download the plugin using I2P to obfuscate the location
 of the downloader. If you don't have an I2P Outproxy to use, then you may need to
-use an in-I2P mirror of the plugin. A mirror URL is available on idk's site here:
+use an in-I2P mirror of the plugin.
 
-`http//idk.i2p/plugins/i2pbote-0.4.8.6.su3`
+`http://o4rsxdeepfrnncsnjq675xogp5v5qkbfgbt6ooqeyfvlifobrjxq.b32.i2p/i2pbote-0.4.8.6.su3`
