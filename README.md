@@ -16,6 +16,8 @@ I2P-Bote is a plugin for I2P that allows users to send and receive emails while 
 - Basic support for short recipient names
 - IMAP / SMTP
 
+## [How to Install](INSTALL.md)
+
 ### Planned Features
 
 - Custom folders
